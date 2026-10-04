@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="dis.net.xml"/>
+        <route-files value="dis.rou.xml"/>
+    </input>
+    <time><begin value="0"/><end value="4000"/><step-length value="1"/></time>
+    <output>
+        <tripinfo-output value="tripinfo.xml"/>
+        <stop-output value="stops.xml"/>
+    </output>
+    <report><no-step-log value="true"/></report>
+</configuration>

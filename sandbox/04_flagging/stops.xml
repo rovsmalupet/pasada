@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-09-23T23:10:36.316061+08:00 by Eclipse SUMO sumo 1.27.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\flag.net.xml"/>
+        <route-files value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\flag.rou.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\tripinfo.xml"/>
+        <stop-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\stops.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="1500"/>
+        <step-length value="1"/>
+    </time>
+
+    <report>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="51050"/>
+    </traci_server>
+
+</sumoConfiguration>
+-->
+
+<stops xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/stopinfo_file.xsd">
+    <stopinfo id="JEEP_R01_EB.1" type="jeepney" lane="AB_1" pos="319.99" parking="0" started="328.00" ended="338.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R01_EB.1" type="jeepney" lane="BC_1" pos="299.99" parking="0" started="382.00" ended="392.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+</stops>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Two-way, ONE traffic lane each way (plus the sidewalk netconvert adds).
+     3.2 m lanes: with lateral-resolution 0.8 that is exactly 4 sublanes.
+     AB = eastbound (left to right), BA = westbound (right to left). -->
+<edges>
+    <edge id="AB" from="A" to="B" numLanes="1" speed="13.89" width="3.2"/>
+    <edge id="BA" from="B" to="A" numLanes="1" speed="13.89" width="3.2"/>
+</edges>

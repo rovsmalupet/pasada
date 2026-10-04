@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-09-23T23:10:36.315566+08:00 by Eclipse SUMO sumo 1.27.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\flag.net.xml"/>
+        <route-files value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\flag.rou.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\tripinfo.xml"/>
+        <stop-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\04_flagging\stops.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="1500"/>
+        <step-length value="1"/>
+    </time>
+
+    <report>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="51050"/>
+    </traci_server>
+
+</sumoConfiguration>
+-->
+
+<tripinfos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tripinfo_file.xsd">
+    <tripinfo id="JEEP_R01_EB.0" depart="0.00" departLane="AB_1" departPos="7.10" departSpeed="13.89" departDelay="0.00" arrival="74.00" arrivalLane="BC_1" arrivalPos="498.00" arrivalSpeed="13.28" duration="74.00" routeLength="992.90" waitingTime="0.00" waitingCount="0" stopTime="0.00" timeLoss="1.82" rerouteNo="0" devices="tripinfo_JEEP_R01_EB.0" vType="jeepney" speedFactor="1.00" vaporized=""/>
+    <tripinfo id="JEEP_R01_EB.1" depart="300.00" departLane="AB_1" departPos="7.10" departSpeed="13.89" departDelay="0.00" arrival="413.00" arrivalLane="BC_1" arrivalPos="498.00" arrivalSpeed="13.84" duration="113.00" routeLength="992.90" waitingTime="0.00" waitingCount="0" stopTime="20.00" timeLoss="8.19" rerouteNo="0" devices="tripinfo_JEEP_R01_EB.1 person_JEEP_R01_EB.1" vType="jeepney" speedFactor="1.00" vaporized=""/>
+    <personinfo id="commuter_1" depart="60.00" type="pedestrian" speedFactor="1.06" duration="436.00" waitingTime="67.00" timeLoss="36.75" traveltime="369.00">
+        <walk depart="60.00" departPos="40.00" arrival="271.00" arrivalPos="320.00" duration="211.00" routeLength="280.00" timeLoss="20.81" maxSpeed="1.47" waitingTime="0.00"/>
+        <ride waitingTime="67.00" vehicle="JEEP_R01_EB.1" depart="338.00" arrival="382.00" arrivalPos="299.99" duration="44.00" routeLength="482.02" timeLoss="3.84"/>
+        <walk depart="382.00" departPos="299.99" arrival="496.00" arrivalPos="450.00" duration="114.00" routeLength="150.01" timeLoss="12.10" maxSpeed="1.47" waitingTime="0.00"/>
+    </personinfo>
+    <tripinfo id="JEEP_R01_EB.2" depart="600.00" departLane="AB_1" departPos="7.10" departSpeed="13.89" departDelay="0.00" arrival="674.00" arrivalLane="BC_1" arrivalPos="498.00" arrivalSpeed="13.83" duration="74.00" routeLength="992.90" waitingTime="0.00" waitingCount="0" stopTime="0.00" timeLoss="1.76" rerouteNo="0" devices="tripinfo_JEEP_R01_EB.2" vType="jeepney" speedFactor="1.00" vaporized=""/>
+</tripinfos>

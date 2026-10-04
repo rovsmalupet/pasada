@@ -1,0 +1,42 @@
+{
+  "c_normal": {
+    "trip_id": "c_normal",
+    "realized_mode": "jeepney",
+    "route_id": "JEEP_R01_EB.1",
+    "actual_departure_s": 60.0,
+    "arrival_time_s": 485.0,
+    "actual_total_time_s": 425.0,
+    "actual_waiting_time_s": 222.0,
+    "actual_access_time_s": 38.0,
+    "actual_in_vehicle_time_s": 90.0,
+    "actual_egress_time_s": 75.0,
+    "distance_m": 1094.0,
+    "cost_php": 13.0,
+    "estimated_total_time_s": 346.7,
+    "delay_ratio": 1.226,
+    "disrupted": false,
+    "disruption_reason": null,
+    "full_pass_bys_experienced": 0,
+    "completed": true
+  },
+  "c_disrupted": {
+    "trip_id": "c_disrupted",
+    "realized_mode": "jeepney",
+    "route_id": "JEEP_R01_EB.4",
+    "actual_departure_s": 1000.0,
+    "arrival_time_s": 1660.0,
+    "actual_total_time_s": 660.0,
+    "actual_waiting_time_s": 178.0,
+    "actual_access_time_s": 43.0,
+    "actual_in_vehicle_time_s": 354.0,
+    "actual_egress_time_s": 85.0,
+    "distance_m": 1094.0,
+    "cost_php": 13.0,
+    "estimated_total_time_s": 346.7,
+    "delay_ratio": 1.904,
+    "disrupted": true,
+    "disruption_reason": "congestion_incident",
+    "full_pass_bys_experienced": 0,
+    "completed": true
+  }
+}

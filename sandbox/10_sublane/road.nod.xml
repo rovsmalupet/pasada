@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- One straight 1.2 km road. No junctions in the middle, so nothing but
+     the jeepneys and the oncoming traffic decides whether a car can pass. -->
+<nodes>
+    <node id="A" x="0.0"    y="0.0"/>
+    <node id="B" x="1200.0" y="0.0"/>
+</nodes>

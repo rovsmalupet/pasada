@@ -14,6 +14,11 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# Personal notes and LLM session context: local only, never committed
+sumo_track/docs/
+sandbox/docs/
+starosa_prototype/docs/
+
 # SUMO track -----------------------------------------------------------------
 # Generated outputs: rebuilt by scripts, never hand-edited
 sumo_track/data/processed/

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="road.net.xml"/>
+        <route-files value="demand.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="2400"/>
+        <step-length value="1"/>
+    </time>
+    <processing>
+        <!-- THE SUBLANE MODEL. Each 3.2 m lane becomes four 0.8 m strips.
+             Vehicles get a sideways position instead of all driving on the
+             lane's centre line, and can occupy strips of the oncoming lane
+             without changing into it completely. -->
+        <lateral-resolution value="0.8"/>
+        <!-- report crashes instead of hiding them; teleports are counted too -->
+        <collision.action value="warn"/>
+        <collision.check-junctions value="true"/>
+    </processing>
+    <output>
+        <tripinfo-output value="tripinfo.xml"/>
+        <stop-output value="stops.xml"/>
+        <collision-output value="collisions.xml"/>
+    </output>
+    <report>
+        <no-step-log value="true"/>
+    </report>
+</configuration>

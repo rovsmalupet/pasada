@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NOW TWO-WAY. Each direction is its own edge, because an edge is one-way.
+     AB/BC = eastbound carriageway.  CB/BA = westbound carriageway.
+     This is why your jeepney routes are JEEP_R01_NB and JEEP_R01_SB:
+     the two directions physically traverse different edges. -->
+<edges>
+    <edge id="AB" from="A" to="B" numLanes="1" speed="13.89"/>
+    <edge id="BC" from="B" to="C" numLanes="1" speed="13.89"/>
+    <edge id="CB" from="C" to="B" numLanes="1" speed="13.89"/>
+    <edge id="BA" from="B" to="A" numLanes="1" speed="13.89"/>
+</edges>

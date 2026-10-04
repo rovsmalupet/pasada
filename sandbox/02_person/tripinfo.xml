@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-09-19T14:42:50.929497+08:00 by Eclipse SUMO GUI 1.27.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\02_person\walk.net.xml"/>
+        <route-files value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\02_person\walk.rou.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\02_person\tripinfo.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="1500"/>
+        <step-length value="1"/>
+    </time>
+
+    <traci_server>
+        <remote-port value="61458"/>
+    </traci_server>
+
+</sumoConfiguration>
+-->
+
+<tripinfos xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/tripinfo_file.xsd">
+    <tripinfo id="veh0" depart="0.00" departLane="AB_1" departPos="5.10" departSpeed="13.03" departDelay="0.00" arrival="81.00" arrivalLane="BC_1" arrivalPos="500.00" arrivalSpeed="12.66" duration="81.00" routeLength="995.00" waitingTime="0.00" waitingCount="0" stopTime="0.00" timeLoss="4.30" rerouteNo="0" devices="tripinfo_veh0" vType="car" speedFactor="0.94" vaporized=""/>
+    <personinfo id="ped0" depart="0.00" type="pedestrian" speedFactor="1.06" duration="666.00" waitingTime="0.00" timeLoss="68.26" traveltime="666.00">
+        <walk depart="0.00" departPos="20.00" arrival="666.00" arrivalPos="400.00" duration="666.00" routeLength="880.00" timeLoss="68.26" maxSpeed="1.47" waitingTime="0.00"/>
+    </personinfo>
+</tripinfos>

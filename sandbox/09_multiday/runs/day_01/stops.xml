@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-09-23T23:19:24.032801+08:00 by Eclipse SUMO sumo 1.27.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\09_multiday\city.net.xml"/>
+        <route-files value="day.rou.xml"/>
+        <additional-files value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\09_multiday\vtypes.add.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="tripinfo.xml"/>
+        <tripinfo-output.write-unfinished value="true"/>
+        <stop-output value="stops.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="10800"/>
+        <step-length value="1"/>
+    </time>
+
+    <report>
+        <no-warnings value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="52235"/>
+    </traci_server>
+
+    <random_number>
+        <seed value="42"/>
+    </random_number>
+
+</sumoConfiguration>
+-->
+
+<stops xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/stopinfo_file.xsd">
+    <stopinfo id="JEEP_R02_NB.6" type="jeepney" lane="B0B1_2" pos="52.30" parking="0" started="1807.00" ended="1810.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R01_EB.6" type="jeepney" lane="A1B1_2" pos="52.30" parking="0" started="1807.00" ended="1810.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R02_NB.6" type="jeepney" lane="B1B2_2" pos="272.28" parking="0" started="1857.00" ended="1860.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R01_EB.6" type="jeepney" lane="B1C1_2" pos="272.29" parking="0" started="1863.00" ended="1866.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R02_SB.19" type="jeepney" lane="B2B1_2" pos="12.29" parking="0" started="5727.00" ended="5730.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R01_WB.19" type="jeepney" lane="C1B1_2" pos="12.27" parking="0" started="5728.00" ended="5731.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R02_SB.19" type="jeepney" lane="B1B0_2" pos="232.30" parking="0" started="5777.00" ended="5780.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_R01_WB.19" type="jeepney" lane="B1A1_2" pos="232.30" parking="0" started="5782.00" ended="5785.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+</stops>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<additional>
+    <vType id="car"     vClass="passenger" maxSpeed="16.67" accel="2.6" decel="4.5" length="5.0"/>
+    <vType id="bike"    vClass="bicycle"   maxSpeed="5.56"  accel="1.2" decel="3.0" length="1.8"/>
+    <vType id="jeepney" vClass="bus"       maxSpeed="16.67" accel="1.3" decel="3.5" length="7.0"
+           personCapacity="20" boardingDuration="3.0"/>
+    <vType id="pedestrian" vClass="pedestrian" speed="1.34"/>
+</additional>

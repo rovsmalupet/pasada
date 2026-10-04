@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="santarosa.net.xml"/>
+        <!-- passengers.rou.xml = the random commuters from make_passengers.py -->
+        <route-files value="demand.rou.xml,passengers.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="3600"/>
+    </time>
+    <processing>
+        <!-- give persons/vehicles generous patience while prototyping -->
+        <time-to-teleport value="-1"/>
+        <!-- sublane model: vehicles get a sideways position inside their lane
+             (0.8 m resolution) instead of all driving on the lane's centre
+             line. Jeepneys use it to hug the kerb (latAlignment="right" in
+             demand.rou.xml); cars then pass a stopped jeepney through the
+             oncoming lane (network built with opposites.guess). -->
+        <lateral-resolution value="0.8"/>
+    </processing>
+    <output>
+        <!-- SUMO's built-in per-trip output (Section 4.4.3.2, third group) -->
+        <tripinfo-output value="tripinfo.xml"/>
+    </output>
+</configuration>

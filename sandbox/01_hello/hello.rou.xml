@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+    <!-- vType = a kind of vehicle. Later this is where the jeepney lives. -->
+    <vType id="car" accel="2.6" decel="4.5" length="5.0" maxSpeed="16.67"/>
+
+    <!-- route = an ordered list of edges -->
+    <route id="r0" edges="AB BC"/>
+
+    <!-- vehicle = one agent. depart is in seconds. MUST be sorted by depart. -->
+    <vehicle id="veh0" type="car" route="r0" depart="0"/>
+    <vehicle id="veh1" type="car" route="r0" depart="5"/>
+    <vehicle id="veh2" type="car" route="r0" depart="10"/>
+</routes>

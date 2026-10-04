@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rebuild with:   netconvert -c road.netccfg -->
+<configuration>
+    <input>
+        <node-files value="road.nod.xml"/>
+        <edge-files value="road.edg.xml"/>
+    </input>
+    <output>
+        <output-file value="road.net.xml"/>
+    </output>
+    <processing>
+        <sidewalks.guess value="true"/>
+        <crossings.guess value="true"/>
+        <opposites.guess value="true"/>
+        <!-- 60 s signal cycle: long enough reds to build a queue on the
+             main road, short enough that the queue clears on each green -->
+        <tls.cycle.time value="60"/>
+    </processing>
+</configuration>

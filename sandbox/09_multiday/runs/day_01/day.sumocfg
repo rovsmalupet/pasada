@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\09_multiday\city.net.xml"/>
+        <additional-files value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\09_multiday\vtypes.add.xml"/>
+        <route-files value="day.rou.xml"/>
+    </input>
+    <time><begin value="0"/><end value="10800"/><step-length value="1"/></time>
+    <output>
+        <tripinfo-output value="tripinfo.xml"/>
+        <tripinfo-output.write-unfinished value="true"/>
+        <stop-output value="stops.xml"/>
+    </output>
+    <report><no-step-log value="true"/><no-warnings value="true"/></report>
+</configuration>

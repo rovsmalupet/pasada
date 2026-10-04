@@ -1,0 +1,18 @@
+<!-- gui-settings.xml - how sumo-gui opens when run.py launches it.
+     * showSublanes: draws the 0.8 m strips inside each lane, so you can see
+       which strips the jeepney and the passing cars occupy.
+     * vehicles drawn at TRUE size (no exaggeration) - otherwise widths lie,
+       and the whole point here is how wide things are.
+     * persons 4x larger, or the commuters are invisible at this zoom.
+     * blinkers on: a car signals left before it pulls out to pass.
+     * centred on the "market stretch" (x 350-650 m) where most boardings are.
+     * 80 ms per simulated second; use the Delay box to change it live. -->
+<viewsettings>
+    <scheme name="sublane jeepney">
+        <edges laneShowBorders="1" showSublanes="1"/>
+        <vehicles vehicleQuality="2" showBlinker="1"/>
+        <persons person_exaggeration="4" person_minSize="2"/>
+    </scheme>
+    <delay value="80"/>
+    <viewport zoom="800" x="500" y="0"/>
+</viewsettings>

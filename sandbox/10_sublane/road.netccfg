@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Saved netconvert options. Rebuild with:   netconvert -c road.netccfg
+     Same idea as sumo_prototype/netconvert.netccfg, minus the OSM parts. -->
+<configuration>
+    <input>
+        <node-files value="road.nod.xml"/>
+        <edge-files value="road.edg.xml"/>
+    </input>
+    <output>
+        <output-file value="road.net.xml"/>
+    </output>
+    <processing>
+        <!-- sidewalks for the commuters to stand on -->
+        <sidewalks.guess value="true"/>
+        <crossings.guess value="true"/>
+        <!-- THE KEY OPTION: records that AB's lane and BA's lane face each
+             other across the centre line (<neigh> elements). Without it, a
+             car can never use any part of the oncoming lane. -->
+        <opposites.guess value="true"/>
+    </processing>
+</configuration>

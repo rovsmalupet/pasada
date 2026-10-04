@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- EDGES = one-way road segments between nodes. speed is in m/s (13.89 = 50 km/h). -->
+<edges>
+    <edge id="AB" from="A" to="B" numLanes="1" speed="13.89"/>
+    <edge id="BC" from="B" to="C" numLanes="1" speed="13.89"/>
+</edges>

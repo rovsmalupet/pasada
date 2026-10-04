@@ -1,0 +1,218 @@
+Warning: Not using public transport line 'JEEP_EB' for routing persons. It has less than two usable stops.
+Warning: Not using public transport line 'JEEP_WB' for routing persons. It has less than two usable stops.
+Warning: Person 'c01_WB' at edge 'BA' position 838.80 cannot use waiting vehicle 'JEEP_WB.1' at position 694.48 because it is too far away.
+Warning: Person 'c46_EB' at edge 'AB' position 585.20 cannot use waiting vehicle 'JEEP_EB.1' at position 565.48 because it is too far away.
+Warning: Person 'c15_WB' at edge 'BA' position 780.00 cannot use waiting vehicle 'JEEP_WB.3' at position 803.89 because it is too far away.
+Warning: Person 'c11_WB' at edge 'BA' position 843.20 cannot use waiting vehicle 'JEEP_WB.7' at position 601.28 because it is too far away.
+Warning: Person 'c37_WB' at edge 'BA' position 353.00 cannot use waiting vehicle 'JEEP_WB.7' at position 843.16 because it is too far away.
+Warning: Person 'c40_EB' at edge 'AB' position 507.10 cannot use waiting vehicle 'JEEP_EB.9' at position 689.50 because it is too far away.
+Warning: Person 'c24_EB' at edge 'AB' position 513.00 cannot use waiting vehicle 'JEEP_EB.9' at position 1033.88 because it is too far away.
+Warning: Person 'c42_EB' at edge 'AB' position 433.10 cannot use waiting vehicle 'JEEP_EB.11' at position 410.09 because it is too far away.
+Warning: Person 'c03_WB' at edge 'BA' position 557.10 cannot use waiting vehicle 'JEEP_WB.10' at position 1007.00 because it is too far away.
+Warning: Person 'c21_WB' at edge 'BA' position 774.30 cannot use waiting vehicle 'JEEP_WB.12' at position 557.10 because it is too far away.
+Warning: Person 'c47_WB' at edge 'BA' position 585.20 cannot use waiting vehicle 'JEEP_WB.13' at position 685.70 because it is too far away.
+Warning: Person 'c08_EB' at edge 'AB' position 644.10 cannot use waiting vehicle 'JEEP_EB.14' at position 510.00 because it is too far away.
+Registry: 50 commuters | lane 3.2 m | centre line y=0.00 | lateral resolution 0.8 m (4 sublanes per lane)
+[   107 s] FLAGDOWN  c20_EB flags JEEP_EB.1 (199 m away)
+[   115 s] FLAGDOWN  c16_EB flags JEEP_EB.1 (193 m away)
+[   128 s] BOARDED   c20_EB -> JEEP_EB.1 (1 aboard)
+[   137 s] FLAGDOWN  c41_WB flags JEEP_WB.1 (199 m away)
+[   157 s] BOARDED   c16_EB -> JEEP_EB.1 (2 aboard)
+[   157 s] FLAGDOWN  c19_WB flags JEEP_WB.1 (93 m away)
+[   158 s] BOARDED   c41_WB -> JEEP_WB.1 (1 aboard)
+[   160 s] FLAGDOWN  c01_WB flags JEEP_WB.1 (144 m away)
+[   184 s] FLAGDOWN  c12_EB flags JEEP_EB.2 (197 m away)
+[   187 s] BOARDED   c19_WB -> JEEP_WB.1 (2 aboard)
+[   187 s] ALIGHTED  c20_EB from JEEP_EB.1
+[   198 s] FLAGDOWN  c46_EB flags JEEP_EB.1 (20 m away)
+[   207 s] BOARDED   c12_EB -> JEEP_EB.2 (1 aboard)
+[   207 s] BOARDED   c46_EB -> JEEP_EB.1 (2 aboard)
+[   213 s] BOARDED   c01_WB -> JEEP_WB.1 (3 aboard)
+[   218 s] OVERTAKE  car_EB.37    passed JEEP_EB.2      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   226 s] FLAGDOWN  c13_WB flags JEEP_WB.2 (196 m away)
+[   247 s] ALIGHTED  c46_EB from JEEP_EB.1
+[   248 s] BOARDED   c13_WB -> JEEP_WB.2 (1 aboard)
+[   252 s] ALIGHTED  c41_WB from JEEP_WB.1
+[   253 s] ALIGHTED  c19_WB from JEEP_WB.1
+[   253 s] ALIGHTED  c12_EB from JEEP_EB.2
+[   255 s] ALIGHTED  c01_WB from JEEP_WB.1
+[   270 s] ALIGHTED  c16_EB from JEEP_EB.1
+[   314 s] FLAGDOWN  c36_EB flags JEEP_EB.3 (197 m away)
+[   332 s] FLAGDOWN  c09_WB flags JEEP_WB.3 (164 m away)
+[   345 s] BOARDED   c36_EB -> JEEP_EB.3 (1 aboard)
+[   345 s] ALIGHTED  c13_WB from JEEP_WB.2
+[   363 s] BOARDED   c09_WB -> JEEP_WB.3 (1 aboard)
+[   366 s] FLAGDOWN  c35_WB flags JEEP_WB.4 (199 m away)
+[   383 s] FLAGDOWN  c04_EB flags JEEP_EB.4 (198 m away)
+[   388 s] BOARDED   c35_WB -> JEEP_WB.4 (1 aboard)
+[   393 s] ALIGHTED  c36_EB from JEEP_EB.3
+[   400 s] OVERTAKE  car_EB.57    passed JEEP_EB.3      (stopped)  crossed centre line by 1.6 m of 3.2 m
+[   402 s] OVERTAKE  car_EB.58    passed JEEP_EB.3      (stopped)  crossed centre line by 2.4 m of 3.2 m  <- FULLY in oncoming lane
+[   404 s] BOARDED   c04_EB -> JEEP_EB.4 (1 aboard)
+[   413 s] ALIGHTED  c09_WB from JEEP_WB.3
+[   433 s] ALIGHTED  c35_WB from JEEP_WB.4
+[   435 s] OVERTAKE  car_WB.72    passed JEEP_WB.4      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   437 s] OVERTAKE  car_WB.73    passed JEEP_WB.4      (stopped)  crossed centre line by 2.4 m of 3.2 m  <- FULLY in oncoming lane
+[   439 s] OVERTAKE  car_WB.74    passed JEEP_WB.4      (stopped)  crossed centre line by 2.4 m of 3.2 m  <- FULLY in oncoming lane
+[   446 s] ALIGHTED  c04_EB from JEEP_EB.4
+[   461 s] FLAGDOWN  c15_WB flags JEEP_WB.4 (197 m away)
+[   480 s] FLAGDOWN  c30_EB flags JEEP_EB.5 (197 m away)
+[   482 s] FLAGDOWN  c38_EB flags JEEP_EB.5 (194 m away)
+[   483 s] BOARDED   c15_WB -> JEEP_WB.4 (1 aboard)
+[   488 s] OVERTAKE  car_WB.75    passed JEEP_WB.4      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   502 s] BOARDED   c30_EB -> JEEP_EB.5 (1 aboard)
+[   521 s] BOARDED   c38_EB -> JEEP_EB.5 (2 aboard)
+[   530 s] ALIGHTED  c15_WB from JEEP_WB.4
+[   562 s] ALIGHTED  c38_EB from JEEP_EB.5
+[   566 s] FLAGDOWN  c14_EB flags JEEP_EB.6 (197 m away)
+[   588 s] BOARDED   c14_EB -> JEEP_EB.6 (1 aboard)
+[   592 s] ALIGHTED  c30_EB from JEEP_EB.5
+[   644 s] FLAGDOWN  c33_WB flags JEEP_WB.7 (76 m away)
+[   652 s] ALIGHTED  c14_EB from JEEP_EB.6
+[   655 s] BOARDED   c33_WB -> JEEP_WB.7 (1 aboard)
+[   671 s] FLAGDOWN  c00_EB flags JEEP_EB.7 (191 m away)
+[   689 s] FLAGDOWN  c23_WB flags JEEP_WB.7 (199 m away)
+[   691 s] BOARDED   c00_EB -> JEEP_EB.7 (1 aboard)
+[   693 s] OVERTAKE  car_EB.118   passed JEEP_EB.7      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   694 s] OVERTAKE  car_EB.119   passed JEEP_EB.7      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   696 s] OVERTAKE  car_EB.120   passed JEEP_EB.7      (stopped)  crossed centre line by 2.4 m of 3.2 m  <- FULLY in oncoming lane
+[   698 s] FLAGDOWN  c39_WB flags JEEP_WB.7 (190 m away)
+[   698 s] OVERTAKE  car_EB.121   passed JEEP_EB.7      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   700 s] ALIGHTED  c33_WB from JEEP_WB.7
+[   701 s] OVERTAKE  car_EB.122   passed JEEP_EB.7      (stopped)  crossed centre line by 2.4 m of 3.2 m  <- FULLY in oncoming lane
+[   732 s] BOARDED   c23_WB -> JEEP_WB.7 (1 aboard)
+[   736 s] FLAGDOWN  c28_EB flags JEEP_EB.8 (199 m away)
+[   739 s] ALIGHTED  c00_EB from JEEP_EB.7
+[   753 s] FLAGDOWN  c11_WB flags JEEP_WB.7 (198 m away)
+[   757 s] BOARDED   c28_EB -> JEEP_EB.8 (1 aboard)
+[   759 s] BOARDED   c39_WB -> JEEP_WB.7 (2 aboard)
+[   763 s] OVERTAKE  car_EB.137   passed JEEP_EB.8      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   767 s] OVERTAKE  car_EB.138   passed JEEP_EB.8      (stopped)  crossed centre line by 1.4 m of 3.2 m
+[   783 s] FLAGDOWN  c48_EB flags JEEP_EB.8 (197 m away)
+[   789 s] ALIGHTED  c23_WB from JEEP_WB.7
+[   799 s] ALIGHTED  c28_EB from JEEP_EB.8
+[   814 s] FLAGDOWN  c02_EB flags JEEP_EB.9 (191 m away)
+[   816 s] BOARDED   c11_WB -> JEEP_WB.7 (2 aboard)
+[   825 s] BOARDED   c48_EB -> JEEP_EB.8 (1 aboard)
+[   836 s] BOARDED   c02_EB -> JEEP_EB.9 (1 aboard)
+[   837 s] FLAGDOWN  c37_WB flags JEEP_WB.9 (191 m away)
+[   846 s] ALIGHTED  c39_WB from JEEP_WB.7
+[   858 s] BOARDED   c37_WB -> JEEP_WB.9 (1 aboard)
+[   865 s] ALIGHTED  c48_EB from JEEP_EB.8
+[   878 s] ALIGHTED  c11_WB from JEEP_WB.7
+[   885 s] FLAGDOWN  c10_EB flags JEEP_EB.9 (155 m away)
+[   886 s] ALIGHTED  c02_EB from JEEP_EB.9
+[   899 s] ALIGHTED  c37_WB from JEEP_WB.9
+[   923 s] BOARDED   c10_EB -> JEEP_EB.9 (1 aboard)
+[   935 s] FLAGDOWN  c40_EB flags JEEP_EB.10 (142 m away)
+[   952 s] BOARDED   c40_EB -> JEEP_EB.10 (1 aboard)
+[   959 s] FLAGDOWN  c17_WB flags JEEP_WB.10 (67 m away)
+[   967 s] FLAGDOWN  c49_WB flags JEEP_WB.10 (199 m away)
+[   975 s] ALIGHTED  c10_EB from JEEP_EB.9
+[   987 s] BOARDED   c17_WB -> JEEP_WB.10 (1 aboard)
+[   997 s] ALIGHTED  c40_EB from JEEP_EB.10
+[  1021 s] BOARDED   c49_WB -> JEEP_WB.10 (2 aboard)
+[  1022 s] FLAGDOWN  c26_EB flags JEEP_EB.11 (190 m away)
+[  1031 s] FLAGDOWN  c24_EB flags JEEP_EB.11 (194 m away)
+[  1043 s] BOARDED   c26_EB -> JEEP_EB.11 (1 aboard)
+[  1055 s] FLAGDOWN  c42_EB flags JEEP_EB.11 (22 m away)
+[  1062 s] ALIGHTED  c17_WB from JEEP_WB.10
+[  1065 s] BOARDED   c42_EB -> JEEP_EB.11 (2 aboard)
+[  1093 s] BOARDED   c24_EB -> JEEP_EB.11 (3 aboard)
+[  1093 s] ALIGHTED  c49_WB from JEEP_WB.10
+[  1117 s] FLAGDOWN  c03_WB flags JEEP_WB.12 (199 m away)
+[  1132 s] ALIGHTED  c42_EB from JEEP_EB.11
+[  1138 s] BOARDED   c03_WB -> JEEP_WB.12 (1 aboard)
+[  1156 s] ALIGHTED  c26_EB from JEEP_EB.11
+[  1156 s] FLAGDOWN  c21_WB flags JEEP_WB.12 (196 m away)
+[  1181 s] BOARDED   c21_WB -> JEEP_WB.12 (2 aboard)
+[  1181 s] ALIGHTED  c24_EB from JEEP_EB.11
+[  1215 s] ALIGHTED  c03_WB from JEEP_WB.12
+[  1216 s] FLAGDOWN  c05_WB flags JEEP_WB.13 (191 m away)
+[  1236 s] BOARDED   c05_WB -> JEEP_WB.13 (1 aboard)
+[  1248 s] ALIGHTED  c21_WB from JEEP_WB.12
+[  1275 s] ALIGHTED  c05_WB from JEEP_WB.13
+[  1283 s] FLAGDOWN  c06_EB flags JEEP_EB.14 (199 m away)
+[  1289 s] FLAGDOWN  c44_EB flags JEEP_EB.14 (200 m away)
+[  1304 s] BOARDED   c06_EB -> JEEP_EB.14 (1 aboard)
+[  1306 s] FLAGDOWN  c47_WB flags JEEP_WB.14 (194 m away)
+[  1306 s] OVERTAKE  car_EB.246   passed JEEP_EB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1308 s] OVERTAKE  car_EB.247   passed JEEP_EB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1309 s] OVERTAKE  car_EB.248   passed JEEP_EB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1312 s] OVERTAKE  car_EB.249   passed JEEP_EB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1315 s] OVERTAKE  car_EB.250   passed JEEP_EB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1328 s] BOARDED   c47_WB -> JEEP_WB.14 (1 aboard)
+[  1331 s] BOARDED   c44_EB -> JEEP_EB.14 (2 aboard)
+[  1336 s] OVERTAKE  car_WB.270   passed JEEP_WB.14     (stopped)  crossed centre line by 2.4 m of 3.2 m  <- FULLY in oncoming lane
+[  1338 s] FLAGDOWN  c08_EB flags JEEP_EB.14 (134 m away)Warning: Person 'c07_WB' at edge 'BA' position 776.80 cannot use waiting vehicle 'JEEP_WB.15' at position 971.10 because it is too far away.
+Warning: Person 'c27_WB' at edge 'BA' position 359.90 cannot use waiting vehicle 'JEEP_WB.16' at position 1061.79 because it is too far away.
+Warning: Person 'c45_WB' at edge 'BA' position 813.50 cannot use waiting vehicle 'JEEP_WB.17' at position 654.10 because it is too far away.
+
+[  1338 s] OVERTAKE  car_WB.271   passed JEEP_WB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1341 s] OVERTAKE  car_WB.272   passed JEEP_WB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1365 s] BOARDED   c08_EB -> JEEP_EB.14 (3 aboard)
+[  1368 s] FLAGDOWN  c34_EB flags JEEP_EB.15 (196 m away)
+[  1371 s] ALIGHTED  c47_WB from JEEP_WB.14
+[  1390 s] BOARDED   c34_EB -> JEEP_EB.15 (1 aboard)
+[  1394 s] ALIGHTED  c06_EB from JEEP_EB.14
+[  1405 s] FLAGDOWN  c43_WB flags JEEP_WB.15 (97 m away)
+[  1406 s] OVERTAKE  car_EB.251   passed JEEP_EB.14     (stopped)  crossed centre line by 1.4 m of 3.2 m
+[  1417 s] BOARDED   c43_WB -> JEEP_WB.15 (1 aboard)
+[  1430 s] ALIGHTED  c44_EB from JEEP_EB.14
+[  1445 s] ALIGHTED  c34_EB from JEEP_EB.15
+[  1453 s] ALIGHTED  c08_EB from JEEP_EB.14
+[  1463 s] ALIGHTED  c43_WB from JEEP_WB.15
+[  1494 s] FLAGDOWN  c07_WB flags JEEP_WB.16 (195 m away)
+[  1516 s] BOARDED   c07_WB -> JEEP_WB.16 (1 aboard)
+[  1564 s] ALIGHTED  c07_WB from JEEP_WB.16
+[  1564 s] FLAGDOWN  c22_EB flags JEEP_EB.17 (196 m away)
+[  1584 s] FLAGDOWN  c31_WB flags JEEP_WB.17 (191 m away)
+[  1586 s] BOARDED   c22_EB -> JEEP_EB.17 (1 aboard)
+[  1594 s] FLAGDOWN  c25_WB flags JEEP_WB.17 (200 m away)
+[  1605 s] BOARDED   c31_WB -> JEEP_WB.17 (1 aboard)
+[  1610 s] FLAGDOWN  c45_WB flags JEEP_WB.17 (159 m away)
+[  1627 s] ALIGHTED  c22_EB from JEEP_EB.17
+[  1636 s] FLAGDOWN  c27_WB flags JEEP_WB.18 (198 m away)
+[  1637 s] BOARDED   c25_WB -> JEEP_WB.17 (2 aboard)
+[  1648 s] FLAGDOWN  c18_EB flags JEEP_EB.18 (197 m away)
+[  1658 s] BOARDED   c27_WB -> JEEP_WB.18 (1 aboard)
+[  1661 s] BOARDED   c45_WB -> JEEP_WB.17 (3 aboard)
+[  1671 s] BOARDED   c18_EB -> JEEP_EB.18 (1 aboard)
+[  1684 s] ALIGHTED  c31_WB from JEEP_WB.17
+[  1701 s] FLAGDOWN  c32_EB flags JEEP_EB.18 (190 m away)
+[  1702 s] ALIGHTED  c27_WB from JEEP_WB.18
+[  1712 s] ALIGHTED  c18_EB from JEEP_EB.18
+[  1717 s] ALIGHTED  c25_WB from JEEP_WB.17
+[  1739 s] ALIGHTED  c45_WB from JEEP_WB.17
+[  1744 s] BOARDED   c32_EB -> JEEP_EB.18 (1 aboard)
+[  1762 s] FLAGDOWN  c29_WB flags JEEP_WB.19 (71 m away)
+[  1771 s] BOARDED   c29_WB -> JEEP_WB.19 (1 aboard)
+[  1786 s] ALIGHTED  c32_EB from JEEP_EB.18
+[  1834 s] ALIGHTED  c29_WB from JEEP_WB.19
+
+========================================================================
+COMMUTERS  50/50 boarded, 50/50 reached their destination
+           kerbside wait: mean 52 s, max 115 s
+
+JEEPNEYS   distance from the kerb while stopped (right side to lane edge):
+           mean 0.00 m, max 0.00 m   (0 = touching the kerb)
+
+OVERTAKES  cars passing a jeepney (peak 107 vehicles on the road)
+           of a STOPPED jeepney     23   partly across centre: 17  |  fully in oncoming lane: 6  |  stayed in own lane: 0
+                                        centre-line crossing: mean 1.67 m, max 2.40 m (lane is 3.2 m = 75% max)
+           of a moving jeepney       4   partly across centre: 4  |  fully in oncoming lane: 0  |  stayed in own lane: 0
+                                        centre-line crossing: mean 1.45 m, max 1.60 m (lane is 3.2 m = 50% max)
+
+WHY FULLY? passing a stopped jeepney, split by whether the car had
+           been stuck behind it first:
+           had been queuing         9 overtakes,   2 fully across (22%)
+           rolled straight past    14 overtakes,   4 fully across (29%)
+           ...and by the nearest ONCOMING vehicle while side by side:
+           oncoming within 100 m    2 overtakes,   1 fully across (50%), mean crossing 2.00 m
+           oncoming lane clear     21 overtakes,   5 fully across (24%), mean crossing 1.64 m
+
+RETURNING  each time a car crossed the centre line, how long it stayed:
+           63 crossings, median 5 s, longest 19 s
+
+HEALTH     teleports: 0   collisions: 0   (both should be 0)
+========================================================================

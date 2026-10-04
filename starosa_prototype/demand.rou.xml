@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- demand.rou.xml — prototype demand: 1 jeepney line, 1 commuter, light cars.
+     The 20 random commuters live in passengers.rou.xml (make_passengers.py).
+     Replace every >>>PLACEHOLDER<<< with your values from Steps 2-3. -->
+<routes>
+
+    <!-- ============ vehicle types (Section 4.4.2) ============
+         latAlignment="right": with the sublane model (run.sumocfg) jeepneys
+         keep to the kerb side of their lane, and stop there to load, leaving
+         the rest of the road for cars to get past. -->
+    <vType id="jeepney" vClass="passenger" length="7.0" maxSpeed="16.7"
+           accel="1.0" decel="3.0" personCapacity="16"
+           boardingDuration="2.0" color="1,0.8,0"
+           guiShape="bus" latAlignment="right"/>
+    <vType id="car" vClass="passenger" color="0.7,0.7,0.7"/>
+    <vType id="bicycle" vClass="bicycle" length="1.8" maxSpeed="5.56"
+           guiShape="bicycle" color="0,1,0"/>
+
+    <!-- ============ the jeepney route (from make_route.py) ============ -->
+    <route id="route_JPN1" edges="146474893#0 146474893#1 1203860658 549231957 579562700#0 325385356 156424420#1 156424420#2 156424420#4 156424420#5 156424420#6 156424420#7 156424420#8 156424420#9 156424420#11 156424420#13 156424420#14 156424420#15 156424420#16 156424420#17 156424420#19 156424420#20 156424420#21 156424420#22 92875200#0 92875200#1 92875200#2 92875200#3 92875200#4 92875200#5 92875200#6 1081554464 1081554462 1081554463 1081554465#0 1081554465#1"/>
+
+    <!-- ============ jeepney service: one vehicle every 60 s ============
+         (was 300 s with a single commuter; with the 20 random commuters of
+         passengers.rou.xml a jeepney now passes every minute, like a busy
+         Philippine corridor - change period to tune the headway.)
+         line="JPN1" is what lets persons board it.
+         MILESTONE B ONLY: both <stop> elements below make every jeepney halt
+         at the boarding AND alighting points, like fixed stops. SUMO requires
+         a stop to already exist at a ride's alighting edge/pos before it will
+         let a person board at all - a boarding-only stop silently blocks
+         boarding forever (confirmed empirically; not documented clearly).
+         MILESTONE C: DELETE both <stop> lines - the TraCI controller commands
+         both the boarding AND alighting stop together, at flag-down time
+         (scheduling only the boarding stop causes the same deadlock). -->
+    <flow id="jpn" type="jeepney" route="route_JPN1" line="JPN1"
+          begin="0" end="3600" period="60">
+         </flow>
+
+    <!-- ============ background traffic (Section 4.4.2.4, minimal) ============
+         cars in BOTH directions of the corridor: "bg" follows the jeepney
+         route, "bgon" drives the same street the other way (the oncoming lane
+         cars must find a gap in to overtake a stopped jeepney).
+         probability = chance per second that a car enters, so arrivals come in
+         random bunches and gaps like real traffic: 0.067 = ~240 cars/h each
+         way, one every ~15 s on average (was period="40", one direction only).
+         Measured with the 21 commuters: 0.05 -> light, 23 cars overtook a
+         jeepney; 0.067 -> 21 overtook, cars stopped ~30 s per trip;
+         0.1 (~360/h) -> few gaps, only 13 overtook, queues build behind
+         jeepneys. Change BOTH flows together.
+         Declared before the person below: SUMO drops any flow/person that is
+         out of non-decreasing depart order relative to earlier entries in this
+         file (silently, with only a warning) - these must stay ahead of
+         commuter0 (depart="30") since they begin at 0. -->
+    <flow id="bg" type="car" route="route_JPN1" begin="0" end="3600" probability="0.067"/>
+    <route id="route_oncoming" edges="-1081554465#1 -1081554465#0 -1081554463 -1081554462 -1081554464 -92875200#6 -92875200#5 -92875200#4 -92875200#3 -92875200#2 -92875200#1 -92875200#0 -156424420#22 -156424420#21 -156424420#20 -156424420#19 -156424420#17 -156424420#16 -156424420#15 -156424420#14 -156424420#13 -156424420#11 -156424420#9 -156424420#8 -156424420#7 -156424420#6 -156424420#5 -156424420#4 -156424420#2 -156424420#1 -156424420#0 -1203860658 -146474893#1 -146474893#0"/>
+    <flow id="bgon" type="car" route="route_oncoming" begin="0" end="3600" probability="0.067"/>
+
+    <!-- ============ single bicycle agent (home -> destination, direct) ============
+         Destination edge (793340171#0) is highway.trunk - SUMO's stock
+         typemap bans bicycles from trunk roads by default (Western-style
+         limited-access assumption). typemap.typ.xml overrides that for this
+         network: Philippine "trunk" roads are ordinary shared national/
+         provincial highways, not access-controlled, so bikes legally use
+         them. See netconvert.netccfg / typemap.typ.xml for the full
+         rationale. motorway/motorway_link (actual toll expressways) still
+         disallow bicycle, unchanged. -->
+    <route id="route_bike1" edges="-93603273 -93603278#5 93603280#1 -90960477#1 -90960477#0 -1083889782 33299157 1083889779 1098781104 -156424420#9 -156424420#8 -156424420#7 -156424420#6 -156424420#5 -156424420#4 -156424420#2 -936777017#1 -936777017#0 579562700#3 579562700#4 579562700#5 579562700#6 579562700#7 793340171#0"/>
+    <vehicle id="bike1" type="bicycle" route="route_bike1" depart="15" color="0,1,0"/>
+
+    <!-- ============ single car agent (home -> destination, direct) ============ -->
+    <route id="route_car1" edges="-1311343850#7 -93603273 -93603278#5 93603280#1 -90960477#1 -90960477#0 -1083889782 33299157 1083889779 1098781104 -156424420#9 -156424420#8 -156424420#7 -156424420#6 -156424420#5 -156424420#4 -156424420#2 -156424420#1 -156424420#0 549231957 579562700#0 579562700#1 579562700#3 579562700#4 579562700#5 579562700#6 579562700#7 793340171#0"/>
+    <vehicle id="car1" type="car" route="route_car1" depart="20" color="1,1,1"/>
+
+    <!-- ============ the commuter (Section 4.4.2.1) ============
+         walk from home to the roadside -> ride line JPN1 -> walk to destination.
+         arrivalPos of the first walk MUST equal the jeepney stop position. -->
+    <person id="commuter0" depart="30" color="0,1,1">
+        <walk from="-90960527#3" to="156424420#4"
+              arrivalPos="93.8"/>
+        <ride from="156424420#4" to="156424420#21"
+              lines="JPN1" arrivalPos="8.3"/>
+        <walk from="156424420#21" to="-205562766#0"/>
+    </person>
+
+</routes>

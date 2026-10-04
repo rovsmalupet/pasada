@@ -1,0 +1,19 @@
+<!-- gui-settings.xml - how sumo-gui opens when run.py launches it.
+     * centred on the signalised junction C (x = 800). netconvert shifted all
+       coordinates up by 150 m to fit the cross street, so the main road's
+       centre line is at y = 150, not 0.
+     * the eastbound queue builds to the LEFT of the junction, the westbound
+       queue to the RIGHT - both are on screen at this zoom.
+     * showSublanes draws the nine 0.4 m strips of each lane, so you can see
+       motorcycles riding in the kerb strips and the centre-line strips.
+     * vehicles at true size (widths are the whole point); persons 4x.
+     * 100 ms per simulated second - motorcycles move fast. -->
+<viewsettings>
+    <scheme name="motorcycle filtering">
+        <edges laneShowBorders="1" showSublanes="1"/>
+        <vehicles vehicleQuality="2" showBlinker="1"/>
+        <persons person_exaggeration="4" person_minSize="2"/>
+    </scheme>
+    <delay value="100"/>
+    <viewport zoom="450" x="800" y="150"/>
+</viewsettings>

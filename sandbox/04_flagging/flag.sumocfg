@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="flag.net.xml"/>
+        <route-files value="flag.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="1500"/>
+        <step-length value="1"/>
+    </time>
+    <output>
+        <tripinfo-output value="tripinfo.xml"/>
+        <stop-output value="stops.xml"/>
+    </output>
+    <report>
+        <no-step-log value="true"/>
+    </report>
+</configuration>

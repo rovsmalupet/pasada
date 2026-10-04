@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-10-01T13:24:44.218539+08:00 by Eclipse SUMO GUI 1.27.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\road.net.xml"/>
+        <route-files value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\demand.rou.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\tripinfo.xml"/>
+        <stop-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\stops.xml"/>
+        <collision-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\collisions.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="2400"/>
+        <step-length value="1"/>
+    </time>
+
+    <processing>
+        <lateral-resolution value="0.8"/>
+        <collision.action value="warn"/>
+        <collision.check-junctions value="true"/>
+    </processing>
+
+    <report>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="56561"/>
+    </traci_server>
+
+    <gui_only>
+        <gui-settings-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\gui-settings.xml"/>
+    </gui_only>
+
+</sumoConfiguration>
+-->
+
+<stops xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/stopinfo_file.xsd">
+    <stopinfo id="JEEP_EB.1" type="jeepney" lane="AB_1" pos="380.40" parking="0" started="127.00" ended="139.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.1" type="jeepney" lane="AB_1" pos="460.80" parking="0" started="156.00" ended="168.00" initialPersons="1" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.1" type="jeepney" lane="BA_1" pos="694.48" parking="0" started="157.00" ended="169.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.1" type="jeepney" lane="BA_1" pos="787.38" parking="0" started="186.00" ended="198.00" initialPersons="1" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.1" type="jeepney" lane="AB_1" pos="565.48" parking="0" started="186.00" ended="198.00" initialPersons="2" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.1" type="jeepney" lane="AB_1" pos="585.20" parking="0" started="206.00" ended="218.00" initialPersons="1" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.2" type="jeepney" lane="AB_1" pos="233.80" parking="0" started="206.00" ended="218.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.1" type="jeepney" lane="BA_1" pos="838.78" parking="0" started="212.00" ended="224.00" initialPersons="2" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.1" type="jeepney" lane="AB_1" pos="796.10" parking="0" started="246.00" ended="258.00" initialPersons="2" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.2" type="jeepney" lane="BA_1" pos="685.19" parking="0" started="247.00" ended="259.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.1" type="jeepney" lane="BA_1" pos="1031.30" parking="0" started="251.00" ended="263.00" initialPersons="3" loadedPersons="0" unloadedPersons="3" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.2" type="jeepney" lane="AB_1" pos="492.00" parking="0" started="252.00" ended="264.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.1" type="jeepney" lane="BA_1" pos="1032.70" parking="0" started="266.00" ended="278.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.1" type="jeepney" lane="AB_1" pos="831.40" parking="0" started="269.00" ended="281.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.1" type="jeepney" lane="BA_1" pos="1035.39" parking="0" started="282.00" ended="294.00" initialPersons="0" loadedPersons="0" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.2" type="jeepney" lane="BA_1" pos="1028.98" parking="0" started="344.00" ended="356.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.3" type="jeepney" lane="AB_1" pos="641.28" parking="0" started="344.00" ended="356.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.3" type="jeepney" lane="BA_1" pos="803.89" parking="0" started="362.00" ended="374.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.4" type="jeepney" lane="BA_1" pos="217.28" parking="0" started="387.00" ended="399.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.3" type="jeepney" lane="AB_1" pos="926.58" parking="0" started="392.00" ended="404.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_EB.4" type="jeepney" lane="AB_1" pos="442.49" parking="0" started="403.00" ended="415.00" initialPersons="0" loadedPersons="1" unloadedPersons="0" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+    <stopinfo id="JEEP_WB.3" type="jeepney" lane="BA_1" pos="1102.79" parking="0" started="412.00" ended="424.00" initialPersons="1" loadedPersons="0" unloadedPersons="1" initialContainers="0" loadedContainers="0" unloadedContainers="0" blockedDuration="0.00"/>
+</stops>

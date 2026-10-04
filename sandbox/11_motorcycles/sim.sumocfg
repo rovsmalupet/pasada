@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <net-file value="road.net.xml"/>
+        <route-files value="demand.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="2400"/>
+        <step-length value="1"/>
+    </time>
+    <processing>
+        <!-- 0.4 m strips (finer than sandbox 10's 0.8 m). SUMO's advice: the
+             strip should be no wider than the narrowest vehicle, and a 3.6 m
+             lane divides into exactly nine of them. -->
+        <lateral-resolution value="0.4"/>
+        <collision.action value="warn"/>
+        <collision.check-junctions value="true"/>
+    </processing>
+    <output>
+        <tripinfo-output value="tripinfo.xml"/>
+        <collision-output value="collisions.xml"/>
+    </output>
+    <report>
+        <no-step-log value="true"/>
+    </report>
+</configuration>

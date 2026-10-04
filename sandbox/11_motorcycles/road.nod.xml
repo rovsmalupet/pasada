@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The same straight main road as sandbox 10, now with a SIGNALISED
+     junction C at x = 800 and a small cross street (N-S). The red light
+     builds a queue every cycle - the "traffic" motorcycles filter through. -->
+<nodes>
+    <node id="A" x="0.0"    y="0.0"/>
+    <node id="C" x="800.0"  y="0.0" type="traffic_light"/>
+    <node id="B" x="1200.0" y="0.0"/>
+    <node id="N" x="800.0"  y="150.0"/>
+    <node id="S" x="800.0"  y="-150.0"/>
+</nodes>

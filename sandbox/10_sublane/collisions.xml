@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-10-01T13:24:44.219637+08:00 by Eclipse SUMO GUI 1.27.0
+<sumoConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\road.net.xml"/>
+        <route-files value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\demand.rou.xml"/>
+    </input>
+
+    <output>
+        <tripinfo-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\tripinfo.xml"/>
+        <stop-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\stops.xml"/>
+        <collision-output value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\collisions.xml"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="2400"/>
+        <step-length value="1"/>
+    </time>
+
+    <processing>
+        <lateral-resolution value="0.8"/>
+        <collision.action value="warn"/>
+        <collision.check-junctions value="true"/>
+    </processing>
+
+    <report>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="56561"/>
+    </traci_server>
+
+    <gui_only>
+        <gui-settings-file value="C:\Users\user\Desktop\THESIS\SUMO\sandbox\10_sublane\gui-settings.xml"/>
+    </gui_only>
+
+</sumoConfiguration>
+-->
+
+<collisions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/collision_file.xsd">
+</collisions>
