@@ -1,0 +1,25 @@
+# All numeric assumptions for the SUMO track.
+# Code must never hardcode these values; it reads them through sumo_track.config.
+#
+# Every entry has:
+#   value   the number used by the code
+#   unit    unit of the value
+#   status  placeholder | assumed | literature | official | observed
+#   source  where the value comes from (or "TBD – ..." if not yet known)
+#   notes   anything else worth knowing
+#
+# Parameters are added here when the code that uses them is written.
+
+step_length:
+  value: 1
+  unit: s
+  status: assumed
+  source: "Manuscript design decision: SUMO runs with --step-length 1"
+  notes: "Fixed for the whole thesis. Not expected to change."
+
+random_seed:
+  value: 42
+  unit: "-"
+  status: assumed
+  source: "Implementation choice"
+  notes: "Default only. Each run may override it; the seed actually used is recorded in run_config.json."

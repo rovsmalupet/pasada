@@ -1,0 +1,55 @@
+# Chooses the source for every input dataset.
+# Code never uses these paths directly; it asks sumo_track.config for the active path.
+#
+#   active       placeholder | real | none
+#   placeholder  stand-in file used until the final file is ready
+#   real         final file (from the data team, or built by the SUMO track where provider says so)
+#   provider     who owns the real dataset (manuscript section)
+#
+# Paths are relative to the repository root. Files are created when the code that uses them is written.
+
+study_boundary:
+  active: placeholder
+  placeholder: data/placeholder/boundary.geojson
+  real: data/real/boundary.geojson
+  provider: "SUMO track (Sec. 4.4.1), from PSA/NAMRIA boundaries (Sec. 4.2.1)"
+  notes: >-
+    Exact polygon. The buffered clip polygon is derived from it at build time.
+    Placeholder: OSM relation 1335521, built by `python -m sumo_track.network.boundary`.
+    It includes about 35.7 km2 of Laguna de Bay (land part about 54.0 km2; PSA/NAMRIA land area 56.17 km2).
+    Real: PSA/NAMRIA city and 18 barangay polygons (HDX COD-AB), to be added later.
+
+osm_extract:
+  active: placeholder
+  placeholder: data/raw/santarosa_bbox.osm
+  real: data/real/santarosa_clean.osm
+  provider: "Sec. 4.2.4"
+  notes: ""
+
+activity_locations:
+  active: placeholder
+  placeholder: data/placeholder/locations.csv
+  real: data/real/locations.csv
+  provider: "Sec. 4.2.3"
+  notes: ""
+
+origin_zones:
+  active: placeholder
+  placeholder: data/placeholder/origin_zones.csv
+  real: data/real/origin_zones.csv
+  provider: "Sec. 4.2.2"
+  notes: "Placeholder uses equal weights per residential edge."
+
+jeepney_routes:
+  active: placeholder
+  placeholder: data/placeholder/jeepney_routes.json
+  real: data/real/jeepney_routes.json
+  provider: "Sec. 4.2.5"
+  notes: ""
+
+traffic_counts:
+  active: none
+  placeholder: null
+  real: data/real/traffic_counts.csv
+  provider: "Sec. 4.2.6"
+  notes: "No placeholder file; background demand uses randomTrips.py until counts arrive."

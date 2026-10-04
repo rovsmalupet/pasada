@@ -1,0 +1,23 @@
+# Applies to the whole PASADA-abm repository. A pattern without a folder
+# prefix matches in every folder; prefix track-specific rules with the folder.
+
+# Python (all folders)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments (all folders); each person recreates their own
+.venv/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# SUMO track -----------------------------------------------------------------
+# Generated outputs: rebuilt by scripts, never hand-edited
+sumo_track/data/processed/
+sumo_track/runs/
+
+# Large untouched downloads; keep a note of each file's source URL and download date
+sumo_track/data/raw/
