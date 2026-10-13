@@ -4,11 +4,17 @@
        "Delay (ms)" box in the toolbar to speed up / slow down live.
      * persons drawn 4x larger (they are tiny at corridor zoom). Vehicles stay
        true size, so you can see a jeepney tucked against the kerb side of its
-       lane (enlarged, it would look wider than the lane itself).
+       lane and motorcycles squeezing past (enlarged, widths would lie).
+     * showSublanes draws the 0.4 m strips of each lane (sandbox 11), so you
+       can see which strips the jeepneys, cars and motorcycles occupy;
+       vehicleQuality 2 draws real shapes (motorcycle, bus); blinkers on, so
+       a car signals before it pulls out to pass.
      * viewport centred on the kerbside stretch of route JPN1 where every
        boarding and alighting happens. -->
 <viewsettings>
     <scheme name="jeepney prototype">
+        <edges laneShowBorders="1" showSublanes="1"/>
+        <vehicles vehicleQuality="2" showBlinker="1"/>
         <persons person_exaggeration="4" person_minSize="2"/>
     </scheme>
     <delay value="100"/>

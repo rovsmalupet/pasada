@@ -27,7 +27,10 @@ A baby version of the controller in Section 4.4.2.2:
   * stops the jeepney at the kerb side of its lane while it loads/unloads,
     so cars behind can overtake it (or, with PULL_OVER, fully off the lane),
   * passes by (FULL) when no seat is left,
-  * logs every event with a timestamp and prints a per-commuter summary.
+  * logs every event with a timestamp and prints a per-commuter summary,
+  * runs traffic_meter.py alongside (observe only): how motorcycles filter
+    past cars and loading jeepneys, how far cars swing out to pass a stopped
+    jeepney, collisions/teleports, and travel time per flow.
 
 Usage:
     python make_passengers.py              # (re)generate the random commuters
@@ -42,6 +45,8 @@ from collections import Counter
 import sumolib
 import traci
 import traci.constants as tc
+
+import traffic_meter
 
 # ======================= CONFIG =======================
 SUMO_CFG  = "run.sumocfg"      # its route files ARE the commuter registry
@@ -187,6 +192,8 @@ def main():
     else:
         traci.start(["sumo", "-c", SUMO_CFG])
     end = traci.simulation.getEndTime()   # -1 if the config sets no end
+    meter = traffic_meter.TrafficMeter(
+        float(traci.simulation.getOption("lateral-resolution")), log=log)
 
     waiting = dict(commuters)   # not yet on board
     assigned = {}               # waiting pid -> the one jeepney flagged for them
@@ -194,6 +201,7 @@ def main():
     stop_users = {}             # (veh, edge, pos) -> pids needing that stop
     full_logged = set()         # (veh, pid) FULL events already printed
     times = {pid: {} for pid in commuters}   # kerb/board/alight/arrive, jeepney
+    jeepneys = set()            # JPN1 vehicles currently on the network
 
     def board_stop(c):
         return c["board_edge"], c["board_pos"], c["board_lane"]
@@ -208,9 +216,14 @@ def main():
                 break
             traci.simulationStep()
             t = traci.simulation.getTime()
+            meter.step(t)
             persons = set(traci.person.getIDList())
-            jeepneys = [v for v in traci.vehicle.getIDList()
-                        if traci.vehicle.getLine(v) == LINE]
+            # check each vehicle's line once, when it enters: asking every
+            # vehicle every second costs one TraCI round trip each, and the
+            # motorcycles double the number of vehicles
+            jeepneys.update(v for v in traci.simulation.getDepartedIDList()
+                            if traci.vehicle.getLine(v) == LINE)
+            jeepneys.difference_update(traci.simulation.getArrivedIDList())
 
             # --- 1. watch person state: kerb arrival, boarding, alighting ---
             for pid in list(waiting):
@@ -323,13 +336,20 @@ def main():
         closed = True
         print("\nsumo-gui was closed - stopping early.")
 
-    # summary first: with sumo-gui, traci.close() blocks until the window is shut
+    # summaries first: with sumo-gui, traci.close() blocks until the window is shut
     print_summary(commuters, times)
-    print("Check tripinfo.xml for SUMO's own door-to-door times.")
+    print(meter.summary())
     if not closed:
         if gui:
-            print("Simulation over - close the sumo-gui window to exit.")
+            print("\nSimulation over - close the sumo-gui window to see travel times.")
         traci.close()
+    # SUMO only finishes writing tripinfo.xml once it has shut down
+    tripinfo = ET.parse(SUMO_CFG).getroot().find("output/tripinfo-output").get("value")
+    try:
+        print(traffic_meter.travel_times(tripinfo))
+    except (OSError, ET.ParseError):
+        print(f"\n({tripinfo} is missing or incomplete - travel times skipped)")
+    print("Check tripinfo.xml for SUMO's own door-to-door times.")
 
 
 def print_summary(commuters, times):

@@ -13,14 +13,26 @@
         <!-- give persons/vehicles generous patience while prototyping -->
         <time-to-teleport value="-1"/>
         <!-- sublane model: vehicles get a sideways position inside their lane
-             (0.8 m resolution) instead of all driving on the lane's centre
-             line. Jeepneys use it to hug the kerb (latAlignment="right" in
-             demand.rou.xml); cars then pass a stopped jeepney through the
-             oncoming lane (network built with opposites.guess). -->
-        <lateral-resolution value="0.8"/>
+             instead of all driving on the lane's centre line. Jeepneys use it
+             to hug the kerb (latAlignment="right" in demand.rou.xml); cars
+             pass a stopped jeepney through the oncoming lane (network built
+             with opposites.guess); motorcycles filter beside other vehicles.
+             0.4 m strips (was 0.8): SUMO's advice is a strip no wider than
+             the narrowest vehicle, and sandbox 11 found 0.8 m strips all but
+             stopped motorcycles filtering on the centre-line side (56 passes
+             vs 1053 at 0.4 m). -->
+        <lateral-resolution value="0.4"/>
+        <!-- report crashes instead of hiding them (traffic_meter.py counts
+             them, and they go to collisions.xml) -->
+        <collision.action value="warn"/>
+        <collision.check-junctions value="true"/>
     </processing>
     <output>
-        <!-- SUMO's built-in per-trip output (Section 4.4.3.2, third group) -->
+        <!-- SUMO's built-in per-trip output (Section 4.4.3.2, third group).
+             write-unfinished: trips still running at the end are written
+             too (arrival="-1"), so a short run still has a complete record -->
         <tripinfo-output value="tripinfo.xml"/>
+        <tripinfo-output.write-unfinished value="true"/>
+        <collision-output value="collisions.xml"/>
     </output>
 </configuration>
