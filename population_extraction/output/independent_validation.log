@@ -1,0 +1,60 @@
+/Users/matthewfuentes/Documents/Thesis/population_density/population_extraction/verify_extraction.py:32: DeprecationWarning: The 'shapely.ops.transform()' function is deprecated. Use 'shapely.transform()' or 'shapely.transform_coordseq()' instead. See https://shapely.readthedocs.io/en/latest/manual.html#shapely.ops.transform for more details.
+  projected = transform(to_meters.transform, geometry)
+/Users/matthewfuentes/Documents/Thesis/population_density/population_extraction/verify_extraction.py:33: DeprecationWarning: The 'shapely.ops.transform()' function is deprecated. Use 'shapely.transform()' or 'shapely.transform_coordseq()' instead. See https://shapely.readthedocs.io/en/latest/manual.html#shapely.ops.transform for more details.
+  expanded = transform(to_degrees.transform, projected.buffer(100))
+Audited 2,000,000 source rows; matched 0 output rows
+Audited 4,000,000 source rows; matched 19,788 output rows
+Audited 6,000,000 source rows; matched 19,788 output rows
+Audited 8,000,000 source rows; matched 19,788 output rows
+Audited 10,000,000 source rows; matched 19,788 output rows
+{
+  "all_output_records_match_independent_full_source_selection_in_order": true,
+  "all_population_strings_and_all_other_fields_unchanged": true,
+  "no_missing_selected_source_records": true,
+  "no_extra_output_records": true,
+  "independent_predicate": "Shapely intersects_xy(polygon, longitude, latitude)",
+  "input_records_audited": 10110681,
+  "selected_records_matched": 19788,
+  "source_uncompressed_csv_sha256": "c32662f03749d1ccd5b6148a3592295ffd47b3b367ceafe4eed6c19ef45a657a",
+  "workspace_csv_matches_zip_member": {
+    "path": "/Users/matthewfuentes/Documents/Thesis/population_density/phl_general_2020.csv",
+    "sha256": "c32662f03749d1ccd5b6148a3592295ffd47b3b367ceafe4eed6c19ef45a657a",
+    "size_bytes": 470681504
+  },
+  "boundary_area_sqkm_epsg32651": 56.18543780276707,
+  "boundary_perimeter_km_epsg32651": 46.151217377309386,
+  "boundary_sensitivity_diagnostics": [
+    {
+      "boundary_buffer_meters": -100,
+      "rows": 18871,
+      "population_exact_decimal": "352568.654129",
+      "population_difference_from_actual": -10189.236099
+    },
+    {
+      "boundary_buffer_meters": -50,
+      "rows": 19376,
+      "population_exact_decimal": "358053.735289",
+      "population_difference_from_actual": -4704.154939
+    },
+    {
+      "boundary_buffer_meters": 0,
+      "rows": 19788,
+      "population_exact_decimal": "362757.890228",
+      "population_difference_from_actual": 0.0
+    },
+    {
+      "boundary_buffer_meters": 50,
+      "rows": 20341,
+      "population_exact_decimal": "369803.352685",
+      "population_difference_from_actual": 7045.462457
+    },
+    {
+      "boundary_buffer_meters": 100,
+      "rows": 21045,
+      "population_exact_decimal": "378170.870629",
+      "population_difference_from_actual": 15412.980401
+    }
+  ],
+  "diagnostic_note": "Buffers are sensitivity checks only. The delivered CSV uses the original unbuffered polygon.",
+  "audit_execution_time_seconds": 30.834
+}
