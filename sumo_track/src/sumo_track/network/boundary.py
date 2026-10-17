@@ -1,16 +1,21 @@
-"""Santa Rosa City boundary from OpenStreetMap.
+"""Santa Rosa City boundary: the placeholder from OpenStreetMap, and the loader for whichever
+boundary the data manifest makes active.
 
-Downloads the city's administrative boundary relation from Overpass once, keeps the untouched
-response in data/raw/, and converts it into the GeoJSON polygon registered in the data manifest
-as study_boundary (placeholder). Converting the same saved response always gives the same file.
+Placeholder: downloads the city's administrative boundary relation from Overpass once, keeps the
+untouched response in data/raw/, and converts it into the GeoJSON polygon registered in the data
+manifest as study_boundary (placeholder). Converting the same saved response always gives the
+same file.
 
     python -m sumo_track.network.boundary            # use the saved download (downloads if missing)
     python -m sumo_track.network.boundary --refresh  # download a fresh copy from Overpass
+
+Other modules read the active boundary (placeholder or real) with load_study_boundary().
 
 OSM data is licensed under ODbL: credit "© OpenStreetMap contributors" wherever it is used.
 """
 
 import argparse
+import hashlib
 import json
 import time
 import urllib.error
@@ -19,6 +24,7 @@ import urllib.request
 
 from pyproj import Geod
 from shapely.geometry import LineString, mapping
+from shapely.geometry import shape as from_geojson
 from shapely.ops import polygonize_full, unary_union
 
 from sumo_track.config import REPO_ROOT, Config
@@ -86,6 +92,56 @@ def area_km2(shape) -> float:
     """True area on the WGS84 ellipsoid, not the distorted area in degrees."""
     area_m2, _ = Geod(ellps="WGS84").geometry_area_perimeter(shape)
     return abs(area_m2) / 1e6
+
+
+# GeoJSON names for WGS84 longitude/latitude (GeoJSON's default when "crs" is absent)
+_WGS84_NAMES = {"urn:ogc:def:crs:OGC:1.3:CRS84", "urn:ogc:def:crs:OGC::CRS84",
+                "EPSG:4326", "urn:ogc:def:crs:EPSG::4326"}
+
+
+def _check_sidecar_checksum(path, raw: bytes) -> None:
+    """If the boundary ships with a provenance sidecar (<name>.metadata.json, as the data
+    team's PSA/NAMRIA boundary does), the file must still match the checksum recorded there."""
+    sidecar = path.with_name(path.stem + ".metadata.json")
+    if not sidecar.is_file():
+        return
+    expected = json.loads(sidecar.read_text(encoding="utf-8")).get("selected_boundary_sha256")
+    if not expected:
+        return
+    # git on Windows (core.autocrlf) checks text files out with CRLF line endings; the
+    # checksum was taken over the original LF file
+    actual = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
+    if actual != expected:
+        raise ValueError(f"{path.name} no longer matches the checksum in {sidecar.name}: "
+                         "the boundary file was changed after it was verified")
+
+
+def load_study_boundary(config):
+    """The active study boundary (data manifest: study_boundary) as a shapely (Multi)Polygon
+    in WGS84 longitude/latitude, plus the feature's properties.
+
+    Fails loudly unless the file holds exactly one valid polygon feature in WGS84, and, when a
+    provenance sidecar exists, still matches its checksum."""
+    path = config.dataset_path("study_boundary")
+    raw = path.read_bytes()
+    _check_sidecar_checksum(path, raw)
+    data = json.loads(raw)
+
+    crs = (data.get("crs") or {}).get("properties", {}).get("name")
+    if crs is not None and crs not in _WGS84_NAMES:
+        raise ValueError(f"{path.name}: expected WGS84 longitude/latitude, found CRS {crs}")
+    features = data["features"] if data.get("type") == "FeatureCollection" else [data]
+    if len(features) != 1:
+        raise ValueError(f"{path.name}: expected one boundary feature, found {len(features)}")
+    boundary = from_geojson(features[0]["geometry"])
+    if boundary.geom_type not in ("Polygon", "MultiPolygon") or boundary.is_empty:
+        raise ValueError(f"{path.name}: expected a polygon, found {boundary.geom_type}")
+    if not boundary.is_valid:
+        raise ValueError(f"{path.name}: the boundary polygon is not valid")
+    min_lon, min_lat, max_lon, max_lat = boundary.bounds
+    if not (-180 <= min_lon <= max_lon <= 180 and -90 <= min_lat <= max_lat <= 90):
+        raise ValueError(f"{path.name}: coordinates are not longitude/latitude {boundary.bounds}")
+    return boundary, features[0].get("properties") or {}
 
 
 def convert(output_path) -> None:

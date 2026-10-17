@@ -4,126 +4,127 @@
      Plan per person: walk home -> kerb, flag down a jeepney, ride, walk -> destination.
      The first walk's arrivalPos IS the boarding spot and the ride's arrivalPos
      IS the alighting spot - jeepney_controller.py reads both from this file.
+     Both are the route spots nearest ON FOOT to home / the destination.
      Persons are sorted by depart: SUMO drops out-of-order entries. -->
 <routes>
-    <!-- walk 195 m, ride 529 m, walk 357 m -->
-    <person id="pax00" depart="74" departPos="22.4" color="0.15,0.30,1.00">
-        <walk from="-90960501" to="156424420#4" arrivalPos="10.0"/>
-        <ride from="156424420#4" to="156424420#11" lines="JPN1" arrivalPos="66.6"/>
-        <walk from="156424420#11" to="-894806772#1" arrivalPos="13.3"/>
-    </person>
-    <!-- walk 377 m, ride 776 m, walk 306 m -->
-    <person id="pax01" depart="245" departPos="14.0" color="0.66,0.15,1.00">
-        <walk from="90960540#6" to="156424420#11" arrivalPos="92.2"/>
-        <ride from="156424420#11" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="1338861507#1" arrivalPos="9.1"/>
-    </person>
-    <!-- walk 124 m, ride 1011 m, walk 190 m -->
-    <person id="pax02" depart="247" departPos="12.7" color="0.15,0.89,1.00">
-        <walk from="1097273422" to="156424420#5" arrivalPos="72.1"/>
-        <ride from="156424420#5" to="92875200#4" lines="JPN1" arrivalPos="10.0"/>
-        <walk from="92875200#4" to="90362581#0" arrivalPos="12.6"/>
-    </person>
-    <!-- walk 330 m, ride 300 m, walk 166 m -->
-    <person id="pax03" depart="255" departPos="14.2" color="0.15,0.35,1.00">
-        <walk from="90960497#2" to="156424420#15" arrivalPos="49.2"/>
-        <ride from="156424420#15" to="92875200#4" lines="JPN1" arrivalPos="10.0"/>
-        <walk from="92875200#4" to="-574539618#2" arrivalPos="32.9"/>
-    </person>
-    <!-- walk 185 m, ride 337 m, walk 353 m -->
-    <person id="pax04" depart="427" departPos="15.3" color="0.45,1.00,0.15">
-        <walk from="-1338250644" to="156424420#17" arrivalPos="49.9"/>
+    <!-- walk 103 m, ride 377 m, walk 155 m -->
+    <person id="pax00" depart="68" departPos="7.8" color="0.15,1.00,0.26">
+        <walk from="-1337854400#1" to="156424420#17" arrivalPos="10.0"/>
         <ride from="156424420#17" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="1341832712#5" arrivalPos="18.6"/>
+        <walk from="92875200#6" to="33299084#0" arrivalPos="7.5"/>
     </person>
-    <!-- walk 359 m, ride 706 m, walk 114 m -->
-    <person id="pax05" depart="443" departPos="7.0" color="1.00,0.55,0.15">
-        <walk from="-345990513#3" to="156424420#13" arrivalPos="57.4"/>
-        <ride from="156424420#13" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="1346099440#3" arrivalPos="21.8"/>
+    <!-- walk 352 m, ride 472 m, walk 317 m -->
+    <person id="pax01" depart="91" departPos="6.0" color="0.17,0.15,1.00">
+        <walk from="-90960504#0" to="156424420#4" arrivalPos="10.0"/>
+        <ride from="156424420#4" to="156424420#11" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="156424420#11" to="-90960520#8" arrivalPos="12.4"/>
     </person>
-    <!-- walk 380 m, ride 937 m, walk 151 m -->
-    <person id="pax06" depart="469" departPos="60.7" color="0.39,1.00,0.15">
-        <walk from="-90960560" to="156424420#9" arrivalPos="90.7"/>
-        <ride from="156424420#9" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="-33299083" arrivalPos="6.7"/>
+    <!-- walk 362 m, ride 596 m, walk 372 m -->
+    <person id="pax02" depart="99" departPos="7.0" color="0.33,0.15,1.00">
+        <walk from="-345990513#5" to="156424420#13" arrivalPos="10.0"/>
+        <ride from="156424420#13" to="92875200#1" lines="JPN1" arrivalPos="48.9"/>
+        <walk from="92875200#1" to="679572019" arrivalPos="44.8"/>
     </person>
-    <!-- walk 183 m, ride 455 m, walk 385 m -->
-    <person id="pax07" depart="507" departPos="44.7" color="0.46,1.00,0.15">
-        <walk from="90960523#1" to="156424420#15" arrivalPos="10.0"/>
+    <!-- walk 379 m, ride 596 m, walk 197 m -->
+    <person id="pax03" depart="139" departPos="23.9" color="0.24,0.15,1.00">
+        <walk from="345990522" to="156424420#13" arrivalPos="10.0"/>
+        <ride from="156424420#13" to="92875200#1" lines="JPN1" arrivalPos="48.9"/>
+        <walk from="92875200#1" to="679572023#0" arrivalPos="11.4"/>
+    </person>
+    <!-- walk 225 m, ride 1040 m, walk 147 m -->
+    <person id="pax04" depart="172" departPos="19.6" color="1.00,0.51,0.15">
+        <walk from="156424420#0" to="156424420#4" arrivalPos="10.0"/>
+        <ride from="156424420#4" to="156424420#21" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="156424420#21" to="1338250644" arrivalPos="15.3"/>
+    </person>
+    <!-- walk 117 m, ride 324 m, walk 103 m -->
+    <person id="pax05" depart="197" departPos="6.8" color="0.15,0.31,1.00">
+        <walk from="-156424420#6" to="156424420#8" arrivalPos="10.0"/>
+        <ride from="156424420#8" to="156424420#13" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="156424420#13" to="-90960498" arrivalPos="20.4"/>
+    </person>
+    <!-- walk 260 m, ride 638 m, walk 240 m -->
+    <person id="pax06" depart="285" departPos="6.7" color="0.15,0.83,1.00">
+        <walk from="345990513#1" to="156424420#13" arrivalPos="10.0"/>
+        <ride from="156424420#13" to="92875200#4" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="92875200#4" to="534803507" arrivalPos="6.5"/>
+    </person>
+    <!-- walk 322 m, ride 455 m, walk 377 m -->
+    <person id="pax07" depart="345" departPos="9.9" color="0.60,1.00,0.15">
+        <walk from="-93603836#1" to="156424420#15" arrivalPos="10.0"/>
         <ride from="156424420#15" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="-572247583#1" arrivalPos="16.6"/>
+        <walk from="92875200#6" to="-92871043#2" arrivalPos="15.8"/>
     </person>
-    <!-- walk 350 m, ride 340 m, walk 195 m -->
-    <person id="pax08" depart="548" departPos="11.9" color="0.22,1.00,0.15">
-        <walk from="894108654#0" to="156424420#15" arrivalPos="10.0"/>
+    <!-- walk 399 m, ride 577 m, walk 193 m -->
+    <person id="pax08" depart="361" departPos="32.1" color="0.15,1.00,0.81">
+        <walk from="-93722909" to="156424420#4" arrivalPos="10.0"/>
+        <ride from="156424420#4" to="156424420#13" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="156424420#13" to="345990514#1" arrivalPos="5.9"/>
+    </person>
+    <!-- walk 316 m, ride 455 m, walk 324 m -->
+    <person id="pax09" depart="424" departPos="28.8" color="0.47,1.00,0.15">
+        <walk from="-90960507" to="156424420#15" arrivalPos="10.0"/>
+        <ride from="156424420#15" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
+        <walk from="92875200#6" to="33299084#3" arrivalPos="34.9"/>
+    </person>
+    <!-- walk 400 m, ride 455 m, walk 105 m -->
+    <person id="pax10" depart="430" departPos="11.9" color="1.00,0.15,0.53">
+        <walk from="90960574" to="156424420#15" arrivalPos="10.0"/>
+        <ride from="156424420#15" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
+        <walk from="92875200#6" to="-1081554465#1" arrivalPos="19.9"/>
+    </person>
+    <!-- walk 367 m, ride 1085 m, walk 359 m -->
+    <person id="pax11" depart="577" departPos="7.7" color="0.26,0.15,1.00">
+        <walk from="90960504#1" to="156424420#4" arrivalPos="10.0"/>
+        <ride from="156424420#4" to="92875200#0" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="92875200#0" to="-679572012" arrivalPos="19.4"/>
+    </person>
+    <!-- walk 323 m, ride 773 m, walk 189 m -->
+    <person id="pax12" depart="605" departPos="6.7" color="0.73,1.00,0.15">
+        <walk from="-93603839#3" to="156424420#11" arrivalPos="94.4"/>
+        <ride from="156424420#11" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
+        <walk from="92875200#6" to="1341832706" arrivalPos="13.1"/>
+    </person>
+    <!-- walk 316 m, ride 340 m, walk 195 m -->
+    <person id="pax13" depart="703" departPos="28.8" color="0.20,1.00,0.15">
+        <walk from="-90960507" to="156424420#15" arrivalPos="10.0"/>
         <ride from="156424420#15" to="92875200#4" lines="JPN1" arrivalPos="10.0"/>
         <walk from="92875200#4" to="-572071371#0" arrivalPos="40.8"/>
     </person>
-    <!-- walk 340 m, ride 332 m, walk 235 m -->
-    <person id="pax09" depart="563" departPos="14.2" color="0.15,0.80,1.00">
-        <walk from="-90960497#2" to="156424420#15" arrivalPos="49.2"/>
-        <ride from="156424420#15" to="92875200#4" lines="JPN1" arrivalPos="41.5"/>
-        <walk from="92875200#4" to="-92871047#0" arrivalPos="13.6"/>
+    <!-- walk 366 m, ride 470 m, walk 160 m -->
+    <person id="pax14" depart="756" departPos="10.1" color="0.67,0.15,1.00">
+        <walk from="-894585716" to="156424420#13" arrivalPos="10.0"/>
+        <ride from="156424420#13" to="156424420#21" lines="JPN1" arrivalPos="16.7"/>
+        <walk from="156424420#21" to="894164760" arrivalPos="18.5"/>
     </person>
-    <!-- walk 388 m, ride 936 m, walk 393 m -->
-    <person id="pax10" depart="611" departPos="60.7" color="1.00,0.86,0.15">
-        <walk from="90960560" to="156424420#9" arrivalPos="92.0"/>
-        <ride from="156424420#9" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="-92878385#0" arrivalPos="25.3"/>
+    <!-- walk 211 m, ride 658 m, walk 195 m -->
+    <person id="pax15" depart="774" departPos="13.0" color="1.00,0.44,0.15">
+        <walk from="-90960561#3" to="156424420#11" arrivalPos="94.4"/>
+        <ride from="156424420#11" to="92875200#4" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="92875200#4" to="-572071371#0" arrivalPos="40.8"/>
     </person>
-    <!-- walk 254 m, ride 597 m, walk 360 m -->
-    <person id="pax11" depart="656" departPos="6.7" color="0.67,1.00,0.15">
-        <walk from="-345990513#1" to="156424420#13" arrivalPos="10.0"/>
-        <ride from="156424420#13" to="92875200#1" lines="JPN1" arrivalPos="48.9"/>
-        <walk from="92875200#1" to="90362581#1" arrivalPos="65.6"/>
+    <!-- walk 117 m, ride 1078 m, walk 223 m -->
+    <person id="pax16" depart="784" departPos="6.8" color="0.94,0.15,1.00">
+        <walk from="-156424420#6" to="156424420#8" arrivalPos="10.0"/>
+        <ride from="156424420#8" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
+        <walk from="92875200#6" to="1338861511#1" arrivalPos="15.3"/>
     </person>
-    <!-- walk 324 m, ride 420 m, walk 299 m -->
-    <person id="pax12" depart="677" departPos="11.3" color="0.29,0.15,1.00">
-        <walk from="90960497#1" to="156424420#15" arrivalPos="45.0"/>
+    <!-- walk 118 m, ride 1038 m, walk 278 m -->
+    <person id="pax17" depart="800" departPos="30.0" color="0.86,0.15,1.00">
+        <walk from="-156424420#8" to="156424420#8" arrivalPos="50.0"/>
+        <ride from="156424420#8" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
+        <walk from="92875200#6" to="1342047276#3" arrivalPos="5.9"/>
+    </person>
+    <!-- walk 375 m, ride 577 m, walk 350 m -->
+    <person id="pax18" depart="832" departPos="104.0" color="0.15,1.00,0.50">
+        <walk from="90960549#1" to="156424420#4" arrivalPos="10.0"/>
+        <ride from="156424420#4" to="156424420#13" lines="JPN1" arrivalPos="10.0"/>
+        <walk from="156424420#13" to="-93603827#0" arrivalPos="72.2"/>
+    </person>
+    <!-- walk 299 m, ride 455 m, walk 324 m -->
+    <person id="pax19" depart="887" departPos="11.3" color="1.00,0.49,0.15">
+        <walk from="-90960497#1" to="156424420#15" arrivalPos="10.0"/>
         <ride from="156424420#15" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="1338861510#1" arrivalPos="6.7"/>
-    </person>
-    <!-- walk 380 m, ride 420 m, walk 338 m -->
-    <person id="pax13" depart="727" departPos="60.7" color="0.35,0.15,1.00">
-        <walk from="-90960560" to="156424420#9" arrivalPos="90.7"/>
-        <ride from="156424420#9" to="156424420#14" lines="JPN1" arrivalPos="151.1"/>
-        <walk from="156424420#14" to="-93681160#0" arrivalPos="13.8"/>
-    </person>
-    <!-- walk 326 m, ride 662 m, walk 50 m -->
-    <person id="pax14" depart="753" departPos="81.3" color="1.00,0.48,0.15">
-        <walk from="90960502" to="156424420#11" arrivalPos="10.0"/>
-        <ride from="156424420#11" to="92875200#1" lines="JPN1" arrivalPos="10.0"/>
-        <walk from="92875200#1" to="-1081555668" arrivalPos="7.8"/>
-    </person>
-    <!-- walk 312 m, ride 309 m, walk 398 m -->
-    <person id="pax15" depart="768" departPos="72.2" color="0.15,1.00,0.53">
-        <walk from="93603827#0" to="156424420#13" arrivalPos="10.0"/>
-        <ride from="156424420#13" to="156424420#15" lines="JPN1" arrivalPos="20.4"/>
-        <walk from="156424420#15" to="-90960546" arrivalPos="16.6"/>
-    </person>
-    <!-- walk 387 m, ride 358 m, walk 289 m -->
-    <person id="pax16" depart="806" departPos="29.0" color="0.15,0.78,1.00">
-        <walk from="-90960534" to="156424420#15" arrivalPos="49.2"/>
-        <ride from="156424420#15" to="92875200#4" lines="JPN1" arrivalPos="67.1"/>
-        <walk from="92875200#4" to="525868672" arrivalPos="13.7"/>
-    </person>
-    <!-- walk 365 m, ride 1330 m, walk 301 m -->
-    <person id="pax17" depart="811" departPos="41.6" color="0.15,1.00,0.57">
-        <walk from="148919816#1" to="156424420#4" arrivalPos="10.0"/>
-        <ride from="156424420#4" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="1338861523#4" arrivalPos="6.4"/>
-    </person>
-    <!-- walk 375 m, ride 1093 m, walk 72 m -->
-    <person id="pax18" depart="857" departPos="16.7" color="0.80,1.00,0.15">
-        <walk from="90960537#1" to="156424420#4" arrivalPos="90.1"/>
-        <ride from="156424420#4" to="92875200#1" lines="JPN1" arrivalPos="48.9"/>
-        <walk from="92875200#1" to="1337854389" arrivalPos="16.1"/>
-    </person>
-    <!-- walk 361 m, ride 814 m, walk 329 m -->
-    <person id="pax19" depart="889" departPos="5.5" color="0.15,1.00,0.59">
-        <walk from="93603839#2" to="156424420#11" arrivalPos="54.2"/>
-        <ride from="156424420#11" to="92875200#6" lines="JPN1" arrivalPos="26.6"/>
-        <walk from="92875200#6" to="92870966#0" arrivalPos="8.4"/>
+        <walk from="92875200#6" to="33299084#3" arrivalPos="34.9"/>
     </person>
 </routes>

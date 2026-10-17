@@ -13,6 +13,11 @@ A baby version of the controller in Section 4.4.2.2:
   * once a commuter is standing at the kerb, flags down the NEAREST JPN1
     jeepney approaching within LOOKAHEAD metres that still has a free seat
     (seats already promised to other flagging commuters count as taken),
+  * a commuter still WALKING to their spot flags a jeepney down too, once
+    they walk along the route itself (a kerb edge, same rule as
+    make_passengers.py): the jeepney stops beside them, and
+    traci.person.removeStage(pid, 0) ends their walk right there - SUMO then
+    starts the ride from where they stand (checked against SUMO 1.27.0),
   * commands vehicle.setStop for BOTH the boarding stop AND the alighting
     stop at once (arbitrary-position stops, NOT named bus stops).
     SUMO silently refuses to ever board a person onto a vehicle unless a
@@ -46,6 +51,7 @@ import sumolib
 import traci
 import traci.constants as tc
 
+import make_passengers   # its kerb rule: where a jeepney may stop for a commuter
 import traffic_meter
 
 # ======================= CONFIG =======================
@@ -185,6 +191,11 @@ def main():
         c["board_lane"] = passenger_lane_index(net, c["board_edge"])
         c["alight_lane"] = passenger_lane_index(net, c["alight_edge"])
     print(f"Registry: {len(commuters)} commuters riding {LINE}")
+    # route edges where a commuter walking along them may flag a jeepney down
+    # (edge -> length): the kerb edges make_passengers.py picks waiting spots on
+    kerb = {e.getID(): e.getLength() for e, _ in make_passengers.kerb_edges(
+        net, make_passengers.read_route(make_passengers.DEMAND_FILE,
+                                        make_passengers.ROUTE_ID))}
 
     if gui:
         traci.start(["sumo-gui", "-c", SUMO_CFG, "-g", GUI_SETTINGS])
@@ -208,6 +219,70 @@ def main():
 
     def alight_stop(c):
         return c["alight_edge"], c["alight_pos"], c["alight_lane"]
+
+    # SUMO lets a waiting person board a jeepney stopped up to this far away
+    reach = float(traci.simulation.getOption("ride.stop-tolerance"))
+
+    def walking_spot(pid):
+        """(edge, pos, lane) of the stop for a commuter still walking to their
+        waiting spot, if they are walking along a kerb edge of the route: the
+        stop position nearest to them that keeps KERB_MARGIN from both ends
+        of the edge (clear of the junctions). Near an end that is up to
+        KERB_MARGIN away, within `reach`, so they still board from where
+        they stand (checked against SUMO 1.27.0: boarded from 7.7-8.3 m).
+        None while they are elsewhere, e.g. still on their own street."""
+        if traci.person.getStage(pid).type != tc.STAGE_WALKING:
+            return None
+        edge = traci.person.getRoadID(pid)
+        if edge not in kerb:
+            return None
+        pos = traci.person.getLanePosition(pid)
+        margin = make_passengers.KERB_MARGIN
+        stop = min(max(pos, margin), kerb[edge] - margin)
+        if abs(stop - pos) > reach - 1.0:   # keep a metre in hand
+            return None
+        return edge, round(stop, 1), passenger_lane_index(net, edge)
+
+    def flag(pid, c, board, t):
+        """Flag down, for pid, the NEAREST jeepney approaching `board`
+        (edge, pos, lane) within LOOKAHEAD that can still stop there, has a
+        free seat, and passes pid's alighting spot further on. Books both
+        stops. Returns (jeepney, metres away), or None if none can take them."""
+        approaching = []
+        for veh in jeepneys:
+            dist = distance_ahead(veh, *board)
+            if 0 <= dist <= LOOKAHEAD:
+                approaching.append((dist, veh))
+
+        for dist, veh in sorted(approaching):
+            # the alighting spot must lie further along this jeepney's route
+            if distance_ahead(veh, *alight_stop(c)) <= dist:
+                continue
+            if traci.vehicle.getPersonNumber(veh) + promised[veh] >= seats(veh):
+                if (veh, pid) not in full_logged:
+                    full_logged.add((veh, pid))
+                    log(t, f"FULL     {veh} passes {pid}")
+                continue
+            # can it still stop in time? Asking anyway is refused and
+            # makes SUMO print a scary "Error: ... too close to brake"
+            speed = traci.vehicle.getSpeed(veh)
+            brake_gap = (speed * traci.vehicle.getTau(veh)
+                         + speed ** 2 / (2 * traci.vehicle.getDecel(veh)))
+            if dist <= brake_gap:
+                continue
+            try:
+                reserve_stop(stop_users, veh, *board, pid)
+            except traci.TraCIException:
+                continue   # too close to brake - try the next jeepney
+            try:
+                reserve_stop(stop_users, veh, *alight_stop(c), pid)
+            except traci.TraCIException:
+                release_stop(stop_users, veh, *board, pid, cancel=True)
+                continue
+            assigned[pid] = veh
+            promised[veh] += 1
+            return veh, dist
+        return None
 
     closed = False   # did the user shut the sumo-gui window mid-run?
     try:
@@ -234,8 +309,10 @@ def main():
                 if not veh:
                     # walking is OVER once SUMO moves the person on to the ride
                     # stage (STAGE_DRIVING) with no vehicle yet - they now stand at
-                    # the kerb. Flagging while they still walk would make the
-                    # jeepney pull over, dwell, and leave before they arrive.
+                    # the kerb. Stopping a jeepney at their waiting spot while they
+                    # still walk there would make it pull over, dwell, and leave
+                    # before they arrive (walking_spot() instead stops it where
+                    # they ARE, and ends their walk there).
                     if ("kerb" not in times[pid]
                             and traci.person.getStage(pid).type == tc.STAGE_DRIVING):
                         times[pid]["kerb"] = t
@@ -280,7 +357,21 @@ def main():
             promised = Counter(assigned.values())   # seats held for waiting commuters
             for pid, c in waiting.items():
                 if "kerb" not in times[pid]:
-                    continue   # still walking to the roadside
+                    # still walking to their waiting spot. Once they walk along
+                    # the route itself, they flag a passing jeepney from right
+                    # where they are instead of letting it go by.
+                    spot = walking_spot(pid) if pid in persons else None
+                    flagged = flag(pid, c, spot, t) if spot else None
+                    if flagged is None:
+                        continue
+                    veh, dist = flagged
+                    traci.person.removeStage(pid, 0)   # stop walking: wait here
+                    c["board_edge"], c["board_pos"], c["board_lane"] = spot
+                    times[pid]["kerb"] = t
+                    log(t, f"FLAGDOWN {pid} flags {veh} while walking ({dist:.0f} m "
+                           f"away): stop at {spot[0]}@{spot[1]}, drop off at "
+                           f"{c['alight_edge']}@{c['alight_pos']}")
+                    continue
 
                 if pid in assigned:
                     veh = assigned[pid]
@@ -294,44 +385,12 @@ def main():
                     release_stop(stop_users, veh, *alight_stop(c), pid, cancel=True)
                     log(t, f"MISSED   {veh} passed {pid}; flagging the next one")
 
-                # approaching jeepneys that can see this commuter, nearest first
-                approaching = []
-                for veh in jeepneys:
-                    dist = distance_ahead(veh, *board_stop(c))
-                    if 0 <= dist <= LOOKAHEAD:
-                        approaching.append((dist, veh))
-
-                for dist, veh in sorted(approaching):
-                    # the alighting spot must lie further along this jeepney's route
-                    if distance_ahead(veh, *alight_stop(c)) <= dist:
-                        continue
-                    if traci.vehicle.getPersonNumber(veh) + promised[veh] >= seats(veh):
-                        if (veh, pid) not in full_logged:
-                            full_logged.add((veh, pid))
-                            log(t, f"FULL     {veh} passes {pid}")
-                        continue
-                    # can it still stop in time? Asking anyway is refused and
-                    # makes SUMO print a scary "Error: ... too close to brake"
-                    speed = traci.vehicle.getSpeed(veh)
-                    brake_gap = (speed * traci.vehicle.getTau(veh)
-                                 + speed ** 2 / (2 * traci.vehicle.getDecel(veh)))
-                    if dist <= brake_gap:
-                        continue
-                    try:
-                        reserve_stop(stop_users, veh, *board_stop(c), pid)
-                    except traci.TraCIException:
-                        continue   # too close to brake - try the next jeepney
-                    try:
-                        reserve_stop(stop_users, veh, *alight_stop(c), pid)
-                    except traci.TraCIException:
-                        release_stop(stop_users, veh, *board_stop(c), pid, cancel=True)
-                        continue
-                    assigned[pid] = veh
-                    promised[veh] += 1
+                flagged = flag(pid, c, board_stop(c), t)
+                if flagged:
+                    veh, dist = flagged
                     log(t, f"FLAGDOWN {pid} flags {veh} ({dist:.0f} m away): stop at "
                            f"{c['board_edge']}@{c['board_pos']}, drop off at "
                            f"{c['alight_edge']}@{c['alight_pos']}")
-                    break
     except traci.FatalTraCIError:
         closed = True
         print("\nsumo-gui was closed - stopping early.")

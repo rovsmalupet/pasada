@@ -104,12 +104,18 @@
 
     <!-- ============ the commuter (Section 4.4.2.1) ============
          walk from home to the roadside -> ride line JPN1 -> walk to destination.
-         arrivalPos of the first walk MUST equal the jeepney stop position. -->
+         The first walk's arrivalPos is where they wait (jeepney_controller.py
+         stops the jeepney there); the ride's arrivalPos is where they get off.
+         Both are the route spots NEAREST ON FOOT, the same rule as
+         make_passengers.py: 156424420#4@10.0 is where the walk from home
+         reaches the route (557 m walk; it was 93.8, a further 84 m along the
+         route), and 156424420#21@16.7 leaves an 88 m walk to the destination
+         (8.3 left 144 m). -->
     <person id="commuter0" depart="30" color="0,1,1">
         <walk from="-90960527#3" to="156424420#4"
-              arrivalPos="93.8"/>
+              arrivalPos="10.0"/>
         <ride from="156424420#4" to="156424420#21"
-              lines="JPN1" arrivalPos="8.3"/>
+              lines="JPN1" arrivalPos="16.7"/>
         <walk from="156424420#21" to="-205562766#0"/>
     </person>
 
