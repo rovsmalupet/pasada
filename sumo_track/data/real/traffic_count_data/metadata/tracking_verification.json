@@ -1,0 +1,42 @@
+{
+  "verified_at_utc": "2026-10-13T08:03:01.021945+00:00",
+  "state": "verified",
+  "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/DJI_20261005131923_0003_D.MP4",
+  "source_run_id": "run_20261013T051453_057778a1-744c17f7a8e7f7c4",
+  "source_output_dir": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/full_runs/run_20261013T051453_057778a1",
+  "processed_frames": 51402,
+  "tracks_checked": 2011,
+  "observation_rows": 100219,
+  "first_last_seconds_match_sqlite_every_track": true,
+  "crossing_identities_unique": true,
+  "crossing_events": 1574,
+  "minute_rows": 36,
+  "minute_categories_match_events": true,
+  "counts_by_vehicle_type": {
+    "car": 904,
+    "truck": 271,
+    "motorcycle": 363,
+    "bus": 36
+  },
+  "counts_by_direction": {
+    "toward_camera": 805,
+    "away_from_camera": 769
+  },
+  "jeepneys_predicted": 18,
+  "predictions_require_human_review": true,
+  "category_definition": "Original RF-DETR classes sum to total vehicles. Predicted jeepneys overlap those categories and are included in total vehicles.",
+  "last_minute": {
+    "minute": 36,
+    "start_seconds": 2100,
+    "end_seconds": 2143.89175,
+    "end_timestamp": "00:35:43.89175"
+  },
+  "protected_files_checked_unchanged": 217,
+  "files_sha256": {
+    "vehicle_tracking_times.csv": "3576d1aa9230cb74acf634ad67b936785da39f850fc8c450d29a9e414bc25dfb",
+    "vehicle_events.csv": "744c17f7a8e7f7c4d3f028b96d1ed35c26c116b8cc9cd8d0e2140796258b2f58",
+    "vehicles_per_min.csv": "741100495221bb4c0ad37221b3e7aca983a3deaecfc5010ede6dde457a56979e",
+    "crop_manifest.json": "e7e2b95e34c51c291037691c98bbd8e0c94cb081c8c036015193512da015f00e",
+    "specialist_predictions.json": "9c67af6a39ff83a87b0d661fc64422104b7a7a407c534f536ffd6925d6cda97c"
+  }
+}

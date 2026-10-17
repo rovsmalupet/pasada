@@ -1,0 +1,240 @@
+{
+  "status": "completed",
+  "error": null,
+  "source_filename": "DJI_20261005131923_0003_D.MP4",
+  "source_video_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/DJI_20261005131923_0003_D.MP4",
+  "actual_duration_seconds": 2143.89175,
+  "fps_exact": "24000/1001",
+  "fps": 23.976023976023978,
+  "source_frame_count": 51402,
+  "total_frames_processed": 51402,
+  "observed_window": {
+    "start": 0.0,
+    "end": 2143.89175
+  },
+  "model_name": "small",
+  "device_used": "mps",
+  "optimized": false,
+  "counting_line_configuration": {
+    "schema_version": 1,
+    "source_resolution": {
+      "width": 1920,
+      "height": 1440
+    },
+    "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/DJI_20261005131923_0003_D.MP4",
+    "anchor": "bottom-center",
+    "confidence_threshold": 0.3,
+    "tracking_detection_threshold": 0.1,
+    "tracker": {
+      "track_activation_threshold": 0.3,
+      "lost_track_buffer": 45,
+      "minimum_matching_threshold": 0.8,
+      "minimum_consecutive_frames": 2
+    },
+    "counting": {
+      "hysteresis_pixels": 8,
+      "stable_frames": 2,
+      "minimum_direction_pixels": 8,
+      "max_gap_seconds": 1.5,
+      "state_ttl_seconds": 10,
+      "duplicate_window_seconds": 0.6,
+      "duplicate_distance_pixels": 25
+    },
+    "lines": [
+      {
+        "id": "toward_main",
+        "start": [
+          520,
+          900
+        ],
+        "end": [
+          895,
+          900
+        ],
+        "allowed_directions": [
+          "toward_camera"
+        ],
+        "direction_axis": [
+          0,
+          1
+        ],
+        "roi": [
+          [
+            750,
+            650
+          ],
+          [
+            920,
+            650
+          ],
+          [
+            850,
+            1400
+          ],
+          [
+            40,
+            1400
+          ]
+        ]
+      },
+      {
+        "id": "away_main",
+        "start": [
+          920,
+          900
+        ],
+        "end": [
+          1240,
+          900
+        ],
+        "allowed_directions": [
+          "away_from_camera"
+        ],
+        "direction_axis": [
+          0,
+          1
+        ],
+        "roi": [
+          [
+            925,
+            650
+          ],
+          [
+            1090,
+            650
+          ],
+          [
+            1600,
+            1400
+          ],
+          [
+            850,
+            1400
+          ]
+        ]
+      }
+    ],
+    "road_polygons": [
+      [
+        [
+          750,
+          650
+        ],
+        [
+          920,
+          650
+        ],
+        [
+          850,
+          1400
+        ],
+        [
+          40,
+          1400
+        ]
+      ],
+      [
+        [
+          925,
+          650
+        ],
+        [
+          1090,
+          650
+        ],
+        [
+          1600,
+          1400
+        ],
+        [
+          850,
+          1400
+        ]
+      ]
+    ],
+    "exclude_polygons": [],
+    "validation": {
+      "geometry_approved": true,
+      "accuracy_validated": false,
+      "anchor_validated": false,
+      "created_at": "2026-10-09T15:35:47.401076+00:00",
+      "representative_frames_reviewed": [
+        2.002,
+        535.9937916666667,
+        1071.945875,
+        1607.9396666666667,
+        2141.9314583333335
+      ],
+      "notes": "Proposed from original DJI frames; five snapshots show small camera shifts and persistent edge blur. Both carriageways covered provisionally. Line excludes parking at right. Endpoints and center boundary need user approval. Bottom-center remains unvalidated; vans/SUVs and Philippine tricycles/jeepneys can be misclassified by COCO. Revision: class-agnostic vehicle NMS at IoU .65 added after overlapping car/truck boxes were observed. Requires manual validation in crowded traffic.",
+      "approved_at": "2026-10-10T00:44:47.263188+00:00",
+      "approval_note": "User approved the current lines and road regions in this chat and explicitly requested the full recording.",
+      "full_run_approved": true
+    },
+    "vehicle_nms_iou": 0.65
+  },
+  "overall_vehicle_count": 1574,
+  "unique_tracking_ids": 2011,
+  "counts_by_vehicle_type": {
+    "car": 904,
+    "motorcycle": 363,
+    "bus": 36,
+    "truck": 271
+  },
+  "counts_by_direction": {
+    "toward_camera": 805,
+    "away_from_camera": 769,
+    "unknown": 0
+  },
+  "specialist_source_frames": 4778,
+  "total_wall_duration_seconds": 9694.403700209004,
+  "average_processing_fps": 5.30223431884643,
+  "baseline_source_code_sha256": {
+    "count_rfdetr.py": "67fcc4afb51e115890916afec484c1011e55e3327ac8af2d885f1a2d36f7d562",
+    "detector.py": "171fc03a709848f83468518899cd113faa642f2cb7f768ff67403af2f6508c74",
+    "inspect_video.py": "34df9e371232fd9c56f29b8eab1accadec2bce0dd889290b143cf2e0b9040446",
+    "validate_counts.py": "dc4990e71bca3b439271bdf810aa979d471718211ad7583cf8c4f993b5d1d1bc",
+    "verify_model.py": "1b402d0a7491c49fe898b9ed348835f78561ff685e056723acb2bfcccb83847c",
+    "annotated_video.py": "d36985b1bfc8eb265bb1efd58590e451cf74dbd7a8c7e2692cb76a0d195fd4f2",
+    "counting.py": "047a954284337a864ec33b82ec8c297f8b92c17aa362f9026b7f5bb3b8f5fc50",
+    "configure_counting.py": "e633f8b54252789dfa2963ea92de708bd1a8e4e2f96bb3562955fe5477b08043",
+    "export.py": "679b19b0f10ce38eb4ccbce39e6897730dee12d643dd8f23ffc370d2308bae01",
+    "visualization.py": "337146bfc32ecbce2cc9f78bdcede362e0907c02e122b8cb8ed5c419411e441f",
+    "video_io.py": "7e574d08aed18a96b6a914e98558457d467a5e2e4d295817a8e95503f1432741",
+    "full_run_job.py": "3eefdff36a22c42440cae2e7ee101f2585fb4d69c080e0eeb524a20b9461633a",
+    "tracker.py": "5ae8388fa72ada9c7cb04cdf18b4e2f3c8830eec6003da1642e3e43d884c2748"
+  },
+  "extension_source_code_sha256": {
+    "detect_jeepneys.py": "d9f5b3d497ede26f007ff9d2abed5eb825f2cf3281d84fca44fd0582cc2b6022",
+    "full_video_review.py": "195f390721a3b843de0d875256c1ff64da96ccac3e18fed26f1ceb1d3cbc1919",
+    "review_vehicles.py": "cfd5d6ed959554f52b5f80489378aea622f6d732c2e3e9701094e61a614f818d",
+    "compare_results.py": "2166a01264f91729d4357510b368a5f832b986fa30c3fa11428fb29473c19b3f",
+    "extract_candidates.py": "b015bd33cf05d9d1cee19435c93639a279930dadd40fc96ec3ec080e44dd6d3e",
+    "__init__.py": "4d89a5f5ca299e1cca6df0d28280f185761931108dcd4250810c7517501e619c",
+    "tracking_ledger.py": "4e1ca4a806812a0a0a1a92b08bbd4ad9b646bdda3a2626ac673e568c3acf688b",
+    "apply_corrections.py": "ce4cbc64a13379e1d5956ffaa2ac01dcc6fa67998684df5ce41b306635504655",
+    "common.py": "bdc9b05446a5f6eb3adc75f6fd3079014f76be7f7b9a25cdbf99731d60a487b9",
+    "evaluate_clips.py": "281da64a83002798d5c1c126fb7be83fb33150b2a5c673d28e7988fbb0f23b8f",
+    "full_video_job.py": "b59dc558244715bc0269897de697f5e52fd9dabdeb5c908a29456b84ef5f6cde",
+    "model_adapter.py": "a65b2ac7ae688ab7335656a80b45f06a7461ba0e200a68af7b507a5e65244627"
+  },
+  "cli_arguments": {
+    "video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/DJI_20261005131923_0003_D.MP4",
+    "geometry": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr/config/dji_overpass_approved.json",
+    "output": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/full_runs/run_20261013T051453_057778a1",
+    "device": "mps",
+    "start": 0,
+    "duration": null,
+    "max_views": 3,
+    "full_run_approved": true,
+    "optimize": false,
+    "runtime_node": "/Users/matthewfuentes/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node"
+  },
+  "full_video": true,
+  "classification_corrections_applied": 0,
+  "limitations": [
+    "First/last times are tracked observations within the existing road mask, not continuous visibility or exact physical region entry/exit.",
+    "Tracking gaps and ID switches can split or join appearances. This is an independent run; IDs cannot be joined to older runs by number alone.",
+    "Specialist labels are predictions requiring human verification; no automatic relabeling.",
+    "Minute counts are original RF-DETR line-crossing events; appearance rows are not additional counts."
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "created_at_utc": "2026-10-17T06:54:15.697611+00:00",
+  "source_run_id": "run_20261013T051453_057778a1-744c17f7a8e7f7c4",
+  "intended_destination": "/Users/matthewfuentes/Documents/GitHub/PASADA-abm/sumo_track/data/real/traffic_count_data",
+  "simulation_input_active": false,
+  "files": {
+    "vehicle_events.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/full_runs/run_20261013T051453_057778a1/vehicle_events.csv",
+      "sha256": "744c17f7a8e7f7c4d3f028b96d1ed35c26c116b8cc9cd8d0e2140796258b2f58",
+      "size_bytes": 233435
+    },
+    "vehicles_per_min.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/output/vehicles_per_min.csv",
+      "sha256": "741100495221bb4c0ad37221b3e7aca983a3deaecfc5010ede6dde457a56979e",
+      "size_bytes": 702
+    },
+    "vehicle_speeds.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/output/vehicle_speeds.csv",
+      "sha256": "ac6c66b0540c002b8ab94a3a99ed2f2e8a2daebda87e4826d599c149c0d8c3b2",
+      "size_bytes": 619697
+    },
+    "vehicle_tracking_times.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/full_runs/run_20261013T051453_057778a1/vehicle_tracking_times.csv",
+      "sha256": "3576d1aa9230cb74acf634ad67b936785da39f850fc8c450d29a9e414bc25dfb",
+      "size_bytes": 2032896
+    },
+    "metadata/counts_source.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/output/vehicles_per_min.csv.source.json",
+      "sha256": "d18788dcae345149f200d548ef68eed1619c3ffbc06c49f8af543bc8d3b0355f",
+      "size_bytes": 2154
+    },
+    "metadata/speeds_source.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/output/vehicle_speeds.csv.source.json",
+      "sha256": "ec6b077ad27b678def3b1fafb03eab8f366eff79a90f5a42da1d74bdab210119",
+      "size_bytes": 907
+    },
+    "metadata/tracking_summary.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/full_runs/run_20261013T051453_057778a1/summary.json",
+      "sha256": "404ef81ae5cff7938950977ad09e8b04fbd2b284bb739a83ba5efcfb8785a79f",
+      "size_bytes": 8000
+    },
+    "metadata/tracking_verification.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/full_runs/run_20261013T051453_057778a1/completion_verification.json",
+      "sha256": "8e7b9aad2fb61153b4d689ffe0650e1bb586d004be2a26658b8660d2ff72376f",
+      "size_bytes": 1773
+    },
+    "metadata/speed_calibration_and_method.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/speed_runs/speed_20261017T060314_24cbc6b6/calibration_and_method.json",
+      "sha256": "bf8d9ac05217caf3757cdce16f3e496f014ba2a732d06abe848f69ae8eb3078c",
+      "size_bytes": 4057
+    },
+    "README.md": {
+      "original_path": null,
+      "sha256": "96aa03b44b2391f6aeab32003f7990ae039c6f7b17b8057ce71ac23827a98ab1",
+      "size_bytes": 4441
+    }
+  },
+  "source_files_copied_without_changes": true
+}

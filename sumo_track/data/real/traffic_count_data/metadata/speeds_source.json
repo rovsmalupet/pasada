@@ -1,0 +1,16 @@
+{
+  "generator": "generate_speeds.py",
+  "source_csv": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/speed_runs/speed_20261017T060314_24cbc6b6/vehicle_speeds.csv",
+  "source_sha256": "763a34ad9bd76a743683f45269e61c6541bfbbcbd6c6c09c6edb7903b6102b08",
+  "output_csv": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/output/vehicle_speeds.csv",
+  "output_sha256": "ac6c66b0540c002b8ab94a3a99ed2f2e8a2daebda87e4826d599c149c0d8c3b2",
+  "rows": 2011,
+  "status_counts": {
+    "source_rejected": 689,
+    "provisional_estimate": 1322
+  },
+  "generated_at_utc": "2026-10-17T06:34:01.373375+00:00",
+  "definition": "Average speed in km/h = distance between selected boundaries / elapsed seconds * 3.6. Provisional distances; not independently validated.",
+  "fallback_full_box_m": 28.0,
+  "low_high_columns": "Distance sensitivity only, not full uncertainty bounds."
+}

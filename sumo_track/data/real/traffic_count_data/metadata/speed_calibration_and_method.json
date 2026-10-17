@@ -1,0 +1,128 @@
+{
+  "status": "exported",
+  "source_run_dir": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/full_runs/run_20261013T051453_057778a1",
+  "source_run_id": "run_20261013T051453_057778a1-744c17f7a8e7f7c4",
+  "source_sha256": {
+    "tracked_observations.sqlite": "ad106b0c38771792a26cd88ddb91e417992b5cf2fa5771e9b9da3172895feb47",
+    "vehicle_tracking_times.csv": "3576d1aa9230cb74acf634ad67b936785da39f850fc8c450d29a9e414bc25dfb",
+    "vehicle_events.csv": "744c17f7a8e7f7c4d3f028b96d1ed35c26c116b8cc9cd8d0e2140796258b2f58",
+    "summary.json": "404ef81ae5cff7938950977ad09e8b04fbd2b284bb739a83ba5efcfb8785a79f",
+    "status.json": "17cb03a6819d80328d604e06e257bb6801b5d60012703b8a88c171ee8c26cd86"
+  },
+  "created_at_utc": "2026-10-17T06:03:14.346550+00:00",
+  "assumed_box_length_m_both_directions": 28,
+  "distance_scenarios_m": [
+    27,
+    29
+  ],
+  "distance_verified": false,
+  "start_gate_fraction": 0.1,
+  "end_gate_fraction": 0.9,
+  "timed_section_m": 22.400000000000002,
+  "max_gap_seconds": 0.25,
+  "stable_samples_after_gate": 3,
+  "road_geometry": {
+    "toward_camera": {
+      "corners_far_left_far_right_near_right_near_left": [
+        [
+          750,
+          650
+        ],
+        [
+          920,
+          650
+        ],
+        [
+          850,
+          1400
+        ],
+        [
+          40,
+          1400
+        ]
+      ],
+      "image_to_unit_road": [
+        [
+          -0.0025996533795493923,
+          -0.002461005199306758,
+          3.549393414211437
+        ],
+        [
+          0.0,
+          -0.0028076256499133434,
+          1.8249566724436732
+        ],
+        [
+          -5.429428002876458e-19,
+          -0.0022183708838821484,
+          1.0
+        ]
+      ]
+    },
+    "away_from_camera": {
+      "corners_far_left_far_right_near_right_near_left": [
+        [
+          925,
+          650
+        ],
+        [
+          1090,
+          650
+        ],
+        [
+          1600,
+          1400
+        ],
+        [
+          850,
+          1400
+        ]
+      ],
+      "image_to_unit_road": [
+        [
+          -0.0029239766081871326,
+          -0.0002923976608187133,
+          2.8947368421052615
+        ],
+        [
+          -1.1644331332494318e-18,
+          -0.0029239766081871317,
+          1.9005847953216368
+        ],
+        [
+          -1.3327003000848227e-18,
+          -0.0022807017543859625,
+          1.0
+        ]
+      ]
+    }
+  },
+  "rows": 2011,
+  "status_counts": {
+    "missing_entry_gate": 293,
+    "provisional_estimate": 1322,
+    "missing_exit_gate": 95,
+    "too_few_observations": 33,
+    "unknown_direction": 138,
+    "missing_both_gates": 126,
+    "tracking_gap": 1,
+    "tracking_jump": 3
+  },
+  "limitations": [
+    "Provisional longitudinal average speeds, not instantaneous or validated measurements.",
+    "User estimates each whole road box as 27\u201329 m; 28 m is the default. The low/high columns vary distance only, not total error bounds.",
+    "Assumes each road quadrilateral represents a straight, planar rectangle of constant width; this has not been surveyed.",
+    "Uses saved bounding-box bottom-center anchors; vehicle height, detection jitter, lens effects and drone movement can bias speed.",
+    "No camera stabilization or independent ground-truth speed validation has been applied.",
+    "Only observed brackets crossing both interior gates are timed. No endpoint extrapolation or joining separate track IDs. Missing/rejected speeds stay blank.",
+    "Original categories and jeepney predictions are copied unchanged; model jeepney labels require human review."
+  ],
+  "method_reference": "https://docs.opencv.org/4.x/d9/dab/tutorial_homography.html",
+  "implementation_sha256": {
+    "estimate_speeds.py": "a61dfc4c43c8f2d4cb5e043868e7e994ee020bffb9abb000c97f5294251ee430",
+    "export_speeds.mjs": "816388cc9fe5ac6071249c9ea96d0676addc060417b987efaf79888eed3cf6b1"
+  },
+  "source_files_unchanged": true,
+  "csv_sha256": "763a34ad9bd76a743683f45269e61c6541bfbbcbd6c6c09c6edb7903b6102b08",
+  "wall_seconds": 13.875780708000093
+}
