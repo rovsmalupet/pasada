@@ -5,12 +5,17 @@ A baby version of the demand-file generator of Section 4.4.1.6. For every
 passenger it picks:
   * a HOME: the middle of a random walkable street near the jeepney route,
   * a DESTINATION: another random walkable street further down the route,
-  * the BOARDING point: the kerbside spot on route_JPN1 nearest to home,
-  * the ALIGHTING point: the kerbside spot on route_JPN1 nearest to the
-    destination (the "nearest-point function" of Section 4.4.1.5),
+  * the BOARDING point: the kerbside spot on route_JPN1 with the SHORTEST WALK
+    from home - right where the walk from home reaches the route,
+  * the ALIGHTING point: likewise, the kerbside spot with the shortest walk
+    to the destination (the "nearest-point function" of Section 4.4.1.5),
   * a random departure time.
-Both walk legs are checked with SUMO's own pedestrian router (and must be at
-most MAX_WALK long), so the generated file always loads cleanly.
+Nearest means nearest ON FOOT, measured with SUMO's own pedestrian router.
+The spot nearest as the crow flies (used before) is often not where the
+person's street meets the route, so 13 of 21 commuters walked 35-115 m
+further than needed, mostly along the route itself past passing jeepneys.
+Both walk legs must be at most MAX_WALK long, so the generated file always
+loads cleanly.
 
 Output: passengers.rou.xml (listed in run.sumocfg). jeepney_controller.py
 builds its flag-down registry from that file, so nothing else needs editing.
@@ -20,6 +25,7 @@ Usage:
 Same seed -> same passengers, so runs stay reproducible.
 """
 import colorsys
+import math
 import os
 import random
 import sys
@@ -71,24 +77,51 @@ def kerb_edges(net, route):
     return result
 
 
-def nearest_kerb_point(xy, kerb):
-    """Nearest-point function: the kerbside route spot closest to xy.
-    Returns (edge_id, pos, route_offset, straight_line_distance)."""
-    best = None
+def straight_line_to_kerb(xy, kerb):
+    """Straight-line distance from xy to the nearest kerbside route edge.
+    A walk is never shorter, so this is a cheap pre-filter."""
+    return min(geomhelper.polygonOffsetAndDistanceToPoint(xy, edge.getShape())[1]
+               for edge, _ in kerb)
+
+
+def kerb_spots(kerb):
+    """The candidate stopping spots: KERB_MARGIN in from each end of every
+    kerb edge. People reach an edge at one of its ends and walking along it
+    only adds distance, so the spot on an edge with the shortest walk is always
+    one of these two. Returns [(edge_id, pos, route_offset, xy)]."""
+    spots = []
     for edge, start in kerb:
         shape = edge.getShape()
-        offset, dist = geomhelper.polygonOffsetAndDistanceToPoint(xy, shape)
         # shape length and edge length can differ slightly - rescale
-        pos = offset * edge.getLength() / geomhelper.polyLength(shape)
-        pos = round(min(max(pos, KERB_MARGIN), edge.getLength() - KERB_MARGIN), 1)
-        if best is None or dist < best[3]:
-            best = (edge.getID(), pos, start + pos, dist)
+        scale = geomhelper.polyLength(shape) / edge.getLength()
+        for pos in (KERB_MARGIN, edge.getLength() - KERB_MARGIN):
+            xy = geomhelper.positionAtShapeOffset(shape, pos * scale)
+            spots.append((edge.getID(), round(pos, 1), start + pos, xy))
+    return spots
+
+
+def nearest_on_foot(edge_id, pos, xy, spots):
+    """Nearest-point function: the kerb spot with the SHORTEST WALK from
+    edge_id@pos (at xy). Returns (edge_id, pos, route_offset, walk_length),
+    or None if no spot is within MAX_WALK on foot."""
+    best = None
+    for dist, (s_edge, s_pos, s_offset, _) in sorted(
+            (math.dist(xy, s[3]), s) for s in spots):
+        # spots come nearest-first; a walk is never shorter than the straight
+        # line (give or take a few metres: sidewalks run beside the centre
+        # lines measured here), so once spots are this far none can win
+        if dist - 10.0 > (best[3] if best else MAX_WALK):
+            break
+        walk = walk_length(edge_id, pos, s_edge, s_pos)
+        if walk is not None and walk <= MAX_WALK and (best is None or walk < best[3]):
+            best = (s_edge, s_pos, s_offset, walk)
     return best
 
 
-def candidate_places(net, route, kerb):
+def candidate_places(net, route, kerb, spots):
     """Every walkable, non-highway street near the route (its midpoint),
-    paired with its nearest kerb point on the route."""
+    paired with the kerb spot it can walk to fastest. Needs SUMO running
+    (pedestrian router)."""
     on_route = set(route)
     places = []
     for edge in net.getEdges():
@@ -97,12 +130,12 @@ def candidate_places(net, route, kerb):
             continue
         shape = edge.getShape()
         xy = geomhelper.positionAtShapeOffset(shape, geomhelper.polyLength(shape) / 2)
-        kerb_point = nearest_kerb_point(xy, kerb)
-        # a walk is never shorter than the straight line - cheap pre-filter
-        if kerb_point[3] <= MAX_WALK:
-            places.append({"edge": edge.getID(),
-                           "pos": round(edge.getLength() / 2, 1),
-                           "kerb": kerb_point})
+        if straight_line_to_kerb(xy, kerb) > MAX_WALK:
+            continue
+        pos = round(edge.getLength() / 2, 1)
+        spot = nearest_on_foot(edge.getID(), pos, xy, spots)
+        if spot is not None:
+            places.append({"edge": edge.getID(), "pos": pos, "kerb": spot})
     return places
 
 
@@ -124,7 +157,7 @@ def sample_passengers(n, rng, places):
             sys.exit(f"Only placed {len(passengers)}/{n} passengers - "
                      "try a larger MAX_WALK or a smaller MIN_RIDE.")
         home = rng.choice(places)
-        board_edge, board_pos, board_offset, _ = home["kerb"]
+        board_edge, board_pos, board_offset, access = home["kerb"]
         # destination must be far enough DOWNSTREAM - the line runs one way
         dests = [p for p in places if p["kerb"][2] - board_offset >= MIN_RIDE]
         if not dests:
@@ -132,9 +165,8 @@ def sample_passengers(n, rng, places):
         dest = rng.choice(dests)
         alight_edge, alight_pos, alight_offset, _ = dest["kerb"]
 
-        access = walk_length(home["edge"], home["pos"], board_edge, board_pos)
-        if access is None or access > MAX_WALK:
-            continue
+        # the spot was chosen walking FROM the destination; check the walk the
+        # commuter really makes, from the kerb to the destination
         egress = walk_length(alight_edge, alight_pos, dest["edge"], dest["pos"])
         if egress is None or egress > MAX_WALK:
             continue
@@ -157,6 +189,7 @@ def write_passengers(path, passengers, departs, seed, rng):
         '     Plan per person: walk home -> kerb, flag down a jeepney, ride, walk -> destination.',
         '     The first walk\'s arrivalPos IS the boarding spot and the ride\'s arrivalPos',
         '     IS the alighting spot - jeepney_controller.py reads both from this file.',
+        '     Both are the route spots nearest ON FOOT to home / the destination.',
         '     Persons are sorted by depart: SUMO drops out-of-order entries. -->',
         '<routes>',
     ]
@@ -190,14 +223,14 @@ def main():
     net = sumolib.net.readNet(NET_FILE)
     route = read_route(DEMAND_FILE, ROUTE_ID)
     kerb = kerb_edges(net, route)
-    places = candidate_places(net, route, kerb)
-    print(f"{len(kerb)} kerbside route edges, "
-          f"{len(places)} candidate homes/destinations within {MAX_WALK:.0f} m")
 
     # SUMO with only the network loaded, used purely as a pedestrian router
     traci.start(["sumo", "-n", NET_FILE, "--no-step-log", "true",
                  "--no-warnings", "true"])
     try:
+        places = candidate_places(net, route, kerb, kerb_spots(kerb))
+        print(f"{len(kerb)} kerbside route edges, {len(places)} candidate "
+              f"homes/destinations within {MAX_WALK:.0f} m walk of the route")
         passengers = sample_passengers(n, rng, places)
     finally:
         traci.close()

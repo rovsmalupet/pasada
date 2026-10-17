@@ -18,6 +18,7 @@ Thumbs.db
 sumo_track/docs/
 sandbox/docs/
 starosa_prototype/docs/
+sumo_track_prototype/docs/
 
 # SUMO track -----------------------------------------------------------------
 # Generated outputs: rebuilt by scripts, never hand-edited
@@ -26,3 +27,8 @@ sumo_track/runs/
 
 # Large untouched downloads; keep a note of each file's source URL and download date
 sumo_track/data/raw/
+
+# SUMO track prototype ------------------------------------------------------
+# Rebuilt by build.py (generated/) and written by each run (runs/)
+sumo_track_prototype/generated/
+sumo_track_prototype/runs/

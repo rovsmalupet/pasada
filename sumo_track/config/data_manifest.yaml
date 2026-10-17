@@ -6,25 +6,34 @@
 #   real         final file (from the data team, or built by the SUMO track where provider says so)
 #   provider     who owns the real dataset (manuscript section)
 #
-# Paths are relative to the repository root. Files are created when the code that uses them is written.
+# Paths are relative to the sumo_track folder (sumo_track.config.REPO_ROOT). Files are created
+# when the code that uses them is written.
 
 study_boundary:
-  active: placeholder
+  active: real
   placeholder: data/placeholder/boundary.geojson
-  real: data/real/boundary.geojson
-  provider: "SUMO track (Sec. 4.4.1), from PSA/NAMRIA boundaries (Sec. 4.2.1)"
+  real: ../population_extraction/boundaries/Santa_Rosa_City_Laguna.geojson
+  provider: "Data team (Sec. 4.2.1): PSA/NAMRIA boundary via HDX COD-AB, in population_extraction/"
   notes: >-
-    Exact polygon. The buffered clip polygon is derived from it at build time.
+    Exact polygon; the buffered clip polygon is derived from it
+    (`python -m sumo_track.network.clip_polygon`).
+    Real: the City of Santa Rosa polygon the data team used to select population cells
+    (HDX COD-AB v03 from NAMRIA/PSA, PSGC 0403428000, valid_on 2025-02-13, 56.17 km2, CC BY-IGO).
+    Read in place, not copied, so both tracks always use the same file. Its provenance and
+    checksum are in Santa_Rosa_City_Laguna.metadata.json beside it, and the loader checks the
+    checksum. City outline only; barangay polygons are still to come.
     Placeholder: OSM relation 1335521, built by `python -m sumo_track.network.boundary`.
-    It includes about 35.7 km2 of Laguna de Bay (land part about 54.0 km2; PSA/NAMRIA land area 56.17 km2).
-    Real: PSA/NAMRIA city and 18 barangay polygons (HDX COD-AB), to be added later.
+    It wrongly includes about 36 km2 of Laguna de Bay (89.64 km2 in total).
 
 osm_extract:
   active: placeholder
-  placeholder: data/raw/santarosa_bbox.osm
+  placeholder: data/raw/santa_rosa_buffered.osm
   real: data/real/santarosa_clean.osm
   provider: "Sec. 4.2.4"
-  notes: ""
+  notes: >-
+    Placeholder: raw OSM data inside the buffered clip polygon, downloaded from Overpass by
+    `python -m sumo_track.network.osm_download` and saved untouched, with a .provenance.json
+    beside it (query, OSM data timestamp, checksum). Real: the data team's cleaned extract.
 
 activity_locations:
   active: placeholder
@@ -41,11 +50,16 @@ origin_zones:
   notes: "Placeholder uses equal weights per residential edge."
 
 jeepney_routes:
-  active: placeholder
+  active: real
   placeholder: data/placeholder/jeepney_routes.json
-  real: data/real/jeepney_routes.json
-  provider: "Sec. 4.2.5"
-  notes: ""
+  real: "../Jeepney Routes/Jeepney_GPS_annotated_2026-10-14"
+  provider: "Data team (Sec. 4.2.5): field observation by Matthew Fuentes, 2026-10-14"
+  notes: >-
+    A folder, read in place: one OsmAnd GPX track per observed jeepney trip
+    (<trip>_..._annotated.gpx) and Jeepney_observed_stops_*.csv with each trip's stops,
+    times and occupancy. Matched to the network by `python -m sumo_track.jeepney.route_match`.
+    Partial: 2 one-way trips observed on one morning (Paseo -> Balibago, Balibago -> Vista
+    Mall). Whether they are one line in two directions is to confirm with the data team.
 
 traffic_counts:
   active: none
