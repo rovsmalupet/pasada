@@ -2,6 +2,21 @@
 
 This folder contains copies of the completed RF-DETR/ByteTrack traffic outputs and provisional speed estimates. The original source files remain intact. `package_manifest.json` records original paths, SHA-256 checksums and file sizes for the handoff.
 
+## Before calculating or recalculating speeds
+
+**The distance between the timing boundaries must first be measured, calculated from a calibrated reference, or manually estimated.** `generate_speeds.py` uses that supplied distance with the recorded entry/exit times; it does not determine a real-world distance in meters from the CSV or video automatically.
+
+For this recording, Matthew manually estimated each whole road box as approximately **27–29 meters** and selected **28 meters** as the central value for both directions. This was a manual approximation, not a surveyed distance or a detector measurement. The exported speeds depend on that assumption.
+
+Before running the Python speed generator for new or revised data:
+
+1. Identify the actual start/end boundaries and determine their road distance along the direction of travel for each carriageway. Record the measurement or estimation method, units and plausible range.
+2. Supply the distance that matches those timestamps. Actual full-box entry/exit timestamps use the full box length. This dataset's saved inner-80% gate timestamps instead use **22.4 m** under the **28 m** whole-box assumption (21.6–23.2 m for the 27–29 m scenarios).
+3. Record the timed section length in `distance_m` or the saved gate file's `gate_distance_m`. If the whole-box estimate changes, regenerate the gate-distance export using the new calibration before running `generate_speeds.py`; existing saved gate distances otherwise retain their old values.
+4. Run the speed calculation only after that distance has been determined and recorded. The Python defaults retain the earlier manual estimate and do not verify it. A different location, box, camera view or recording requires its own distance assessment.
+
+An estimated distance produces an estimated speed. The low/high speed columns describe sensitivity to the assumed distance, not full uncertainty bounds. A distance-only revision needs a speed recalculation, without repeating vehicle detection or traffic counts.
+
 ## Files
 
 | File | Purpose |
