@@ -45,6 +45,21 @@ day_length_s:
   source: "Manuscript design decision: each simulated day is a separate 0-86400 s SUMO run"
   notes: "Jeepney flows run over the whole day."
 
+# --- Activity locations (Phase 2) ----------------------------------------------------------
+
+location_dedup_distance_m:
+  value: 100
+  unit: m
+  status: assumed
+  source: "Implementation choice"
+  notes: >-
+    Two features of the same category with the same name closer than this are one place
+    mapped twice (e.g. a node and a building outline); farther apart, they are separate
+    branches (e.g. two Puregold stores). An unnamed building (level "part") closer than this
+    to a location of its category is one more building of it. Every merge is listed in the
+    provenance file. On the 2026-10-16 OSM data the unnamed-building rule takes schools from
+    75 to 54 and workplaces from 358 to 191 (at 50 m: 61 and 257).
+
 # --- Jeepney routes (Phase 3) --------------------------------------------------------------
 
 route_match_radius_m:

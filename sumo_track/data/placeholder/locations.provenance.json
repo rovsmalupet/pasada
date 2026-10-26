@@ -1,0 +1,2475 @@
+{
+  "built_utc": "2026-10-26T11:18:54Z",
+  "osm_extract": "data/raw/santa_rosa_buffered.osm",
+  "osm_sha256": "849e88d301a5bd2bb80cb46e32e5a1e7ee8263a982a3305586e504fe15ebe1bd",
+  "osm_data_timestamp": "2026-10-16T16:35:28Z",
+  "rules_file": "config/activity_categories.yaml",
+  "rules_sha256": "4210cf27b4b38939236a0c3da0de8cdcf13c039ecd6280ed7c48149cf82afd0d",
+  "boundary": "../population_extraction/boundaries/Santa_Rosa_City_Laguna.geojson",
+  "dedup_distance_m": 100.0,
+  "counts": {
+    "terminal": {
+      "matched": 16,
+      "inside_boundary": 13,
+      "locations": 11
+    },
+    "mall": {
+      "matched": 28,
+      "inside_boundary": 24,
+      "locations": 16
+    },
+    "market": {
+      "matched": 32,
+      "inside_boundary": 22,
+      "locations": 22
+    },
+    "school": {
+      "matched": 448,
+      "inside_boundary": 281,
+      "locations": 54
+    },
+    "workplace": {
+      "matched": 970,
+      "inside_boundary": 441,
+      "locations": 191
+    }
+  },
+  "unassembled_relations": 0,
+  "merges": [
+    {
+      "kept": "way/91415157",
+      "dropped": "node/2947586405",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "node/5524135343",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/628711246",
+      "dropped": "node/5850315098",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1339830391",
+      "dropped": "node/6575908085",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1339830391",
+      "dropped": "node/11021739152",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1339830391",
+      "dropped": "node/11021739153",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861520",
+      "dropped": "node/12384466767",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861520",
+      "dropped": "node/12393587481",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861520",
+      "dropped": "node/12393587482",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861520",
+      "dropped": "node/12393587483",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/542936032",
+      "dropped": "node/12679914409",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/91415157",
+      "dropped": "way/93183958",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/91415157",
+      "dropped": "way/93183974",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/142847045",
+      "dropped": "way/530493803",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/142847045",
+      "dropped": "way/530493804",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/142847045",
+      "dropped": "way/530493805",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/529388664",
+      "dropped": "way/536081561",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482956",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482957",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482958",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482959",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482960",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482961",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482962",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482963",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482964",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/526610010",
+      "dropped": "way/1552482965",
+      "reason": "inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/27371825",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/32082945",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/60345271",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/90546137",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/118112761",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/123847863",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/123849651",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/134990096",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/134990101",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/135387926",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/135387928",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/142486427",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/142847022",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/142847027",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/142847038",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/142847044",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/161848272",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/185930142",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/185930322",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/192456586",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/260869334",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/263338987",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/291271300",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/291271309",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/309494389",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/310226156",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/317519247",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/350209781",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/445171954",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/514633222",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/530493820",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/532685279",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/543593988",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548774877",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548774878",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548774881",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548774882",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548774883",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548774884",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548774885",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/548775229",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/549065179",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/549065186",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/549992834",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/549992835",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/581207218",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/581207219",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/628726746",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/758287139",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/758513139",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/759474082",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/1047629006",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/1072690687",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/1099496248",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/1263582580",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "-",
+      "dropped": "way/1338861505",
+      "reason": "area has places inside"
+    },
+    {
+      "kept": "way/310222822",
+      "dropped": "way/310222821",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/310222822",
+      "dropped": "way/310222823",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/242551680",
+      "dropped": "way/242551689",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992856",
+      "dropped": "way/549992855",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1553221787",
+      "dropped": "way/1553221786",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992856",
+      "dropped": "way/549992857",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/530493812",
+      "dropped": "way/530493813",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/310222818",
+      "dropped": "way/310222825",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803466",
+      "dropped": "way/534803470",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992832",
+      "dropped": "way/549992833",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/445171950",
+      "dropped": "way/283039201",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992847",
+      "dropped": "way/549992848",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065181",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992850",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065255",
+      "dropped": "way/549065254",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992851",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992856",
+      "dropped": "way/549992854",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1047629007",
+      "dropped": "way/291271301",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065182",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992832",
+      "dropped": "way/549992828",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/242551690",
+      "dropped": "way/242551685",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803492",
+      "dropped": "way/534803494",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/543594014",
+      "dropped": "way/543594013",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1430465685",
+      "dropped": "way/1430465684",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/545124146",
+      "dropped": "way/545124144",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/263338964",
+      "dropped": "way/263338983",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803492",
+      "dropped": "way/534803490",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065222",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/530493812",
+      "dropped": "way/530493811",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992832",
+      "dropped": "way/549992827",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/310222819",
+      "dropped": "way/310222820",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992847",
+      "dropped": "way/549992849",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/531041278",
+      "dropped": "way/531041279",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065251",
+      "dropped": "way/549065249",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065235",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065250",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/530493814",
+      "dropped": "way/530493816",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065206",
+      "dropped": "way/549065207",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/545124146",
+      "dropped": "way/545124145",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065239",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065241",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/283039893",
+      "dropped": "way/283039894",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065208",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065233",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/310222819",
+      "dropped": "way/310222824",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/530493814",
+      "dropped": "way/530493815",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065210",
+      "dropped": "way/549065213",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/161848274",
+      "dropped": "way/1553221784",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065210",
+      "dropped": "way/549065211",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803466",
+      "dropped": "way/534803468",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992846",
+      "dropped": "way/549992845",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/548039861",
+      "dropped": "way/548039863",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065262",
+      "dropped": "way/549065259",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065240",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065255",
+      "dropped": "way/549065248",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065236",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081546",
+      "dropped": "way/536081545",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065227",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065225",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/532685277",
+      "dropped": "way/532685276",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/548039861",
+      "dropped": "way/548039862",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/242551680",
+      "dropped": "way/242551687",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/532685270",
+      "dropped": "way/532685271",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/548039861",
+      "dropped": "way/548039856",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/532685270",
+      "dropped": "way/532685275",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/548039861",
+      "dropped": "way/548039855",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065231",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/532685270",
+      "dropped": "way/532685269",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065230",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/532685270",
+      "dropped": "way/532685272",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992811",
+      "dropped": "way/549992810",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/581207220",
+      "dropped": "way/682143620",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081553",
+      "dropped": "way/536081560",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065201",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065180",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065178",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/548039861",
+      "dropped": "way/548039859",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065197",
+      "dropped": "way/549065196",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081546",
+      "dropped": "way/536081552",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081553",
+      "dropped": "way/536081557",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065203",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081546",
+      "dropped": "way/536081548",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065189",
+      "dropped": "way/549065195",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992808",
+      "dropped": "way/549992806",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992832",
+      "dropped": "way/549992826",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081551",
+      "dropped": "way/536081550",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992842",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065189",
+      "dropped": "way/549065200",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992808",
+      "dropped": "way/549992807",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/532685270",
+      "dropped": "way/532685274",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/543593994",
+      "dropped": "way/543593995",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803492",
+      "dropped": "way/544907804",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/543594014",
+      "dropped": "way/543594015",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992837",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/543593989",
+      "dropped": "way/543593990",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065224",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992832",
+      "dropped": "way/549992831",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/242551680",
+      "dropped": "way/242551683",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/543593994",
+      "dropped": "way/543593996",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/548039861",
+      "dropped": "way/548039858",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065255",
+      "dropped": "way/549065253",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065206",
+      "dropped": "way/549065199",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081540",
+      "dropped": "way/536081542",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992811",
+      "dropped": "way/549992809",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803492",
+      "dropped": "way/544907802",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803492",
+      "dropped": "way/544907805",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/291271299",
+      "dropped": "way/291271306",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065251",
+      "dropped": "way/549065247",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992844",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065244",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992841",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065218",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992843",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065255",
+      "dropped": "way/549065252",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065251",
+      "dropped": "way/549065246",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081540",
+      "dropped": "way/536081558",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065245",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081553",
+      "dropped": "way/536081555",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065228",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065210",
+      "dropped": "way/549065214",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081540",
+      "dropped": "way/536081559",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065189",
+      "dropped": "way/549065188",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081551",
+      "dropped": "way/536081556",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081553",
+      "dropped": "way/536081554",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/532685270",
+      "dropped": "way/532685273",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065220",
+      "dropped": "way/549065221",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/135387830",
+      "dropped": "way/548039857",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065262",
+      "dropped": "way/549065258",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/543593991",
+      "dropped": "way/543593993",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065242",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065255",
+      "dropped": "way/549065256",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/536081540",
+      "dropped": "way/536081544",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/543593991",
+      "dropped": "way/543593992",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065229",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992801",
+      "dropped": "way/549992830",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992808",
+      "dropped": "way/549992804",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065243",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065177",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065189",
+      "dropped": "way/549065187",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065210",
+      "dropped": "way/549065209",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/548039861",
+      "dropped": "way/548039860",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065238",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065210",
+      "dropped": "way/549065212",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992846",
+      "dropped": "way/549992836",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065226",
+      "dropped": "way/549065223",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/317350764",
+      "dropped": "way/543594008",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065197",
+      "dropped": "way/549065192",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065197",
+      "dropped": "way/549065193",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065262",
+      "dropped": "way/549065260",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065210",
+      "dropped": "way/549065215",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065206",
+      "dropped": "way/549065205",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065197",
+      "dropped": "way/549065191",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065255",
+      "dropped": "way/549065216",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065206",
+      "dropped": "way/549065204",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/534803492",
+      "dropped": "way/544907803",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992838",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992840",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992801",
+      "dropped": "way/549992829",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065197",
+      "dropped": "way/549065194",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065197",
+      "dropped": "way/549065190",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065183",
+      "dropped": "way/549065176",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065262",
+      "dropped": "way/549065261",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065202",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065206",
+      "dropped": "way/549065198",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992799",
+      "dropped": "way/549992798",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549992852",
+      "dropped": "way/549992839",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/549065234",
+      "dropped": "way/549065237",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/34688919",
+      "dropped": "node/704223566",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/428818546",
+      "dropped": "node/3927154711",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/90546125",
+      "dropped": "node/4369988796",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/90546125",
+      "dropped": "node/5192544227",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/90546125",
+      "dropped": "node/5192546510",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/90546125",
+      "dropped": "node/5192546542",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/32424613",
+      "dropped": "node/13904140932",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/685750447",
+      "dropped": "node/13904199499",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/542845013",
+      "dropped": "node/5019918928",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/751265883",
+      "dropped": "node/5400846821",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1345306855",
+      "dropped": "node/12446134016",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/236029335",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/236029336",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/236029338",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/236029339",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/236029340",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/236029342",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/236029345",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/236029346",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/236029347",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/236029348",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/244652610",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/244652613",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/244652614",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/244652615",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/244652616",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/244652617",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869344",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/260869345",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869346",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/260869347",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869350",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/260869351",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869354",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/260869355",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/260869358",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869359",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869360",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869362",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/260869363",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/260869364",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/303335396",
+      "dropped": "way/303335394",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/307245736",
+      "dropped": "way/307245738",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/307245736",
+      "dropped": "way/307245739",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519106",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519107",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519108",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519110",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519112",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519114",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519117",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/185930341",
+      "dropped": "way/317519119",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/357647424",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/357647430",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/303335396",
+      "dropped": "way/358283327",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/303335396",
+      "dropped": "way/358283902",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/303335396",
+      "dropped": "way/427822688",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657889",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657890",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657899",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657901",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657902",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657905",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657913",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260399865",
+      "dropped": "way/463657914",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100669",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100670",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100671",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100672",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100673",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100674",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100675",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100676",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/487100678",
+      "dropped": "way/487100677",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514155316",
+      "dropped": "way/514632896",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/534689289",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/540655037",
+      "dropped": "way/540615748",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/540655037",
+      "dropped": "way/540615749",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/540655037",
+      "dropped": "way/540615750",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/540655037",
+      "dropped": "way/540655036",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/542409219",
+      "dropped": "way/542409217",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387828",
+      "dropped": "way/542515909",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387828",
+      "dropped": "way/542515910",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387828",
+      "dropped": "way/542515911",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387828",
+      "dropped": "way/542515912",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299917",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299918",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299919",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299920",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299921",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299922",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299923",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299924",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/548299916",
+      "dropped": "way/548299925",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/447794415",
+      "dropped": "way/553872510",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884875",
+      "dropped": "way/553884876",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884875",
+      "dropped": "way/553884877",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884875",
+      "dropped": "way/553884878",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884875",
+      "dropped": "way/553884879",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884875",
+      "dropped": "way/553884880",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884875",
+      "dropped": "way/553884881",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884905",
+      "dropped": "way/553884903",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884905",
+      "dropped": "way/553884904",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/553884905",
+      "dropped": "way/653303323",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/672807012",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/676407621",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270117",
+      "dropped": "way/752919389",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270117",
+      "dropped": "way/752919390",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270117",
+      "dropped": "way/752919391",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270118",
+      "dropped": "way/752919392",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270118",
+      "dropped": "way/752919393",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270117",
+      "dropped": "way/752919394",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270118",
+      "dropped": "way/752919395",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/776536458",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/776536460",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/776536461",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/776536462",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/776536463",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/776536464",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/776536465",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270118",
+      "dropped": "way/791270112",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270117",
+      "dropped": "way/791270113",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791270117",
+      "dropped": "way/791270115",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/791401023",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/791401022",
+      "dropped": "way/791401024",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164758",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164759",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164760",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164761",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164762",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164763",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164764",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164765",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164766",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164767",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164768",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164769",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164770",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164771",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164772",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164773",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164774",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/135387973",
+      "dropped": "way/972164775",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869335",
+      "dropped": "way/981055361",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640305",
+      "dropped": "way/984775929",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640305",
+      "dropped": "way/984775930",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640305",
+      "dropped": "way/984775931",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640305",
+      "dropped": "way/984775932",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775933",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775934",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775935",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775936",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775937",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775938",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775939",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775940",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775941",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775942",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775943",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775944",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/638640221",
+      "dropped": "way/984775945",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1330306338",
+      "dropped": "way/1330306334",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1330306338",
+      "dropped": "way/1330306335",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1330306338",
+      "dropped": "way/1330306336",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839596",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839597",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839598",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839599",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839600",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839601",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839602",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839603",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839610",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839611",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839612",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839613",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839614",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1322475649",
+      "dropped": "way/1330839615",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861489",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861490",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861491",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861492",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861493",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861494",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861495",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861496",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861497",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861488",
+      "dropped": "way/1338861498",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832697",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832698",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832699",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832700",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832701",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832702",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832703",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832704",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1341832696",
+      "dropped": "way/1341832705",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143475",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143476",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143477",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143478",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143479",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143480",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143481",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143482",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143483",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143484",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143485",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514247803",
+      "dropped": "way/1346143486",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/1472764076",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/1472764077",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/260869379",
+      "dropped": "way/1472764078",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/1524114799",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/1524114801",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/1524114802",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/676411885",
+      "dropped": "way/1524114803",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099436",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/514155316",
+      "dropped": "way/528615627",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/758513149",
+      "dropped": "way/553887791",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099435",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1339830395",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1339830397",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099434",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099431",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1339830396",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099427",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099430",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099429",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099439",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099428",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/514155316",
+      "dropped": "way/1337163203",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/357647385",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099438",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099433",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/190909096",
+      "dropped": "way/236029334",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/217852652",
+      "dropped": "way/357647427",
+      "reason": "unnamed building nearby"
+    },
+    {
+      "kept": "way/1339830392",
+      "dropped": "way/1346099432",
+      "reason": "unnamed building nearby"
+    }
+  ]
+}

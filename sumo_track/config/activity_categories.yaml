@@ -1,0 +1,43 @@
+# Which OpenStreetMap features become activity locations (Phase 2; categories of Sec. 4.2.3).
+# Read by `python -m sumo_track.locations.extract_pois`.
+#
+# A feature takes the FIRST category below with a matching rule. Each rule names an OSM tag key,
+# its values ("*" = any value) and a level:
+#   place  a place in its own right: a school campus, a mall, an office, a terminal
+#   part   a building that may belong to a mapped place of the same category; dropped when it
+#          lies inside one (a school building inside its campus)
+#   area   a land-use area; kept only when no place or part of the same category lies inside it
+#          (an industrial estate whose factories are not mapped one by one)
+# exclude_name: a feature whose name matches this regular expression (case-insensitive) is skipped.
+#
+# Status: placeholder rules for the SUMO track's own extraction (decision 2026-09-30: the SUMO
+# track builds POIs itself from OSM). To confirm with the data team (Sec. 4.2.3) and the group.
+
+terminal:
+  rules:
+    - {key: amenity, values: [bus_station], level: place}
+    - {key: public_transport, values: [station], level: place}
+  exclude_name: "tricycle"        # tricycles are out of the study's scope (Plan B.2)
+
+mall:
+  rules:
+    - {key: shop, values: [mall, department_store], level: place}
+
+market:
+  rules:
+    - {key: amenity, values: [marketplace], level: place}
+    - {key: shop, values: [supermarket], level: place}
+
+school:
+  rules:
+    - {key: amenity, values: [school, college, university], level: place}
+    - {key: building, values: [school, college, university], level: part}
+
+workplace:
+  rules:
+    - {key: office, values: "*", level: place}
+    - {key: amenity, values: [townhall, hospital], level: place}
+    - {key: industrial, values: "*", level: place}
+    - {key: man_made, values: [works], level: place}
+    - {key: building, values: [industrial, office], level: part}
+    - {key: landuse, values: [industrial, commercial], level: area}

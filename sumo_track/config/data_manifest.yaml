@@ -40,7 +40,13 @@ activity_locations:
   placeholder: data/placeholder/locations.csv
   real: data/real/locations.csv
   provider: "Sec. 4.2.3"
-  notes: ""
+  notes: >-
+    Placeholder: schools, workplaces, markets, malls and terminals extracted from the saved OSM
+    data by `python -m sumo_track.locations.extract_pois` (rules in
+    config/activity_categories.yaml), inside the exact study boundary, duplicates merged. A
+    .provenance.json beside it lists the OSM timestamp, checksums, counts and every merge.
+    Zone and road fields stay empty until zoning and snapping (Phase 2, steps 3-4).
+    Real: the data team's activity location inventory (Sec. 4.2.3), in the same columns.
 
 origin_zones:
   active: placeholder

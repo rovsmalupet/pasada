@@ -17,6 +17,7 @@ from sumo_track.config import REPO_ROOT
 STEPS = [
     ("clip_polygon", "sumo_track.network.clip_polygon"),
     ("osm_download", "sumo_track.network.osm_download"),
+    ("locations", "sumo_track.locations.extract_pois"),
     ("network", "sumo_track.network.build"),
     ("route_match", "sumo_track.jeepney.route_match"),
     ("vtypes", "sumo_track.jeepney.vtypes"),
