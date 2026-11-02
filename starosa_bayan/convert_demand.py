@@ -1,9 +1,11 @@
-"""Turn a demand file into SUMO input: the bridge between the LLM and the simulation.
+"""Turn a day's demand into SUMO input: the bridge between the LLM and the simulation.
 
-The demand file (demand/day_1.json; format in demand/README.md) is written by the LLM, or by
-llm_stub.py until it is connected. It says who goes where, when and by which mode, and holds no
-transport values: as the thesis plan requires (Sec. 4.3.1), this code works out every route,
-position and time.
+The demand (format in demand/README.md) comes from the LLM, or from llm_stub.py until it is
+connected, in two files: the schedule (demand/schedule_day_1.json: who goes where and when) and
+the modes file (demand/modes_day_1.json: the option chosen for each trip, from the options
+make_choices.py lists with this module's Planner). A single file with the modes in the schedule
+also works. Neither holds transport values: as the thesis plan requires (Sec. 4.3.1), this code
+works out every route, position and time.
 
   * TRIPS by sumo_track's fixed rule (Plan Phase 5, step 1): a trip whenever two consecutive
     schedule entries are at different places, leaving when the earlier entry ends.
@@ -25,16 +27,18 @@ position and time.
         most MAX_WALK). A bike ride is at most BIKE_TRIP_LIMIT. A car trip waits CAR_ACCESS_S at
         the car before driving and CAR_PARKING_S after parking.
     Each leg gets a free-flow estimate of its time (est_s).
-  * CHECKS: a file that breaks the format stops the conversion with a list of what is wrong. A
-    trip that cannot be made as written (no line serves it, too far to walk, no car, the car is
-    elsewhere) is reported, and that agent's whole day is left out.
+  * CHECKS: a file that breaks the format stops the conversion with a list of what is wrong
+    (also: a trip with no choice, or a choice for no trip). A trip that cannot be made as written
+    (no line serves it, the chosen line does not, too far to walk, no car, the car is elsewhere)
+    is reported, and that agent's whole day is left out.
 
 Writes commuters.rou.xml (one <person> per trip, with params agent_id, trip_id, trip_type, mode
 and est_s, and just before each car or bike trip its vehicle, depart="triggered": it leaves when
 they get in; sorted by departure) and trips.json (the trips, readable). run.py converts the demand
-file into each run's folder; run this to check a file on its own.
+into each run's folder; run this to check a day on its own.
 
-    python convert_demand.py [DEMAND] [--out DIR]   (default settings.DEMAND_FILE, generated/)
+    python convert_demand.py [SCHEDULE] [--modes FILE] [--out DIR]
+        (defaults: settings.SCHEDULE_FILE, settings.MODES_FILE, generated/)
 """
 
 import argparse
@@ -63,6 +67,8 @@ MODE_COLORS = {"walk": "1,1,1", "bike": "0,1,0", "car": "1,0.2,1"}   # commuter 
 CLOCK = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")    # HH:MM within the day
 TOP_KEYS = {"day", "made_by", "agents"}
 ENTRY_KEYS = {"location_id", "activity", "start", "end", "mode", "reasoning"}
+MODES_TOP_KEYS = {"day", "made_by", "agents"}                       # the modes file (step 3)
+SELECTION_KEYS = {"trip_id", "mode", "route_id", "reasoning"}
 PED_SPEED = 1.39      # m/s: SUMO's default walking speed (desiredMaxSpeed; TraCI cannot read it)
 _router_speed = None  # m/s: the speed SUMO's pedestrian router assumes (PED_SPEED x persontrip.walkfactor)
 
@@ -286,11 +292,12 @@ class Planner:
             self._walks[key] = walk(a[0], a[1], b[0], b[1])
         return self._walks[key]
 
-    def leg(self, mode, a, b, at_house=(False, False)):
+    def leg(self, mode, a, b, at_house=(False, False), line=None):
         """The leg from place a to place b by mode: (leg dict, None), or (None, why not).
-        at_house: whether a and b are the agent's home (a car is at the house there)."""
+        at_house: whether a and b are the agent's home (a car is at the house there). line: the
+        jeepney line to take (default: the one with the shortest total walk)."""
         if mode == "jeepney":
-            return self.jeepney(a, b)
+            return self.jeepney(a, b, line)
         if mode == "walk":
             return self.walk_trip(a, b)
         key = (mode, a[0], a[1], b[0], b[1], at_house)
@@ -301,23 +308,32 @@ class Planner:
             return None, f"the ride is {leg['length_m']:.0f} m, over BIKE_TRIP_LIMIT ({S.BIKE_TRIP_LIMIT:.0f} m)"
         return leg, why
 
-    def jeepney(self, a, b):
-        """Of the lines serving a -> b, the one with the shortest total walk."""
-        best = None
+    def jeepney_options(self, a, b):
+        """A leg for every line serving a -> b (both walks at most MAX_WALK, at least MIN_RIDE of
+        ride in the line's direction), shortest total walk first."""
+        options = []
         for line in sorted(self.lines):
             board = self.spot(line, a, toward=True)
             alight = self.spot(line, b, toward=False) if board else None
             if alight is None or alight[2] - board[2] < S.MIN_RIDE:
                 continue
-            if best is None or board[3] + alight[3] < best["walk_m"]:
-                ride_m = alight[2] - board[2]
-                est = board[4] + S.JEEPNEY_HEADWAY_S / 2 + ride_m / self.line_speed[line] + alight[4]
-                best = {"line": line, "board": board, "alight": alight, "walk_m": board[3] + alight[3],
-                        "ride_m": ride_m, "est_s": est}
-        if best is None:
+            ride_m = alight[2] - board[2]
+            options.append({"line": line, "board": board, "alight": alight, "walk_m": board[3] + alight[3],
+                            "ride_m": ride_m, "ride_s": ride_m / self.line_speed[line], "wait_s": S.JEEPNEY_HEADWAY_S / 2,
+                            "est_s": board[4] + S.JEEPNEY_HEADWAY_S / 2 + ride_m / self.line_speed[line] + alight[4]})
+        return sorted(options, key=lambda o: (o["walk_m"], o["line"]))
+
+    def jeepney(self, a, b, line=None):
+        """Of the lines serving a -> b, `line`, or else the one with the shortest total walk."""
+        options = self.jeepney_options(a, b)
+        if line is not None:
+            options = [o for o in options if o["line"] == line]
+            if not options:
+                return None, f"line {line} does not serve this trip (within {S.MAX_WALK:.0f} m on foot at both ends)"
+        if not options:
             return None, (f"no line runs from within {S.MAX_WALK:.0f} m on foot of the start to within "
                           f"{S.MAX_WALK:.0f} m of the end, with at least {S.MIN_RIDE:.0f} m of ride")
-        return best, None
+        return options[0], None
 
     def walk_trip(self, a, b):
         straight = math.dist(a[2], b[2])
@@ -358,8 +374,8 @@ class Planner:
         length = route.length - p0[1] - (self.net.getEdge(p1[0]).getLength() - p1[1])
         waits = S.CAR_ACCESS_S + S.CAR_PARKING_S if mode == "car" else 0.0
         return {"from": p0, "to": p1, "edges": route.edges, "length_m": length,
-                "walk_m": (w0[0] if walk_a else None, w1[0] if walk_b else None),
-                "est_s": w0[1] + route.travelTime + waits + w1[1]}, None
+                "walk_m": (w0[0] if walk_a else None, w1[0] if walk_b else None), "walk_s": (w0[1], w1[1]),
+                "drive_s": route.travelTime, "est_s": w0[1] + route.travelTime + waits + w1[1]}, None
 
 
 # --------------------------------------------------------------------- the demand file
@@ -376,8 +392,19 @@ def home_id(agent_id):
     return f"HOME_{agent_id}"
 
 
-def check_format(demand, agents, location_ids):
-    """Everything in a demand file that breaks the format (demand/README.md), as messages."""
+def trips_of(agent, day):
+    """(trip_id, entry before, entry) of each trip in an agent's schedule, by the fixed rule: a
+    trip whenever two consecutive entries are at different places (Plan Phase 5)."""
+    k = 0
+    for prev, entry in zip(agent["schedule"], agent["schedule"][1:]):
+        if prev["location_id"] != entry["location_id"]:
+            k += 1
+            yield f"{agent['agent_id']}_D{day:02d}_T{k:02d}", prev, entry
+
+
+def check_format(demand, agents, location_ids, with_modes=True):
+    """Everything in a demand file that breaks the format (demand/README.md), as messages.
+    with_modes=False: a schedule (step 1), which must not have modes yet."""
     if not isinstance(demand, dict):
         return ["the file must be a JSON object"]
     errors = [f"top level: unknown key {k!r}" for k in sorted(set(demand) - TOP_KEYS)]
@@ -412,9 +439,11 @@ def check_format(demand, agents, location_ids):
             if j == 0 and loc != home:
                 errors.append(f"{where}: the day must start at home ({home})")
             moved = j > 0 and loc != schedule[j - 1].get("location_id")
-            if moved and entry.get("mode") not in MODES:
+            if not with_modes and "mode" in entry:
+                errors.append(f'{where}: a schedule has no "mode": modes are chosen from the options (modes file)')
+            elif with_modes and moved and entry.get("mode") not in MODES:
                 errors.append(f'{where}: "mode" must be one of {", ".join(MODES)}: how they get here')
-            if not moved and "mode" in entry:
+            elif not moved and "mode" in entry:
                 errors.append(f'{where}: "mode" belongs only on an entry at a different place from the one before')
             end = entry.get("end")
             if end is None:
@@ -434,10 +463,52 @@ def check_format(demand, agents, location_ids):
     return errors
 
 
-def plan_day(demand, agents, planner):
+def apply_modes(demand, modes, lines):
+    """Put the modes file's choices (step 3) into the schedule (step 1): each trip's mode goes on
+    the entry it arrives at, as in a one-file demand. Returns ({trip_id: jeepney line}, errors)."""
+    if not isinstance(modes, dict) or not isinstance(modes.get("agents"), list):
+        return {}, ['modes file: must be an object with "agents": a list']
+    errors = [f"modes file: unknown key {k!r}" for k in sorted(set(modes) - MODES_TOP_KEYS)]
+    if modes.get("day") != demand.get("day"):
+        errors.append(f'modes file: "day" is {modes.get("day")!r}, the schedule\'s is {demand.get("day")!r}')
+    chosen = {}
+    for i, agent in enumerate(modes["agents"]):
+        aid = agent.get("agent_id") if isinstance(agent, dict) else None
+        errors += [f"modes agents[{i}]: unknown key {k!r}" for k in sorted(set(agent or {}) - {"agent_id", "selections"})]
+        for j, sel in enumerate(agent.get("selections", []) if isinstance(agent, dict) else []):
+            where = f"modes {aid} selections[{j}]"
+            if not isinstance(sel, dict):
+                errors.append(f"{where}: must be an object")
+                continue
+            errors += [f"{where}: unknown key {k!r}" for k in sorted(set(sel) - SELECTION_KEYS)]
+            if sel.get("mode") not in MODES:
+                errors.append(f'{where}: "mode" must be one of {", ".join(MODES)}')
+            elif (sel["mode"] == "jeepney") != ("route_id" in sel):
+                errors.append(f'{where}: "route_id" (the jeepney line) goes with, and only with, mode jeepney')
+            elif sel["mode"] == "jeepney" and sel["route_id"] not in lines:
+                errors.append(f'{where}: route_id {sel["route_id"]!r} is not a jeepney line')
+            if sel.get("trip_id") in chosen:
+                errors.append(f"{where}: trip {sel.get('trip_id')} is chosen twice")
+            chosen[sel.get("trip_id")] = sel
+    route_ids = {}
+    for agent in demand["agents"]:
+        for trip_id, _, entry in trips_of(agent, demand["day"]):
+            sel = chosen.pop(trip_id, None)
+            if sel is None:
+                errors.append(f"modes file: no choice for trip {trip_id}")
+                continue
+            entry["mode"] = sel.get("mode")
+            if "route_id" in sel:
+                route_ids[trip_id] = sel["route_id"]
+    errors += [f"modes file: trip {t} is not in the schedule" for t in sorted(chosen, key=str)]
+    return route_ids, errors
+
+
+def plan_day(demand, agents, planner, route_ids=None):
     """The trips of every agent whose whole day can be made as written:
-    ([trip, sorted by departure], {agent_id: why the day was left out})."""
-    day, trips, problems = demand["day"], [], {}
+    ([trip, sorted by departure], {agent_id: why the day was left out}). route_ids: the jeepney
+    line chosen for a trip (default: the line with the shortest total walk)."""
+    day, trips, problems, route_ids = demand["day"], [], {}, route_ids or {}
     for agent in demand["agents"]:
         aid, info = agent["agent_id"], agents[agent["agent_id"]]
         home = planner.home_place(info["home"])
@@ -452,21 +523,18 @@ def plan_day(demand, agents, planner):
             loc = entry["location_id"]
             return entry.get("activity") or ("home" if loc == home_id(aid) else planner.locations[loc]["category"])
 
-        schedule, parked, mine, problem, k = agent["schedule"], {m: home_id(aid) for m in VCLASS}, [], None, 0
-        for prev, entry in zip(schedule, schedule[1:]):
-            a, b = prev["location_id"], entry["location_id"]
-            if a == b:
-                continue
-            k += 1
-            mode, trip_id = entry["mode"], f"{aid}_D{day:02d}_T{k:02d}"
-            what = f"{trip_id} ({a} -> {b} by {mode}, {prev['end']})"
+        parked, mine, problem = {m: home_id(aid) for m in VCLASS}, [], None
+        for trip_id, prev, entry in trips_of(agent, day):
+            a, b, mode = prev["location_id"], entry["location_id"], entry["mode"]
+            what = f"{trip_id} ({a} -> {b} by {mode}{' ' + route_ids[trip_id] if trip_id in route_ids else ''}, {prev['end']})"
             if mode in VCLASS and not info[f"has_{mode}"]:
                 problem = f"{what}: has no {mode} (has_{mode} is false in agents.json)"
                 break
             if mode in VCLASS and parked[mode] != a:
                 problem = f"{what}: the {mode} is at {parked[mode]}"
                 break
-            leg, why = planner.leg(mode, place(a), place(b), at_house=(a == home_id(aid), b == home_id(aid)))
+            leg, why = planner.leg(mode, place(a), place(b), at_house=(a == home_id(aid), b == home_id(aid)),
+                                   line=route_ids.get(trip_id))
             if leg is None:
                 problem = f"{what}: {why}"
                 break
@@ -543,6 +611,44 @@ def trip_xml(trip, lines):
     return xml + ["    </person>"]
 
 
+def cost_php(mode, leg):
+    """What the trip costs: the jeepney fare for the ride (JEEPNEY_FARE: a minimum up to min_km,
+    then per started km), or the car's running cost; walking and cycling cost nothing."""
+    if mode == "jeepney":
+        extra_km = max(0.0, leg["ride_m"] / 1000 - S.JEEPNEY_FARE["min_km"])
+        return round(S.JEEPNEY_FARE["min_php"] + math.ceil(extra_km) * S.JEEPNEY_FARE["per_km_php"], 2)
+    if mode == "car":
+        return round(leg["length_m"] / 1000 * S.CAR_COST_PHP_PER_KM, 2)
+    return 0.0
+
+
+def alternative(mode, leg):
+    """One option for the LLM (the plan's candidate alternative, Part D.4): free-flow estimates
+    in whole seconds and metres. Except for a walk, the total is the sum of its parts:
+      access: walking to the jeepney, bike or car (plus CAR_ACCESS_S getting the car);
+      waiting: for a jeepney, half its headway; in_vehicle: riding or driving;
+      egress: walking on from the jeepney or the parked vehicle (plus CAR_PARKING_S parking)."""
+    if mode == "walk":
+        return {"mode": mode, "distance_m": round(leg["walk_m"]), "estimated_total_time_s": round(leg["est_s"]),
+                "cost_php": 0.0}
+    if mode == "jeepney":
+        walk = (leg["board"][3], leg["alight"][3])
+        parts = {"access_time_s": leg["board"][4], "waiting_time_s": leg["wait_s"], "in_vehicle_time_s": leg["ride_s"],
+                 "egress_time_s": leg["alight"][4]}
+        option = {"mode": mode, "route_id": leg["line"], "distance_m": walk[0] + leg["ride_m"] + walk[1],
+                  "access_walk_m": walk[0], "in_vehicle_m": leg["ride_m"], "egress_walk_m": walk[1]}
+    else:
+        walk = [w or 0.0 for w in leg["walk_m"]]
+        waits = (S.CAR_ACCESS_S, S.CAR_PARKING_S) if mode == "car" else (0.0, 0.0)
+        parts = {"access_time_s": leg["walk_s"][0] + waits[0], "waiting_time_s": 0, "in_vehicle_time_s": leg["drive_s"],
+                 "egress_time_s": waits[1] + leg["walk_s"][1]}
+        option = {"mode": mode, "distance_m": walk[0] + leg["length_m"] + walk[1],
+                  "access_walk_m": walk[0], "in_vehicle_m": leg["length_m"], "egress_walk_m": walk[1]}
+    parts = {k: round(v) for k, v in parts.items()}
+    option = {k: (round(v) if isinstance(v, float) else v) for k, v in option.items()}
+    return {**option, "estimated_total_time_s": sum(parts.values()), **parts, "cost_php": cost_php(mode, leg)}
+
+
 def trip_record(trip):
     """A trip in the shape of the plan's trip record (Part D.4), with its estimate."""
     leg = trip["leg"]
@@ -550,34 +656,58 @@ def trip_record(trip):
             "origin_location_id": trip["from_id"], "destination_location_id": trip["to_id"],
             "departure": clock(trip["depart"]), "departure_time_s": trip["depart"], "trip_type": trip["trip_type"],
             "mode": trip["mode"], "route_id": leg.get("line"), "estimated_total_time_s": round(leg["est_s"]),
+            "cost_php": cost_php(trip["mode"], leg),
             "sumo_person_id": trip["id"]}
 
 
-def convert(demand_path, out_dir):
-    """Check the demand file and write commuters.rou.xml and trips.json into out_dir (with a
-    copy of the demand file when out_dir is a run folder). Returns the commuters.rou.xml path."""
-    demand_path, out_dir = Path(demand_path), Path(out_dir)
-    if not demand_path.is_file():
-        raise SystemExit(f"No demand file at {demand_path}: write one (format in demand/README.md), "
-                         "or run python llm_stub.py for a stand-in")
+def load_json(path, hint):
+    path = Path(path)
+    if not path.is_file():
+        raise SystemExit(f"No file at {path}: {hint}")
     try:
-        demand = json.loads(demand_path.read_text(encoding="utf-8"))
+        return json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as e:
-        raise SystemExit(f"{demand_path.name} is not valid JSON: {e}")
+        raise SystemExit(f"{path.name} is not valid JSON: {e}")
+
+
+def has_modes(demand):
+    """Whether a demand file already has the modes in its schedule (one-file form)."""
+    return isinstance(demand, dict) and any(
+        isinstance(e, dict) and "mode" in e for a in demand.get("agents") or [] if isinstance(a, dict)
+        for e in a.get("schedule") or [])
+
+
+def convert(demand_path, out_dir, modes_path=None):
+    """Check a day's demand and write commuters.rou.xml and trips.json into out_dir (with copies of
+    the input files when out_dir is a run folder). The demand is a schedule (step 1) and a modes
+    file (step 3), or one file with the modes in its schedule, which ignores modes_path. Returns
+    the commuters.rou.xml path."""
+    demand_path, out_dir = Path(demand_path), Path(out_dir)
+    demand = load_json(demand_path, "write a schedule (format in demand/README.md), or run python llm_stub.py schedule")
     agents = load_agents()
     planner = Planner()
-    errors = check_format(demand, agents, set(planner.locations))
+    one_file = has_modes(demand)
+    errors = check_format(demand, agents, set(planner.locations), with_modes=one_file)
+    route_ids, inputs = {}, [demand_path]
+    if not errors and not one_file:
+        if modes_path is None:
+            raise SystemExit(f"{demand_path.name} has no modes: give the modes file (step 3) too")
+        modes_path = Path(modes_path)
+        modes = load_json(modes_path, "run python make_choices.py, then let the LLM (or python llm_stub.py modes) choose")
+        route_ids, errors = apply_modes(demand, modes, planner.lines)
+        errors = errors or check_format(demand, agents, set(planner.locations))
+        inputs.append(modes_path)
     if errors:
         more = f"\n  ... and {len(errors) - 30} more" if len(errors) > 30 else ""
-        raise SystemExit(f"{demand_path.name} does not follow the demand format (demand/README.md):\n  "
+        raise SystemExit(f"{' + '.join(p.name for p in inputs)} do not follow the demand format (demand/README.md):\n  "
                          + "\n  ".join(errors[:30]) + more)
     with planner:
-        trips, problems = plan_day(demand, agents, planner)
+        trips, problems = plan_day(demand, agents, planner, route_ids)
 
     lines = planner.lines
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
-           f"<!-- Generated by convert_demand.py from {demand_path.name} (day {demand['day']}, made by "
-           f"{comment_text(str(demand.get('made_by', 'unknown')))}). Do not edit: change the demand file.",
+           f"<!-- Generated by convert_demand.py from {' + '.join(p.name for p in inputs)} (day {demand['day']}, made by "
+           f"{comment_text(str(demand.get('made_by', 'unknown')))}). Do not edit: change the demand.",
            "     One <person> per trip (params: agent_id, trip_id, trip_type, mode, est_s = free-flow estimate):",
            "       * jeepney: walk to the roadside, flag a jeepney on the line, ride, walk on. The first",
            "         walk's arrivalPos is the boarding spot and the ride's arrivalPos the alighting",
@@ -597,11 +727,12 @@ def convert(demand_path, out_dir):
     rou.write_text("\n".join(xml) + "\n", encoding="utf-8")
     (out_dir / "trips.json").write_text(json.dumps([trip_record(t) for t in trips], indent=2) + "\n", encoding="utf-8")
     if out_dir.resolve() != demand_path.parent.resolve() and out_dir.resolve() != S.GENERATED.resolve():
-        shutil.copy2(demand_path, out_dir / demand_path.name)     # a run keeps the demand it ran
+        for path in inputs:
+            shutil.copy2(path, out_dir / path.name)                # a run keeps the demand it ran
 
     n_agents = len(demand["agents"])
     per_mode = Counter(t["mode"] for t in trips)
-    print(f"Demand file {demand_path.name} (day {demand['day']}, made by {demand.get('made_by', 'unknown')}): "
+    print(f"Demand {' + '.join(p.name for p in inputs)} (day {demand['day']}, made by {demand.get('made_by', 'unknown')}): "
           f"{n_agents} agents, {n_agents - len(problems)} kept, {len(trips)} trips ("
           + ", ".join(f"{m} {per_mode[m]}" for m in MODES) + ")")
     jeep = Counter(t["leg"]["line"] for t in trips if t["mode"] == "jeepney")
@@ -616,11 +747,13 @@ def convert(demand_path, out_dir):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Check a demand file and turn it into SUMO input.")
-    parser.add_argument("demand", nargs="?", default=str(S.DEMAND_FILE), help="the demand file (JSON)")
+    parser = argparse.ArgumentParser(description="Check a day's demand and turn it into SUMO input.")
+    parser.add_argument("demand", nargs="?", default=str(S.SCHEDULE_FILE),
+                        help="the schedule (step 1), or one file with the modes in it (JSON)")
+    parser.add_argument("--modes", default=str(S.MODES_FILE), help="the modes file (step 3), for a schedule without modes")
     parser.add_argument("--out", default=str(S.GENERATED), help="folder for commuters.rou.xml and trips.json")
     args = parser.parse_args()
-    convert(args.demand, args.out)
+    convert(args.demand, args.out, args.modes)
 
 
 if __name__ == "__main__":

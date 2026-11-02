@@ -5,8 +5,13 @@ same simulation on a bigger, better-defined map. The setup itself is unchanged:
 
 - jeepney lines along the map's main roads, both directions, with the TraCI flag-down
   controller;
-- commuters from a readable demand file (`demand/day_1.json`; format in `demand/README.md`).
-  The LLM will write it; until then `llm_stub.py` writes a stand-in;
+- commuters from readable demand files, in three steps a day (format in `demand/README.md`):
+  1. the LLM writes the schedule (where and when);
+  2. the simulation lists every way each trip can be made, with distance, time, waiting,
+     walking and cost (`make_choices.py`);
+  3. the LLM picks one option per trip.
+
+  Until the LLM is connected, `llm_stub.py` stands in for steps 1 and 3;
 - homes from the population grid (`../population_extraction/`) and destinations at the
   activity locations (`../sumo_track/data/placeholder/locations.csv`);
 - walk, bike, car and jeepney trips, background cars and motorcycles, a whole day per run,
@@ -59,10 +64,12 @@ python run.py                      # sumo-gui; press play
 python run.py --nogui              # headless: event log and summary
 python run.py --no-background      # without background cars and motorcycles (much faster)
 python run.py --end 36000          # stop at 10:00 (simulated seconds; default a whole day)
-python run.py --demand FILE        # another demand file (default demand/day_1.json)
-python make_agents.py --force      # new agents (then also: python llm_stub.py --force)
-python llm_stub.py --force         # a new stand-in demand file
-python convert_demand.py [FILE]    # check a demand file without running it
+python run.py --demand FILE --modes FILE   # another schedule and modes file
+python make_agents.py --force      # new agents (then also the three steps below, with --force)
+python llm_stub.py schedule        # step 1: a stand-in schedule
+python make_choices.py             # step 2: the options for every trip
+python llm_stub.py modes           # step 3: a stand-in choice per trip
+python convert_demand.py           # check steps 1 + 3 without running them
 ```
 
 ## Files
@@ -78,11 +85,12 @@ python convert_demand.py [FILE]    # check a demand file without running it
 | `make_vtypes.py` | Jeepney, car, motorcycle and bike types → `generated/` |
 | `make_background.py` | Random background car and motorcycle trips over the day → `generated/` |
 | `make_agents.py` | Agents (homes from the population grid, car and bike access) and the activity locations → `demand/agents.json` |
-| `llm_stub.py` | Stand-in for the LLM → `demand/day_1.json` |
+| `llm_stub.py` | Stand-in for the LLM: `schedule` → `demand/schedule_day_1.json`; `modes` → `demand/modes_day_1.json` |
+| `make_choices.py` | The options for every trip of the schedule (distance, time and its parts, cost) → `demand/choices_day_1.json` |
 | `convert_demand.py` | Checks a demand file and turns it into SUMO persons and vehicles |
 | `run.py` | Converts the demand file, runs SUMO with the flag-down controller, writes `runs/<date_time>/` |
 | `traffic_meter.py` | Optional meter of how motorcycles, cars and jeepneys share the road (`run.py --meter`) |
-| `demand/` | The demand file format (`README.md`, `day.schema.json`) and the demand files |
+| `demand/` | The formats (`README.md`, `day.schema.json`, `modes.schema.json`) and the day's files |
 | `data/` | The barangay boundaries and the study area |
 
 `generated/`, `runs/` and `bayan.net.xml` are not committed.

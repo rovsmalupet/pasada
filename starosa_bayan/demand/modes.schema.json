@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "modes.schema.json",
+  "title": "Modes file: the option chosen for each trip of one day",
+  "description": "Written by the LLM (llm_stub.py modes stands in until then) from the choices file (make_choices.py), and read with the schedule by convert_demand.py. That also checks what a schema cannot: every trip of the schedule has exactly one choice, every trip_id is in the schedule, route_id is a jeepney line, and every chosen trip can be made (a car or bike only where it was left). See README.md.",
+  "type": "object",
+  "required": ["day", "agents"],
+  "additionalProperties": false,
+  "properties": {
+    "day": {"type": "integer", "minimum": 1, "description": "The same day as the schedule."},
+    "made_by": {"type": "string", "description": "Who or what wrote the file (model, prompt version)."},
+    "agents": {"type": "array", "items": {"$ref": "#/$defs/agent"}}
+  },
+  "$defs": {
+    "agent": {
+      "type": "object",
+      "required": ["agent_id", "selections"],
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {"type": "string"},
+        "selections": {"type": "array", "items": {"$ref": "#/$defs/selection"}}
+      }
+    },
+    "selection": {
+      "type": "object",
+      "required": ["trip_id", "mode"],
+      "additionalProperties": false,
+      "properties": {
+        "trip_id": {"type": "string", "pattern": "^.+_D[0-9]{2}_T[0-9]{2}$", "description": "A trip from the choices file, e.g. A0001_D01_T01."},
+        "mode": {"enum": ["jeepney", "walk", "bike", "car"]},
+        "route_id": {"type": "string", "description": "The jeepney line: needed with mode jeepney, and only then."},
+        "reasoning": {"type": "string", "description": "Why, in a sentence. Optional, kept for reading."}
+      },
+      "if": {"properties": {"mode": {"const": "jeepney"}}},
+      "then": {"required": ["route_id"]},
+      "else": {"not": {"required": ["route_id"]}}
+    }
+  }
+}

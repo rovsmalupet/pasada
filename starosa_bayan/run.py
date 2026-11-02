@@ -1,8 +1,9 @@
-"""Run the multi-line setup: jeepneys on the two main roads, commuters, background traffic.
+"""Run the multi-line setup: jeepneys on the main roads, commuters, background traffic.
 
-The commuters come from the demand file (settings.DEMAND_FILE, demand/day_1.json; written by
-the LLM, or by llm_stub.py until then). Each run first converts it with convert_demand.py into
-the run's folder, so a run keeps the demand it ran (a copy of the file, commuters.rou.xml and
+The commuters come from the day's demand (format in demand/README.md): the schedule
+(settings.SCHEDULE_FILE) and the option chosen for each trip (settings.MODES_FILE), both written
+by the LLM, or by llm_stub.py until then. Each run first converts them with convert_demand.py into
+the run's folder, so a run keeps the demand it ran (copies of both files, commuters.rou.xml and
 trips.json).
 
 Copied from ../starosa_prototype/run.py on 2026-11-03 (ported there from ../sumo_track_prototype).
@@ -32,7 +33,8 @@ collisions.xml and summary.json, so runs never overwrite each other.
     python run.py --no-background    # without background cars and motorcycles (much faster)
     python run.py --meter            # also measure motorcycle filtering (slower)
     python run.py --end 36000        # stop at 10:00 (simulated seconds; default settings.END_S)
-    python run.py --demand FILE      # another demand file (default settings.DEMAND_FILE)
+    python run.py --demand FILE      # another schedule (default settings.SCHEDULE_FILE), or one file with modes
+    python run.py --modes FILE       # another modes file (default settings.MODES_FILE)
 """
 
 import argparse
@@ -188,13 +190,15 @@ def main():
     parser.add_argument("--no-background", action="store_true", help="leave out background traffic")
     parser.add_argument("--meter", action="store_true", help="measure motorcycle filtering (slower)")
     parser.add_argument("--end", type=int, default=S.END_S, help="simulated seconds")
-    parser.add_argument("--demand", default=str(S.DEMAND_FILE), help="the demand file (JSON)")
+    parser.add_argument("--demand", default=str(S.SCHEDULE_FILE),
+                        help="the schedule (step 1), or one file with the modes in it (JSON)")
+    parser.add_argument("--modes", default=str(S.MODES_FILE), help="the modes file (step 3)")
     args = parser.parse_args()
 
     run_dir = S.RUNS / datetime.now().strftime("%Y-%m-%d_%H%M%S")
     run_dir.mkdir(parents=True)
     try:
-        commuters_file = convert(args.demand, run_dir)     # the demand file -> this run's SUMO persons
+        commuters_file = convert(args.demand, run_dir, args.modes)   # the demand -> this run's SUMO persons
     except SystemExit:
         if not any(run_dir.iterdir()):
             run_dir.rmdir()                                 # no empty run folders for a bad file

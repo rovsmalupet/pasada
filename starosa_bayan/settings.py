@@ -14,7 +14,10 @@ RUNS = HERE / "runs"               # one folder per run
 # the demand: who goes where, when and how (format in demand/README.md). Not generated: kept as is
 DEMAND = HERE / "demand"
 AGENTS_FILE = DEMAND / "agents.json"     # what the LLM is given: agents (homes, car, bike) and places
-DEMAND_FILE = DEMAND / "day_1.json"      # what the LLM writes; run.py reads it
+# one day, in three steps (thesis plan B.3, daily loop steps 1, 3 and 4):
+SCHEDULE_FILE = DEMAND / "schedule_day_1.json"   # 1. the LLM: where and when (no modes)
+CHOICES_FILE = DEMAND / "choices_day_1.json"     # 2. make_choices.py: each trip's options with their numbers
+MODES_FILE = DEMAND / "modes_day_1.json"         # 3. the LLM: an option per trip; run.py reads 1 and 3
 
 # MAP: the study area, the 14 barangays of Santa Rosa entirely north-east of SLEX (all of that side
 # but Malitlit, which SLEX cuts through), chosen by the user on 2026-11-03. make_map.py joins them
@@ -95,6 +98,12 @@ PARK_SNAP_M = 200.0                # m: a car or bike is parked on the nearest e
                                    #    house (no walk there); otherwise they walk to it
 CAR_ACCESS_S = 60.0                # s: at the car before driving off (sumo_track Plan D.6: car_access_time)
 CAR_PARKING_S = 120.0              # s: parking before walking on (car_parking_time)
+# costs shown with each option (make_choices.py); stand-ins to confirm with the data team (Sec. 4.2.5)
+JEEPNEY_FARE = dict(min_php=14.0, min_km=4.0, per_km_php=2.0)    # traditional jeepney, LTFRB/DOTr fare from
+                                                                 # 2026-09-28 (news reports, checked 2026-11-03): the
+                                                                 # minimum for the first 4 km, then per km. No 20%
+                                                                 # student/senior/PWD discount; modern jeepneys: 17 + 2.40
+CAR_COST_PHP_PER_KM = 6.0          # fuel only: about PHP 60 per litre at 10 km per litre
 # llm_stub.py's day plans: home -> activity -> home (stand-ins until the LLM writes schedules)
 # category: (earliest start, latest start, shortest stay, longest stay), in hours of the day
 ACTIVITY_TIMES = {
