@@ -1,0 +1,57 @@
+{
+  "day": 1,
+  "made_by": "hand-written dummy: an example of the format with one case per agent, not LLM output",
+  "agents": [
+    {"agent_id": "A0001", "schedule": [
+        {"location_id": "HOME_A0001", "activity": "home", "end": "07:15"},
+        {"location_id": "LOC_0111", "activity": "work", "start": "07:45", "end": "17:00", "mode": "jeepney", "reasoning": "Has a car, but a jeepney line passes both home and the office."},
+        {"location_id": "HOME_A0001", "activity": "home", "mode": "jeepney"}
+    ]},
+    {"agent_id": "A0002", "schedule": [
+        {"location_id": "HOME_A0002", "activity": "home", "end": "06:40"},
+        {"location_id": "LOC_0078", "activity": "school", "start": "07:00", "end": "15:30", "mode": "walk", "reasoning": "No car or bike; the school is within walking distance."},
+        {"location_id": "HOME_A0002", "activity": "home", "mode": "walk"}
+    ]},
+    {"agent_id": "A0003", "schedule": [
+        {"location_id": "HOME_A0003", "activity": "home", "end": "07:30"},
+        {"location_id": "LOC_0111", "activity": "work", "start": "07:45", "end": "17:15", "mode": "car", "reasoning": "Drives to work."},
+        {"location_id": "HOME_A0003", "activity": "home", "mode": "car"}
+    ]},
+    {"agent_id": "A0004", "schedule": [
+        {"location_id": "HOME_A0004", "activity": "home", "end": "07:20"},
+        {"location_id": "LOC_0135", "activity": "work", "start": "07:40", "end": "12:00", "mode": "car", "reasoning": "Drives to work."},
+        {"location_id": "LOC_0015", "activity": "lunch", "start": "12:15", "end": "12:50", "mode": "walk", "reasoning": "Walks to the mall for lunch; the car stays parked at work."},
+        {"location_id": "LOC_0135", "activity": "work", "end": "17:30", "mode": "walk"},
+        {"location_id": "HOME_A0004", "activity": "home", "mode": "car", "reasoning": "Drives home from where the car was parked."}
+    ]},
+    {"agent_id": "A0005", "schedule": [
+        {"location_id": "HOME_A0005", "activity": "home", "reasoning": "Stays home all day: no trips."}
+    ]},
+    {"agent_id": "A0006", "schedule": [
+        {"location_id": "HOME_A0006", "activity": "home", "end": "06:50"},
+        {"location_id": "LOC_0067", "activity": "school", "start": "07:30", "end": "16:00", "mode": "jeepney"},
+        {"location_id": "LOC_0028", "activity": "market", "start": "16:15", "end": "16:40", "mode": "walk", "reasoning": "Stops at the store on the way home."},
+        {"location_id": "HOME_A0006", "activity": "home", "mode": "jeepney"}
+    ]},
+    {"agent_id": "A0008", "schedule": [
+        {"location_id": "HOME_A0008", "activity": "home", "end": "09:00"},
+        {"location_id": "LOC_0028", "activity": "market", "start": "09:10", "end": "10:00", "mode": "bike"},
+        {"location_id": "HOME_A0008", "activity": "home", "mode": "bike"}
+    ]},
+    {"agent_id": "A0009", "schedule": [
+        {"location_id": "HOME_A0009", "activity": "home", "end": "08:30"},
+        {"location_id": "LOC_0032", "activity": "market", "end": "09:30", "mode": "walk", "reasoning": "Walks there."},
+        {"location_id": "HOME_A0009", "activity": "home", "mode": "jeepney", "reasoning": "Takes a jeepney back with the shopping."}
+    ]},
+    {"agent_id": "A0013", "schedule": [
+        {"location_id": "HOME_A0013", "activity": "home", "end": "05:30"},
+        {"location_id": "LOC_0001", "activity": "terminal", "start": "06:00", "end": "18:30", "mode": "jeepney", "reasoning": "Rides to the terminal to work outside the area; back in the evening."},
+        {"location_id": "HOME_A0013", "activity": "home", "mode": "jeepney"}
+    ]},
+    {"agent_id": "A0014", "schedule": [
+        {"location_id": "HOME_A0014", "activity": "home", "end": "06:45"},
+        {"location_id": "LOC_0057", "activity": "school", "start": "07:00", "end": "16:00", "mode": "bike"},
+        {"location_id": "HOME_A0014", "activity": "home", "mode": "bike"}
+    ]}
+  ]
+}

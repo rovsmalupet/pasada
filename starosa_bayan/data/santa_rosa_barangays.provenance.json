@@ -1,0 +1,17 @@
+{
+  "source": "OCHA Philippines COD-AB (cod-ab-phl) on HDX, from NAMRIA and PSA",
+  "license": "CC BY-IGO 3.0: attribute NAMRIA, PSA and OCHA/HDX",
+  "resource": "phl_admin_boundaries.shp.zip",
+  "resource_url": "https://data.humdata.org/dataset/caf116df-f984-4deb-85ca-41b349d3f313/resource/4e4067d6-3fc8-4d2c-91ea-330c3d4f8e8e/download/phl_admin_boundaries.shp.zip",
+  "resource_size": 928515157,
+  "member": "phl_admin4.shp/.shx/.dbf",
+  "selected": "adm3_pcode == PH0403428",
+  "valid_on": [
+    "20250213"
+  ],
+  "version": [
+    "v03"
+  ],
+  "fetched_utc": "2026-11-02T20:45:37Z",
+  "made_by": "get_barangays.py"
+}

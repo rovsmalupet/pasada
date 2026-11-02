@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "day.schema.json",
+  "title": "Demand file: one simulated day",
+  "description": "Who goes where, when and by which mode, for one day. Written by the LLM (llm_stub.py stands in until then) and read by convert_demand.py, which also checks what a schema cannot: every agent_id and location_id exists in agents.json, the day starts at the agent's own home, a mode is given exactly on entries at a different place from the one before, end times increase, and every trip can be made. See README.md.",
+  "type": "object",
+  "required": ["day", "agents"],
+  "additionalProperties": false,
+  "properties": {
+    "day": {"type": "integer", "minimum": 1, "description": "Which simulated day this is."},
+    "made_by": {"type": "string", "description": "Who or what wrote the file (model, prompt version)."},
+    "agents": {"type": "array", "items": {"$ref": "#/$defs/agent"}}
+  },
+  "$defs": {
+    "clock": {"type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$", "description": "HH:MM, 00:00-23:59."},
+    "agent": {
+      "type": "object",
+      "required": ["agent_id", "schedule"],
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {"type": "string", "description": "An agent_id from agents.json."},
+        "schedule": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/entry"},
+                     "description": "The day in order. The first entry is the agent's home (home_id in agents.json)."}
+      }
+    },
+    "entry": {
+      "type": "object",
+      "required": ["location_id"],
+      "additionalProperties": false,
+      "properties": {
+        "location_id": {"type": "string", "description": "The agent's home_id, or a location_id from agents.json."},
+        "activity": {"type": "string", "description": "What they do there, e.g. home, work, school, market. Optional."},
+        "start": {"$ref": "#/$defs/clock", "description": "Planned start, for reading only: the simulation does not use it."},
+        "end": {"$ref": "#/$defs/clock", "description": "When they leave. Needed on every entry but the last."},
+        "mode": {"enum": ["jeepney", "walk", "bike", "car"],
+                 "description": "How they get to this entry from the one before. Only on an entry at a different place from the one before."},
+        "reasoning": {"type": "string", "description": "Why, in a sentence. Optional, kept for reading."}
+      }
+    }
+  }
+}

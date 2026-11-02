@@ -19,6 +19,7 @@ sumo_track/docs/
 sandbox/docs/
 starosa_prototype/docs/
 sumo_track_prototype/docs/
+starosa_bayan/docs/
 
 # SUMO track -----------------------------------------------------------------
 # Generated outputs: rebuilt by scripts, never hand-edited
@@ -32,3 +33,15 @@ sumo_track/data/raw/
 # Rebuilt by build.py (generated/) and written by each run (runs/)
 sumo_track_prototype/generated/
 sumo_track_prototype/runs/
+
+# Santa Rosa prototype, multi-line setup (run.py) ---------------------------
+# Rebuilt by build.py (generated/) and written by each run (runs/)
+starosa_prototype/generated/
+starosa_prototype/runs/
+
+# Santa Rosa bayan prototype (a copy of the multi-line setup on another map) -
+# Rebuilt by build.py (generated/) and written by each run (runs/)
+starosa_bayan/generated/
+starosa_bayan/runs/
+# 67 MB: rebuild from the committed bayan.osm with netconvert -c netconvert.netccfg (or make_map.py)
+starosa_bayan/bayan.net.xml

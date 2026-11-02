@@ -2,7 +2,7 @@
 traffic_meter.py — how motorcycles, cars and jeepneys share the road.
 
 The filter meter of sandbox 11 (sandbox/11_motorcycles/run.py), ported to the
-real Santa Rosa network. jeepney_controller.py calls step() once per
+real Santa Rosa network. jeepney_controller.py (and run.py --meter) calls step() once per
 simulation step and prints summary() at the end. It only observes - it never
 changes what a vehicle does.
 
