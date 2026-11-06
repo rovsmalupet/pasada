@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "habits.schema.json",
+  "title": "Habits file: each commuter's Habitual Travel Patterns (manuscript Sec. 4.3.3)",
+  "description": "Written by the LLM (llm_stub.py stands in until then) from llm_inputs/habits_input.json, once at the start. Reflections later change only mode_preference_weights (in their own files). $defs/agent is one agent's answer, for one LLM call. llm_tasks.py also checks what a schema cannot: locations from the agent's activity_locations, the activity fitting the location's category, origin and destination at home or a frequent location, purpose = the activity at the destination, unique trip_key, weights for exactly the agent's usable_modes adding up to 1, at least one trip unless no location was offered, and each day's trips going from home back home. See README.md.",
+  "type": "object",
+  "required": ["agents"],
+  "additionalProperties": false,
+  "properties": {
+    "made_by": {"type": "string", "description": "Who or what wrote the file (model, prompt version)."},
+    "agents": {"type": "array", "items": {"$ref": "#/$defs/agent"}}
+  },
+  "$defs": {
+    "clock": {"type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"},
+    "agent": {
+      "type": "object",
+      "required": ["agent_id", "frequent_locations", "recurring_trips"],
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {"type": "string"},
+        "frequent_locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["location_id", "activity"],
+            "additionalProperties": false,
+            "properties": {
+              "location_id": {"type": "string", "description": "From the agent's activity_locations."},
+              "activity": {"enum": ["work", "school", "shopping", "leisure", "out_of_area"]}
+            }
+          }
+        },
+        "recurring_trips": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["trip_key", "origin", "destination", "purpose", "days", "usual_departure", "mode_preference_weights"],
+            "additionalProperties": false,
+            "properties": {
+              "trip_key": {"type": "string", "minLength": 1, "description": "Unique per agent, e.g. R1."},
+              "origin": {"type": "string", "description": "The agent's home_id or a frequent location_id."},
+              "destination": {"type": "string", "description": "The agent's home_id or a frequent location_id."},
+              "purpose": {"enum": ["home", "work", "school", "shopping", "leisure", "out_of_area"]},
+              "days": {"type": "array", "minItems": 1, "uniqueItems": true,
+                       "items": {"enum": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}},
+              "usual_departure": {"$ref": "#/$defs/clock"},
+              "mode_preference_weights": {
+                "type": "object",
+                "description": "One weight per mode in the agent's usable_modes, adding up to 1.",
+                "additionalProperties": false,
+                "properties": {
+                  "jeepney": {"type": "number", "minimum": 0, "maximum": 1},
+                  "walk": {"type": "number", "minimum": 0, "maximum": 1},
+                  "bike": {"type": "number", "minimum": 0, "maximum": 1},
+                  "car": {"type": "number", "minimum": 0, "maximum": 1}
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

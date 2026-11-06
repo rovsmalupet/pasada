@@ -1,10 +1,10 @@
 {
-  "built_utc": "2026-10-26T11:18:54Z",
+  "built_utc": "2026-11-05T17:09:07Z",
   "osm_extract": "data/raw/santa_rosa_buffered.osm",
   "osm_sha256": "849e88d301a5bd2bb80cb46e32e5a1e7ee8263a982a3305586e504fe15ebe1bd",
   "osm_data_timestamp": "2026-10-16T16:35:28Z",
   "rules_file": "config/activity_categories.yaml",
-  "rules_sha256": "4210cf27b4b38939236a0c3da0de8cdcf13c039ecd6280ed7c48149cf82afd0d",
+  "rules_sha256": "e3a28cc9d44df9124c06224242c0c47ed2b16d4c902d2cb3fd12072d7d702dee",
   "boundary": "../population_extraction/boundaries/Santa_Rosa_City_Laguna.geojson",
   "dedup_distance_m": 100.0,
   "counts": {
@@ -32,10 +32,85 @@
       "matched": 970,
       "inside_boundary": 441,
       "locations": 191
+    },
+    "healthcare": {
+      "matched": 50,
+      "inside_boundary": 40,
+      "locations": 39
+    },
+    "services": {
+      "matched": 88,
+      "inside_boundary": 71,
+      "locations": 69
+    },
+    "worship": {
+      "matched": 74,
+      "inside_boundary": 48,
+      "locations": 46
+    },
+    "food": {
+      "matched": 350,
+      "inside_boundary": 288,
+      "locations": 281
+    },
+    "recreation": {
+      "matched": 409,
+      "inside_boundary": 294,
+      "locations": 263
+    },
+    "shop": {
+      "matched": 642,
+      "inside_boundary": 540,
+      "locations": 529
     }
   },
   "unassembled_relations": 0,
   "merges": [
+    {
+      "kept": "way/285841696",
+      "dropped": "node/6938987296",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/285841696",
+      "dropped": "node/6938987298",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/285841696",
+      "dropped": "node/6938987299",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/285841696",
+      "dropped": "node/6938987309",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1338861503",
+      "dropped": "node/12384455499",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/542845014",
+      "dropped": "node/1537736364",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "way/1241360834",
+      "dropped": "node/2952631084",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "way/303335416",
+      "dropped": "way/303335418",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/303335536",
+      "dropped": "way/303335535",
+      "reason": "inside"
+    },
     {
       "kept": "way/91415157",
       "dropped": "node/2947586405",
@@ -1287,6 +1362,66 @@
       "reason": "unnamed building nearby"
     },
     {
+      "kept": "node/5325598301",
+      "dropped": "node/8874733717",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "way/1330306326",
+      "dropped": "node/5291592188",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/530495297",
+      "dropped": "node/6588001885",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1524302695",
+      "dropped": "node/13893367453",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1524302693",
+      "dropped": "node/13893367455",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1524302694",
+      "dropped": "node/13893367458",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/35036675",
+      "dropped": "node/2194248989",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "node/3178257013",
+      "dropped": "node/4550639492",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "node/5125502221",
+      "dropped": "node/5261573422",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "node/5346085377",
+      "dropped": "node/5925834302",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "node/10823055292",
+      "dropped": "node/10823546768",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "node/10823055292",
+      "dropped": "node/10967673205",
+      "reason": "same name nearby"
+    },
+    {
       "kept": "way/34688919",
       "dropped": "node/704223566",
       "reason": "inside"
@@ -1327,6 +1462,161 @@
       "reason": "inside"
     },
     {
+      "kept": "way/122120330",
+      "dropped": "node/1365058068",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/122120329",
+      "dropped": "node/1365379388",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/229953550",
+      "dropped": "node/2384942658",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/229953550",
+      "dropped": "node/2384942659",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/35036668",
+      "dropped": "node/6157754098",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/192456591",
+      "dropped": "node/11491919758",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514635026",
+      "dropped": "node/13233063935",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1163128780",
+      "dropped": "way/128365921",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1163128780",
+      "dropped": "way/128365922",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/463793120",
+      "dropped": "way/134990116",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/463793120",
+      "dropped": "way/134990120",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/307019065",
+      "dropped": "way/142486437",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/304170582",
+      "dropped": "way/304170583",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/306996256",
+      "dropped": "way/306996257",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/306996256",
+      "dropped": "way/306996258",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/306996261",
+      "dropped": "way/306996262",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/316518367",
+      "dropped": "way/316518368",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/317478049",
+      "dropped": "way/317478053",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/304170582",
+      "dropped": "way/317625692",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/463671149",
+      "dropped": "way/463671147",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/463671149",
+      "dropped": "way/463787530",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/463671149",
+      "dropped": "way/463787531",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/463793120",
+      "dropped": "way/463793134",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/463793120",
+      "dropped": "way/463793135",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/475599300",
+      "dropped": "way/475606762",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/475599300",
+      "dropped": "way/480371301",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/475599300",
+      "dropped": "way/480371302",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/514635026",
+      "dropped": "way/528615620",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/533076375",
+      "dropped": "way/533076376",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/770525376",
+      "dropped": "way/560939529",
+      "reason": "inside"
+    },
+    {
+      "kept": "way/1163128752",
+      "dropped": "way/1179903559",
+      "reason": "inside"
+    },
+    {
       "kept": "way/542845013",
       "dropped": "node/5019918928",
       "reason": "inside"
@@ -1335,6 +1625,16 @@
       "kept": "way/751265883",
       "dropped": "node/5400846821",
       "reason": "inside"
+    },
+    {
+      "kept": "node/6152894104",
+      "dropped": "node/6446809201",
+      "reason": "same name nearby"
+    },
+    {
+      "kept": "node/1562429768",
+      "dropped": "node/12478569832",
+      "reason": "same name nearby"
     },
     {
       "kept": "way/1345306855",

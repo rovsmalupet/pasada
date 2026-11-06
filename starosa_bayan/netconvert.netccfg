@@ -5,9 +5,11 @@
 <configuration>
     <input>
         <osm-files value="bayan.osm"/>
-        <!-- full copy of SUMO's default typemap with one change: highway.trunk
+        <!-- full copy of SUMO's default typemap with two changes: highway.trunk
              (Philippine national/provincial highways) no longer disallows
-             bicycle - see typemap.typ.xml for why. netconvert's type-files
+             bicycle, and urban speed limits (40 km/h on trunk and primary
+             roads, 30 km/h on secondary to residential) where OSM has no
+             maxspeed - see typemap.typ.xml for why. netconvert's type-files
              option REPLACES the built-in default rather than layering on it,
              so this must be the complete typemap, not just a diff. -->
         <type-files value="typemap.typ.xml"/>

@@ -19,7 +19,7 @@ works out every route, position and time.
         shortest walk to the end, at least MIN_RIDE further along the line (a line runs one
         way). Both walks at most MAX_WALK,
       - walk: SUMO's pedestrian route, at most WALK_TRIP_LIMIT,
-      - bike or car: the agent's own (has_bike / has_car in agents.json), which must be where
+      - bike or car: the agent's own (the persona's access, see load_agents), which must be where
         the trip starts: it stays where it was last parked, at first at home. It stands on the
         nearest edge within PARK_SNAP_M of each place that it may use and people may walk on
         (most destinations are on service roads or footways, closed to cars). A car at home is
@@ -203,7 +203,7 @@ def street_exclusions(net, lines):
 def study_area():
     """The study area (AREA_FILE, made by make_map.py), prepared for fast point tests."""
     if not S.AREA_FILE.is_file():
-        raise SystemExit(f"No study area yet ({S.AREA_FILE.relative_to(S.HERE)}): run python make_map.py")
+        raise SystemExit(f"No study area yet ({S.rel(S.AREA_FILE)}): run python make_map.py")
     return prep(shape(json.loads(S.AREA_FILE.read_text(encoding="utf-8"))["geometry"]))
 
 
@@ -241,11 +241,30 @@ def load_lines():
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def age_from(age_group):
+    """The lowest age of a base agent's age group: "Under 5" -> 0, "25 - 29" -> 25, "85 and over" -> 85."""
+    return 0 if age_group.startswith("Under") else int(re.match(r"\d+", age_group).group())
+
+
+def may_drive(agent):
+    return age_from(agent["age_group"]) >= S.CAR_DRIVER_MIN_AGE
+
+
 def load_agents():
-    """{agent_id: agent} from demand/agents.json (make_agents.py)."""
+    """{agent_id: agent} from demand/agents.json (make_agents.py), with has_car and has_bike: the
+    access in the agent's persona (personas.json, checked by llm_tasks.py) once there is one,
+    else the household's (a car only from CAR_DRIVER_MIN_AGE)."""
     if not S.AGENTS_FILE.is_file():
-        raise SystemExit(f"No agents yet ({S.AGENTS_FILE.relative_to(S.HERE)}): run python make_agents.py")
-    return {a["agent_id"]: a for a in json.loads(S.AGENTS_FILE.read_text(encoding="utf-8"))["agents"]}
+        raise SystemExit(f"No agents yet ({S.rel(S.AGENTS_FILE)}): run python make_agents.py")
+    agents = {a["agent_id"]: a for a in json.loads(S.AGENTS_FILE.read_text(encoding="utf-8"))["agents"]}
+    personas = {}
+    if S.PERSONAS_FILE.is_file():
+        personas = {p.get("agent_id"): p.get("persona") for p in json.loads(S.PERSONAS_FILE.read_text(encoding="utf-8"))["agents"]}
+    for aid, a in agents.items():
+        p = personas.get(aid)
+        a["has_car"] = bool(p["private_car_access"]) if p else a["household_car_access"] and may_drive(a)
+        a["has_bike"] = bool(p["bicycle_access"]) if p else a["household_bicycle_access"]
+    return agents
 
 
 # ------------------------------------------------------------------------------- legs
@@ -344,6 +363,8 @@ class Planner:
             return None, "no walking route"
         if w[0] > S.WALK_TRIP_LIMIT:
             return None, f"the walk is {w[0]:.0f} m, over WALK_TRIP_LIMIT ({S.WALK_TRIP_LIMIT:.0f} m)"
+        if w[0] < S.MIN_TRIP_M:
+            return None, f"the places are {w[0]:.0f} m apart on foot, under MIN_TRIP_M ({S.MIN_TRIP_M:.0f} m): no trip"
         return {"walk_m": w[0], "est_s": w[1]}, None
 
     def vehicle_trip(self, a, b, mode, at_house):
@@ -528,7 +549,7 @@ def plan_day(demand, agents, planner, route_ids=None):
             a, b, mode = prev["location_id"], entry["location_id"], entry["mode"]
             what = f"{trip_id} ({a} -> {b} by {mode}{' ' + route_ids[trip_id] if trip_id in route_ids else ''}, {prev['end']})"
             if mode in VCLASS and not info[f"has_{mode}"]:
-                problem = f"{what}: has no {mode} (has_{mode} is false in agents.json)"
+                problem = f"{what}: has no {mode} (no {mode} access in the persona, or in the household)"
                 break
             if mode in VCLASS and parked[mode] != a:
                 problem = f"{what}: the {mode} is at {parked[mode]}"
@@ -650,13 +671,14 @@ def alternative(mode, leg):
 
 
 def trip_record(trip):
-    """A trip in the shape of the plan's trip record (Part D.4), with its estimate."""
-    leg = trip["leg"]
+    """A trip in the shape of the plan's trip record (Part D.4), with the numbers of the option
+    chosen (the estimate the LLM saw; run.py compares the outcome with it)."""
+    leg, option = trip["leg"], alternative(trip["mode"], trip["leg"])
     return {"trip_id": trip["trip_id"], "agent_id": trip["agent"], "day": trip["day"],
             "origin_location_id": trip["from_id"], "destination_location_id": trip["to_id"],
             "departure": clock(trip["depart"]), "departure_time_s": trip["depart"], "trip_type": trip["trip_type"],
-            "mode": trip["mode"], "route_id": leg.get("line"), "estimated_total_time_s": round(leg["est_s"]),
-            "cost_php": cost_php(trip["mode"], leg),
+            "mode": trip["mode"], "route_id": leg.get("line"), "distance_m": option["distance_m"],
+            "estimated_total_time_s": option["estimated_total_time_s"], "cost_php": option["cost_php"],
             "sumo_person_id": trip["id"]}
 
 
@@ -681,9 +703,9 @@ def convert(demand_path, out_dir, modes_path=None):
     """Check a day's demand and write commuters.rou.xml and trips.json into out_dir (with copies of
     the input files when out_dir is a run folder). The demand is a schedule (step 1) and a modes
     file (step 3), or one file with the modes in its schedule, which ignores modes_path. Returns
-    the commuters.rou.xml path."""
+    (the commuters.rou.xml path, the day, {agent_id: why their day was left out})."""
     demand_path, out_dir = Path(demand_path), Path(out_dir)
-    demand = load_json(demand_path, "write a schedule (format in demand/README.md), or run python llm_stub.py schedule")
+    demand = load_json(demand_path, "write a schedule (format in demand/README.md), or run python pipeline.py")
     agents = load_agents()
     planner = Planner()
     one_file = has_modes(demand)
@@ -693,7 +715,7 @@ def convert(demand_path, out_dir, modes_path=None):
         if modes_path is None:
             raise SystemExit(f"{demand_path.name} has no modes: give the modes file (step 3) too")
         modes_path = Path(modes_path)
-        modes = load_json(modes_path, "run python make_choices.py, then let the LLM (or python llm_stub.py modes) choose")
+        modes = load_json(modes_path, "run python make_choices.py, then the LLM chooses (python pipeline.py)")
         route_ids, errors = apply_modes(demand, modes, planner.lines)
         errors = errors or check_format(demand, agents, set(planner.locations))
         inputs.append(modes_path)
@@ -743,7 +765,7 @@ def convert(demand_path, out_dir, modes_path=None):
         for aid, why in sorted(problems.items()):
             print(f"    {aid}: {why}")
     print(f"Wrote {rou} and trips.json")
-    return rou
+    return rou, demand["day"], problems
 
 
 def main():

@@ -1,0 +1,4 @@
+# traci and sumolib come from SUMO itself: %SUMO_HOME%\tools on PYTHONPATH, so they match the installed SUMO
+shapely>=2.0    # the study area and barangay polygons
+pyproj>=3.6     # sumolib needs it to turn lat/lon into positions on the network
+rtree>=1.0      # the spatial index sumolib uses to find nearby edges

@@ -43,5 +43,9 @@ starosa_prototype/runs/
 # Rebuilt by build.py (generated/) and written by each run (runs/)
 starosa_bayan/generated/
 starosa_bayan/runs/
+starosa_bayan/demand/old/
 # 67 MB: rebuild from the committed bayan.osm with netconvert -c netconvert.netccfg (or make_map.py)
 starosa_bayan/bayan.net.xml
+
+# local test of starosa_bayan with a real LLM (llm_test/README.md)
+llm_test/

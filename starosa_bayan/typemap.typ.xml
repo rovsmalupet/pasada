@@ -1,6 +1,16 @@
 <!-- typemap.typ.xml — local copy of SUMO's default osmNetconvert.typ.xml
-     (Eclipse SUMO 1.27.0, data/typemap/osmNetconvert.typ.xml), with ONE
-     change: highway.trunk / highway.trunk_link no longer disallow "bicycle".
+     (Eclipse SUMO 1.27.0, data/typemap/osmNetconvert.typ.xml), with two
+     changes. First: highway.trunk / highway.trunk_link no longer disallow "bicycle".
+     starosa_bayan adds a SECOND change (2026-11-03): urban speed limits from
+     RA 4136 Sec. 35 and DOTr-DPWH-DILG JMC 2018-001 for passenger cars, used
+     where OSM has no maxspeed tag (OSM's own tags still win):
+       trunk, primary (+ links): 40 km/h (11.11 m/s), "through streets or
+         boulevards" (SUMO's default was 100 km/h);
+       secondary, tertiary (+ links), unclassified, residential: 30 km/h
+         (8.33 m/s), "city and municipal streets" (was 50-100 km/h). OSM's
+         tags in this area agree: secondary 30-40, tertiary and residential
+         mostly 30.
+     service (20 km/h) and living_street (10 km/h) are unchanged.
 
      Why: SUMO's stock typemap treats "trunk" like a Western-style limited-
      access arterial and bans bicycles from it, same as highway.motorway. In
@@ -17,17 +27,17 @@
      every other road type's definition. -->
 <types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/types_file.xsd">
     <type id="highway.motorway"       numLanes="2" speed="39.44" priority="14" oneway="true"  disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship pedestrian bicycle moped"/>
-    <type id="highway.trunk"          numLanes="2" speed="27.78" priority="13" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship pedestrian"/>
-    <type id="highway.primary"        numLanes="2" speed="27.78" priority="12" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
-    <type id="highway.secondary"      numLanes="1" speed="27.78" priority="11" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
-    <type id="highway.tertiary"       numLanes="1" speed="22.22" priority="10" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.trunk"          numLanes="2" speed="11.11" priority="13" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship pedestrian"/>
+    <type id="highway.primary"        numLanes="2" speed="11.11" priority="12" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.secondary"      numLanes="1" speed="8.33" priority="11" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.tertiary"       numLanes="1" speed="8.33" priority="10" oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
     <type id="highway.motorway_link"  numLanes="1" speed="22.22" priority="9"  oneway="true"  disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship pedestrian bicycle moped"/>
-    <type id="highway.trunk_link"     numLanes="1" speed="22.22" priority="8"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship pedestrian"/>
-    <type id="highway.primary_link"   numLanes="1" speed="22.22" priority="7"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
-    <type id="highway.secondary_link" numLanes="1" speed="22.22" priority="6"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
-    <type id="highway.tertiary_link"  numLanes="1" speed="22.22" priority="5"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
-    <type id="highway.unclassified"   numLanes="1" speed="13.89" priority="4"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
-    <type id="highway.residential"    numLanes="1" speed="13.89" priority="3"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.trunk_link"     numLanes="1" speed="11.11" priority="8"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship pedestrian"/>
+    <type id="highway.primary_link"   numLanes="1" speed="11.11" priority="7"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.secondary_link" numLanes="1" speed="8.33" priority="6"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.tertiary_link"  numLanes="1" speed="8.33" priority="5"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.unclassified"   numLanes="1" speed="8.33" priority="4"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
+    <type id="highway.residential"    numLanes="1" speed="8.33" priority="3"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
     <type id="highway.living_street"  numLanes="1" speed="2.78"  priority="2"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
     <type id="highway.unsurfaced"     numLanes="1" speed="8.33"  priority="1"  oneway="false" disallow="rail rail_urban rail_electric rail_fast tram drone aircraft scooter container wheelchair subway cable_car ship"/>
     <type id="highway.service"        numLanes="1" speed="5.56"  priority="1"  oneway="false" allow="delivery pedestrian bicycle"/>

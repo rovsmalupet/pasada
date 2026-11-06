@@ -1,4 +1,0 @@
-shapely==2.2.0
-pandas==2.3.3
-pyproj==3.8.0
-matplotlib==3.11.2

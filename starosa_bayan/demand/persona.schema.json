@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "persona.schema.json",
+  "title": "Personas file: one persona per base commuter agent (manuscript Sec. 4.3.2)",
+  "description": "Written by the LLM (llm_stub.py stands in until then) from llm_inputs/persona_input.json, once at the start. $defs/agent is one agent's answer, for one LLM call. llm_tasks.py also checks what a schema cannot: every agent asked about appears once, a car only with household_car_access and an age group from settings.CAR_DRIVER_MIN_AGE, a bicycle only with household_bicycle_access. See README.md.",
+  "type": "object",
+  "required": ["agents"],
+  "additionalProperties": false,
+  "properties": {
+    "made_by": {"type": "string", "description": "Who or what wrote the file (model, prompt version)."},
+    "agents": {"type": "array", "items": {"$ref": "#/$defs/agent"}}
+  },
+  "$defs": {
+    "level": {"enum": ["Low", "Moderate", "High"]},
+    "agent": {
+      "type": "object",
+      "required": ["agent_id", "persona"],
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {"type": "string"},
+        "persona": {
+          "type": "object",
+          "required": ["description", "private_car_access", "bicycle_access", "walking_predisposition",
+                       "cycling_predisposition", "sensitivities", "general_transport_preference"],
+          "additionalProperties": false,
+          "properties": {
+            "description": {"type": "string", "minLength": 1, "description": "The commuter's behaviour in a few sentences."},
+            "private_car_access": {"type": "boolean"},
+            "bicycle_access": {"type": "boolean"},
+            "walking_predisposition": {"$ref": "#/$defs/level"},
+            "cycling_predisposition": {"$ref": "#/$defs/level"},
+            "sensitivities": {
+              "type": "object",
+              "required": ["safety", "cost", "comfort", "accessibility", "availability", "efficiency", "reliability"],
+              "additionalProperties": false,
+              "properties": {
+                "safety": {"$ref": "#/$defs/level"}, "cost": {"$ref": "#/$defs/level"},
+                "comfort": {"$ref": "#/$defs/level"}, "accessibility": {"$ref": "#/$defs/level"},
+                "availability": {"$ref": "#/$defs/level"}, "efficiency": {"$ref": "#/$defs/level"},
+                "reliability": {"$ref": "#/$defs/level"}
+              }
+            },
+            "general_transport_preference": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "reflection.schema.json",
+  "title": "Reflection file: each commuter's End-of-Day Reflection and Habit Update (manuscript Sec. 4.3.7)",
+  "description": "Written by the LLM (llm_stub.py stands in until then) from llm_inputs/reflection_input_day_N.json, after the day's simulation. $defs/agent is one agent's answer, for one LLM call. llm_tasks.py also checks what a schema cannot: every agent asked about appears once, habit_update keys are the agent's recurring trip_keys, the new weights are for exactly the agent's usable_modes and add up to 1, and no weight changes by more than settings.MAX_WEIGHT_CHANGE. See README.md.",
+  "type": "object",
+  "required": ["day", "agents"],
+  "additionalProperties": false,
+  "properties": {
+    "day": {"type": "integer", "minimum": 1, "description": "The day reflected on."},
+    "made_by": {"type": "string", "description": "Who or what wrote the file (model, prompt version)."},
+    "agents": {"type": "array", "items": {"$ref": "#/$defs/agent"}}
+  },
+  "$defs": {
+    "weights": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "jeepney": {"type": "number", "minimum": 0, "maximum": 1},
+        "walk": {"type": "number", "minimum": 0, "maximum": 1},
+        "bike": {"type": "number", "minimum": 0, "maximum": 1},
+        "car": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "agent": {
+      "type": "object",
+      "required": ["agent_id", "travel_experience", "habit_update"],
+      "additionalProperties": false,
+      "properties": {
+        "agent_id": {"type": "string"},
+        "travel_experience": {"type": "string", "minLength": 1,
+                              "description": "The day's Travel Experience entry: only what is likely to change future travel."},
+        "habit_update": {"type": "object", "additionalProperties": {"$ref": "#/$defs/weights"},
+                         "description": "{trip_key: new mode_preference_weights}; {} for no change."}
+      }
+    }
+  }
+}

@@ -26,7 +26,13 @@ lines:
 
 The run covers a day (END_S) and stops early once every commuter is home. Each run writes
 runs/<date_time>/: the demand (above), the SUMO config, gui settings, tripinfo.xml,
-collisions.xml and summary.json, so runs never overwrite each other.
+collisions.xml, summary.json and outcomes_day_<n>.json, so runs never overwrite each other.
+
+outcomes_day_<n>.json is what the LLM reflects on at the end of the day (Plan B.3 step 7, the trip
+outcome of Part D.4): one record per trip that departed, grouped by agent, with what happened
+against the estimate the trip was chosen by (actual times, the jeepney's parts, full jeepneys that
+passed the commuter by, whether it was disrupted: DISRUPTION_RATIO, DISRUPTION_MIN_S), and the
+agents whose day was left out, with why.
 
     python run.py                    # sumo-gui, press play
     python run.py --nogui            # headless: event log and summary
@@ -51,7 +57,7 @@ import traci.constants as tc
 import settings as S
 import traffic_meter
 from make_background import trips_file
-from convert_demand import MODES, convert, kerb_edges
+from convert_demand import MODES, clock, convert, kerb_edges
 
 
 def log(t, msg):
@@ -198,11 +204,13 @@ def main():
     run_dir = S.RUNS / datetime.now().strftime("%Y-%m-%d_%H%M%S")
     run_dir.mkdir(parents=True)
     try:
-        commuters_file = convert(args.demand, run_dir, args.modes)   # the demand -> this run's SUMO persons
+        # the demand -> this run's SUMO persons
+        commuters_file, day, left_out = convert(args.demand, run_dir, args.modes)
     except SystemExit:
         if not any(run_dir.iterdir()):
             run_dir.rmdir()                                 # no empty run folders for a bad file
         raise
+    records = json.loads((run_dir / "trips.json").read_text(encoding="utf-8"))
     net = sumolib.net.readNet(str(S.NET_FILE))
     lines = json.loads((S.GENERATED / "jeepney_routes.json").read_text(encoding="utf-8"))
     commuters = load_commuters(commuters_file, set(lines))
@@ -391,6 +399,9 @@ def main():
 
     summary = summarise(commuters, times, lines, teleports, len(collisions))
     summary["modes"] = summarise_modes(trip_info, trips, t)
+    passes = Counter(pid for _, pid in full_logged)          # full jeepneys that passed each commuter
+    summary["outcomes"] = write_outcomes(run_dir, day, records, trips, times, passes, left_out, t,
+                                         whole_day=done == len(trips) or t >= S.END_S)
     (run_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     if meter:
         print(meter.summary())
@@ -433,7 +444,7 @@ def summarise_modes(trip_info, trips, until):
         mine = [i for i, info in trip_info.items() if info["mode"] == mode]
         done = [i for i in mine if "arrive" in trips[i]]
         durations = [trips[i]["arrive"] - trips[i]["depart"] for i in done]
-        ratios = [d / trip_info[i]["est_s"] for i, d in zip(done, durations)]
+        ratios = [d / max(trip_info[i]["est_s"], 1) for i, d in zip(done, durations)]
         out[mode] = {"trips": len(mine), "arrived": len(done),
                      "mean_trip_s": round(sum(durations) / len(durations)) if durations else None,
                      "mean_vs_estimate": round(sum(ratios) / len(ratios), 2) if ratios else None}
@@ -453,6 +464,104 @@ def summarise_modes(trip_info, trips, until):
     out["next_trip_due_before_arrival"] = late
     print(f"  commuters whose next trip was due before the one before had arrived: {len(late)}"
           + (f" ({', '.join(late[:20])}{', ...' if len(late) > 20 else ''})" if late else ""))
+    return out
+
+
+OUTCOME_RULES = [
+    "One record per trip that departed: what happened, against the estimate the trip was chosen by "
+    "(estimated_total_time_s, on empty roads). Times in seconds; departure and arrival also as HH:MM.",
+    "delay_ratio is actual_total_time_s / estimated_total_time_s. Jeepney trips also have their actual parts, "
+    "as in the options: access (walking to where they flagged the jeepney), waiting, in-vehicle, egress.",
+    "full_pass_bys_experienced: full jeepneys of the line that came by while the commuter waited, or walked "
+    "along the route, and could not take them.",
+    f"disrupted: the trip took at least {S.DISRUPTION_RATIO:g}x its estimate and at least "
+    f"{S.DISRUPTION_MIN_S / 60:g} min longer, or had not arrived when the run ended (disruption_reason says which). "
+    "It is null for a trip still underway when a run stopped before the day was over (whole_day false).",
+    "distance_m and cost_php are those of the chosen option.",
+    "An agent with left_out had their whole day left out before the run, because a trip could not be made "
+    "as chosen: they made no trips.",
+]
+
+
+def outcome(rec, trip, stamps, passes, until, whole_day):
+    """One trip's outcome record (the plan's trip outcome, Part D.4) from its trips.json record,
+    its depart and arrive times, and for a jeepney trip its times at the roadside, boarding and
+    alighting (stamps). A trip still underway when a run stopped early is neither disrupted nor
+    not: disrupted is null."""
+    # TraCI lists who departed or arrived after the step they did it in, so every time it gave is
+    # one step (1 s) later than SUMO's own (tripinfo.xml). Shifted back here; spans are unchanged
+    depart, arrive = trip["depart"] - 1, trip["arrive"] - 1 if "arrive" in trip else None
+    est = max(rec["estimated_total_time_s"], 1)
+    total = round(arrive - depart) if arrive is not None else None
+    disrupted = True
+    if total is None and whole_day:
+        reason = f"had not arrived when the run ended ({clock(until)})"
+    elif total is None:
+        disrupted, reason = None, f"still underway when the run stopped ({clock(until)})"
+    elif total >= est * S.DISRUPTION_RATIO and total - est >= S.DISRUPTION_MIN_S:
+        reason = f"took {total / est:.1f}x the estimate ({(total - est) / 60:.0f} min longer)"
+    else:
+        disrupted, reason = False, None
+    t = {k: v - 1 for k, v in {"depart": trip["depart"], **stamps}.items() if k != "veh"}
+
+    def span(a, b):
+        return round(t[b] - t[a]) if a in t and b in t else None
+
+    out = {"trip_id": rec["trip_id"], "realized_mode": rec["mode"], "route_id": rec["route_id"],
+           "departure": clock(depart), "arrival": clock(arrive) if arrive is not None else None,
+           "actual_departure_s": round(depart), "arrival_time_s": round(arrive) if arrive is not None else None,
+           "actual_total_time_s": total, "estimated_total_time_s": rec["estimated_total_time_s"],
+           "delay_ratio": round(total / est, 2) if total is not None else None}
+    if rec["mode"] == "jeepney":
+        out.update(actual_access_time_s=span("depart", "kerb"), actual_waiting_time_s=span("kerb", "board"),
+                   actual_in_vehicle_time_s=span("board", "alight"), actual_egress_time_s=span("alight", "arrive"))
+    else:
+        out["actual_waiting_time_s"] = 0
+    out.update(full_pass_bys_experienced=passes[rec["sumo_person_id"]], distance_m=rec["distance_m"],
+               cost_php=rec["cost_php"], disrupted=disrupted, disruption_reason=reason,
+               completed=arrive is not None)
+    return out
+
+
+def write_outcomes(run_dir, day, records, trips, times, passes, left_out, until, whole_day):
+    """outcomes_day_<day>.json in the run folder: the outcome of every trip that departed, grouped
+    by agent, and the agents whose day was left out. Prints and returns its totals."""
+    by_agent = defaultdict(list)
+    for rec in records:
+        pid = rec["sumo_person_id"]
+        if "depart" in trips[pid]:
+            by_agent[rec["agent_id"]].append(outcome(rec, trips[pid], times.get(pid, {}), passes, until, whole_day))
+    agents = [({"agent_id": a}, by_agent[a]) for a in sorted(by_agent)]
+    agents += [({"agent_id": a, "left_out": why}, []) for a, why in sorted(left_out.items())]
+    agents.sort(key=lambda x: x[0]["agent_id"])
+    done = [o for _, outs in agents for o in outs]
+    head = {"day": day, "made_by": f"run.py, run {run_dir.name}",
+            "about": "What happened on each trip of the day, for the end-of-day reflection.", "rules": OUTCOME_RULES,
+            "whole_day": whole_day, "run_ended": clock(until),
+            "trips_not_departed": len(records) - len(done)}
+
+    def agent_text(who, outs):          # one trip per line, as in the choices file
+        body = ",\n            ".join(json.dumps(o, ensure_ascii=False) for o in outs)
+        return (f'    {json.dumps(who, ensure_ascii=False)[:-1]}, "trips": ['
+                + (f"\n            {body}\n        " if outs else "") + "]}")
+
+    path = run_dir / f"outcomes_day_{day}.json"
+    path.write_text("{\n" + ",\n".join(f"  {json.dumps(k)}: {json.dumps(v, ensure_ascii=False)}" for k, v in head.items())
+                    + ',\n  "agents": [\n' + ",\n".join(agent_text(w, o) for w, o in agents) + "\n  ]\n}\n",
+                    encoding="utf-8")
+    json.loads(path.read_text(encoding="utf-8"))   # check it is valid JSON
+
+    disrupted = Counter(o["realized_mode"] for o in done if o["disrupted"])
+    out = {"file": path.name, "trips": len(done), "completed": sum(o["completed"] for o in done),
+           "disrupted": dict(disrupted), "full_pass_bys": sum(o["full_pass_bys_experienced"] for o in done),
+           "agents_left_out": len(left_out), "whole_day": whole_day}
+    print(f"\n================ trip outcomes ({path.name}) ================")
+    print(f"  {len(done)} trips departed, {out['completed']} arrived; disrupted: {sum(disrupted.values())}"
+          + (" (" + ", ".join(f"{m} {disrupted[m]}" for m in MODES if disrupted[m]) + ")" if disrupted else "")
+          + f"; full jeepneys passing someone by: {out['full_pass_bys']}; agents left out: {len(left_out)}")
+    if not whole_day:
+        print(f"  the run stopped at {clock(until)}, before the day was over: {len(done) - out['completed']} trips "
+              f"still underway (disrupted: null), {len(records) - len(done)} not departed (no record)")
     return out
 
 

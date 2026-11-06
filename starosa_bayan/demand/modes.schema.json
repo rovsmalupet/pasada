@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "modes.schema.json",
   "title": "Modes file: the option chosen for each trip of one day",
-  "description": "Written by the LLM (llm_stub.py modes stands in until then) from the choices file (make_choices.py), and read with the schedule by convert_demand.py. That also checks what a schema cannot: every trip of the schedule has exactly one choice, every trip_id is in the schedule, route_id is a jeepney line, and every chosen trip can be made (a car or bike only where it was left). See README.md.",
+  "description": "Written by the LLM (llm_stub.py stands in until then) from llm_inputs/modes_input_day_N.json (each trip's options, from make_choices.py), and read with the schedule by convert_demand.py. $defs/agent is one agent's answer, for one LLM call. llm_tasks.py and convert_demand.py also check what a schema cannot: every trip of the schedule has exactly one choice, every trip_id is in the schedule, the choice is one of the trip's options, a car or bike only where it was left, and no choice arriving after the next trip leaves when another option would not. See README.md.",
   "type": "object",
   "required": ["day", "agents"],
   "additionalProperties": false,

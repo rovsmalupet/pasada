@@ -47,7 +47,7 @@ def main():
     parser.add_argument("--out", default=str(S.CHOICES_FILE), help="the choices file to write")
     args = parser.parse_args()
     schedule_path, out = Path(args.schedule), Path(args.out)
-    schedule = load_json(schedule_path, "write one (format in demand/README.md), or run python llm_stub.py schedule")
+    schedule = load_json(schedule_path, "write one (format in demand/README.md), or run python pipeline.py")
     agents = load_agents()
     planner = Planner()
     errors = check_format(schedule, agents, set(planner.locations), with_modes=False)

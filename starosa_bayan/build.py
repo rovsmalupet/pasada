@@ -1,10 +1,8 @@
 """Regenerate everything in generated/ for run.py, in order. Needs the map (make_map.py: the
 study area and the network).
 
-The demand files in demand/ are not rebuilt: the LLM's files refer to those agents and trips.
-Only a missing file is made: agents.json (make_agents.py), the schedule (llm_stub.py schedule),
-the choices (make_choices.py) and the modes (llm_stub.py modes). run.py converts the schedule and
-the modes at every run.
+The demand in demand/ is not touched: the LLM's files refer to those agents and trips. It comes from
+the pipeline (python pipeline.py: agents, the LLM's answers, options, the simulation).
 
     python build.py
 """
@@ -33,13 +31,7 @@ def main():
         raise SystemExit("No study area yet: python make_map.py")
     for step in STEPS:
         run(step)
-    for path, step in ((S.AGENTS_FILE, ["make_agents.py"]), (S.SCHEDULE_FILE, ["llm_stub.py", "schedule"]),
-                       (S.CHOICES_FILE, ["make_choices.py"]), (S.MODES_FILE, ["llm_stub.py", "modes"])):
-        if path.is_file():
-            print(f"\n{path.relative_to(S.HERE)} kept as it is")
-        else:
-            run(*step)
-    print("\nAll done. Check the demand: python convert_demand.py; run it: python run.py")
+    print("\nAll done. Next, a day from the LLM to SUMO: python pipeline.py --day 1 --llm stub")
 
 
 if __name__ == "__main__":

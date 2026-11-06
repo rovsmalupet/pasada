@@ -9,9 +9,14 @@
 #   area   a land-use area; kept only when no place or part of the same category lies inside it
 #          (an industrial estate whose factories are not mapped one by one)
 # exclude_name: a feature whose name matches this regular expression (case-insensitive) is skipped.
+# exclude_tags: a feature matching one of the category's rules with one of these key=value tags is skipped.
 #
 # Status: placeholder rules for the SUMO track's own extraction (decision 2026-09-30: the SUMO
 # track builds POIs itself from OSM). To confirm with the data team (Sec. 4.2.3) and the group.
+#
+# Order: add new categories at the end. Earlier categories keep what they match and location ids
+# follow this order, so the existing locations keep their ids. shop stays last: it takes any shop
+# value, so a feature that is also a pharmacy, a cafe or a bank goes to that category first.
 
 terminal:
   rules:
@@ -41,3 +46,31 @@ workplace:
     - {key: man_made, values: [works], level: place}
     - {key: building, values: [industrial, office], level: part}
     - {key: landuse, values: [industrial, commercial], level: area}
+
+healthcare:
+  rules:
+    - {key: amenity, values: [clinic, doctors, dentist, pharmacy], level: place}
+
+services:
+  rules:
+    - {key: amenity, values: [bank, atm], level: place}
+
+worship:
+  rules:
+    - {key: amenity, values: [place_of_worship], level: place}
+    - {key: building, values: [church, chapel, mosque], level: part}
+
+food:
+  rules:
+    - {key: amenity, values: [restaurant, fast_food, cafe, food_court, bar], level: place}
+
+recreation:
+  rules:
+    - {key: leisure, values: [park, playground, pitch, sports_centre, stadium, sports_hall, fitness_centre], level: place}
+    - {key: amenity, values: [gym], level: place}
+    - {key: sport, values: [fitness], level: place}
+
+shop:
+  rules:
+    - {key: shop, values: "*", level: place}
+  exclude_tags: ["shop=vacant"]   # an empty shop is not a destination
