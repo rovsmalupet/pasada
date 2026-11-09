@@ -87,7 +87,7 @@ coordinates.
   {"agent_id": "A000150", "persona": {
      "description": "Female, aged 35 - 39, living in Pooc; employed (Service and Sales Workers); ...",
      "private_car_access": false, "bicycle_access": true,
-     "walking_predisposition": "High", "cycling_predisposition": "Moderate",
+     "walking_sensitivity": "Low", "cycling_sensitivity": "Moderate",
      "sensitivities": {"safety": "Moderate", "cost": "High", "comfort": "Moderate", "accessibility": "Moderate",
                        "availability": "Moderate", "efficiency": "High", "reliability": "High"},
      "general_transport_preference": "Prefers jeepneys for longer trips and walking for short ones."}}

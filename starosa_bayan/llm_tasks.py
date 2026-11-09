@@ -32,8 +32,10 @@ import settings as S
 from convert_demand import (CLOCK, MODES, VCLASS, Planner, apply_modes, check_format, home_id, load_agents,
                             load_json, load_lines, may_drive, seconds, trips_of)
 
-PERSONA_KEYS = {"description", "private_car_access", "bicycle_access", "walking_predisposition",
-                "cycling_predisposition", "sensitivities", "general_transport_preference"}
+# walking/cycling_sensitivity (2026-11-10, was *_predisposition): the names and meaning of the
+# evaluated persona prompt (PASADA-llm, manuscript Sec. 4.3.2): High = walking or cycling discourages them.
+PERSONA_KEYS = {"description", "private_car_access", "bicycle_access", "walking_sensitivity",
+                "cycling_sensitivity", "sensitivities", "general_transport_preference"}
 HABIT_KEYS = {"agent_id", "frequent_locations", "recurring_trips"}
 RECURRING_KEYS = {"trip_key", "origin", "destination", "purpose", "days", "usual_departure",
                   "mode_preference_weights"}
@@ -45,7 +47,7 @@ PERSONA_RULES = [
     "fixed (census-based) and must not be contradicted.",
     "private_car_access, bicycle_access: true or false. A car only if household_car_access is true and the age "
     f"group starts at {S.CAR_DRIVER_MIN_AGE} or more; a bicycle only if household_bicycle_access is true.",
-    f"walking_predisposition, cycling_predisposition, and each of sensitivities ({', '.join(S.SENSITIVITIES)}): "
+    f"walking_sensitivity, cycling_sensitivity (High: walking or cycling discourages them), and each of sensitivities ({', '.join(S.SENSITIVITIES)}): "
     f"one of {', '.join(S.LEVELS)}.",
     "description and general_transport_preference: text.",
 ]
@@ -224,7 +226,7 @@ def check_personas(answer, st):
         for k in ("private_car_access", "bicycle_access"):
             if k in p and not isinstance(p[k], bool):
                 errors.append(f"{aid} persona: {k} must be true or false")
-        for k in ("walking_predisposition", "cycling_predisposition"):
+        for k in ("walking_sensitivity", "cycling_sensitivity"):
             if k in p and p[k] not in S.LEVELS:
                 errors.append(f"{aid} persona: {k} must be one of {', '.join(S.LEVELS)}")
         sens = p.get("sensitivities")

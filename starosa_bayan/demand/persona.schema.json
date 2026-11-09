@@ -20,15 +20,15 @@
         "agent_id": {"type": "string"},
         "persona": {
           "type": "object",
-          "required": ["description", "private_car_access", "bicycle_access", "walking_predisposition",
-                       "cycling_predisposition", "sensitivities", "general_transport_preference"],
+          "required": ["description", "private_car_access", "bicycle_access", "walking_sensitivity",
+                       "cycling_sensitivity", "sensitivities", "general_transport_preference"],
           "additionalProperties": false,
           "properties": {
             "description": {"type": "string", "minLength": 1, "description": "The commuter's behaviour in a few sentences."},
             "private_car_access": {"type": "boolean"},
             "bicycle_access": {"type": "boolean"},
-            "walking_predisposition": {"$ref": "#/$defs/level"},
-            "cycling_predisposition": {"$ref": "#/$defs/level"},
+            "walking_sensitivity": {"$ref": "#/$defs/level"},
+            "cycling_sensitivity": {"$ref": "#/$defs/level"},
             "sensitivities": {
               "type": "object",
               "required": ["safety", "cost", "comfort", "accessibility", "availability", "efficiency", "reliability"],

@@ -4,7 +4,7 @@
 rules of thumb, not behaviour:
 
   persona     car: the household's, from CAR_DRIVER_MIN_AGE; bicycle: the household's. Sensitivities
-              and predispositions from the income decile, age and role.
+              (attributes, walking, cycling) from the income decile, age and role.
   habits      employed: work Mon-Fri (some also Sat), some of them out of the area from a terminal;
               students: school Mon-Fri; others: shopping on 2 or 3 days a week. Work or school at
               any location of that kind the agent is offered; shopping at one of the 3 nearest.
@@ -68,8 +68,9 @@ def persona(a):
     return {"description": f"{a['sex']}, aged {a['age_group']}, living in {a['barangay']}; "
                            f"{role.get(kind, 'not working')}; per capita income decile {decile} of 10.",
             "private_car_access": car, "bicycle_access": bike,
-            "walking_predisposition": "Low" if age >= 65 else "High" if decile <= 5 else "Moderate",
-            "cycling_predisposition": "Moderate" if bike and 10 <= age < 60 else "Low",
+            # sensitivity: High = it discourages them (was a predisposition, High = willing; values flipped)
+            "walking_sensitivity": "High" if age >= 65 else "Low" if decile <= 5 else "Moderate",
+            "cycling_sensitivity": "Moderate" if bike and 10 <= age < 60 else "High",
             "sensitivities": sens, "general_transport_preference": f"Prefers {prefers}."}
 
 
@@ -77,16 +78,17 @@ def weights_for(loc, modes, p):
     """Weights for a trip to loc: only modes that reach it, scored by distance and persona."""
     d, sens = loc["distance_m"], p["sensitivities"]
     level = {"High": 1.3, "Moderate": 1.0, "Low": 0.5}
+    tolerance = {"High": 0.5, "Moderate": 1.0, "Low": 1.3}   # walking/cycling sensitivity: High = less of it
     score = {}
     for m in modes:
         if m not in loc["reachable_by"]:
             score[m] = 0.0
         elif m == "walk":
-            score[m] = (1.0 if d < 800 else 0.5 if d < 1500 else 0.1) * level[p["walking_predisposition"]]
+            score[m] = (1.0 if d < 800 else 0.5 if d < 1500 else 0.1) * tolerance[p["walking_sensitivity"]]
         elif m == "jeepney":
             score[m] = (0.3 if d < 800 else 1.0) * (1.2 if sens["cost"] == "High" else 1.0)
         elif m == "bike":
-            score[m] = (0.8 if d < 4000 else 0.2) * level[p["cycling_predisposition"]]
+            score[m] = (0.8 if d < 4000 else 0.2) * tolerance[p["cycling_sensitivity"]]
         else:
             score[m] = {"Low": 1.5, "Moderate": 1.0, "High": 0.5}[sens["cost"]] * (1.3 if sens["comfort"] == "High" else 1.0)
     return normalised(score)
