@@ -52,10 +52,27 @@ def load(name):
     print("loaded:", name, "|", info["repo"], flush=True)
 
 
-def ask(system, user, max_new_tokens=C.MAX_NEW_TOKENS):
+def chat_text(system, user):
     messages = [{"role": "system", "content": system}, {"role": "user", "content": user}]
     extra = {"enable_thinking": False} if C.MODELS[CURRENT]["thinking_off"] else {}
-    text = tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, **extra)
-    inputs = tok([text], return_tensors="pt").to(model.device)
-    output = model.generate(**inputs, max_new_tokens=max_new_tokens, **C.GEN)
-    return tok.decode(output[0][inputs["input_ids"].shape[1]:], skip_special_tokens=True)
+    return tok.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, **extra)
+
+
+def ask(system, user, max_new_tokens=C.MAX_NEW_TOKENS):
+    """One prompt, as in the evaluation notebook."""
+    return ask_batch(system, [user], max_new_tokens)[0]
+
+
+def ask_batch(system, users, max_new_tokens=C.MAX_NEW_TOKENS):
+    """Several prompts in one generate call: padded on the left, with an attention mask so the
+    padding is ignored. Each answer is still sampled on its own, with the same settings."""
+    import torch
+    if tok.pad_token is None:
+        tok.pad_token = tok.eos_token
+    tok.padding_side = "left"
+    texts = [chat_text(system, u) for u in users]
+    inputs = tok(texts, return_tensors="pt", padding=True).to(model.device)
+    with torch.no_grad():
+        output = model.generate(**inputs, max_new_tokens=max_new_tokens, pad_token_id=tok.pad_token_id, **C.GEN)
+    start = inputs["input_ids"].shape[1]
+    return [tok.decode(row[start:], skip_special_tokens=True) for row in output]

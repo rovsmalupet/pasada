@@ -15,39 +15,58 @@ pipeline.py goes on                   ◄──pull──                ◄─�
 
 | File | What it does |
 |---|---|
-| `answer.py` | Answers every input file without an answer: one prompt per agent, regenerating a failed answer up to 3 times (Sec. 4.3.9.1), saving progress after every agent |
+| `answer.py` | Answers every input file without an answer: one prompt per agent, batched, regenerating a failed answer up to 3 times (Sec. 4.3.9.1), saving progress after every agent |
 | `tasks.py` | Per task: the simulation's input → the evaluated prompt, and the model's answer → checks → the simulation's answer format |
 | `prompts.py` | The five prompts, copied from the notebook; the few changes the simulation needs are marked `INTEGRATION` |
 | `kb.py`, `model.py`, `config.py` | Knowledge-base retrieval, model loading (4-bit, as evaluated) and settings, from the notebook |
-| `serve.sh` | Server loop: every minute pull, answer, push |
+| `run_sim.py` | Everything on the server: the pipeline day by day, answering each LLM task when it stops |
+| `serve.sh` | Server loop for the git hand-over: every minute pull, answer, push |
 | `laptop_loop.py` | Laptop loop: run the pipeline, push its inputs, wait for the answers, go on |
 
-## Running it
+## Running it: everything on the GPU server (the usual way)
 
-**Server, once:**
+`run_sim.py` runs the pipeline day by day and answers each LLM task as soon as it stops for one,
+with the model kept loaded. No git in between. In tmux, so a dropped connection does not stop it.
+
+**Once:**
 ```bash
-git clone -b llm-integration https://github.com/dlsudatasci/PASADA-abm.git ~/abm
-~/thesis-env/bin/pip install sentence-transformers pandas   # if not there yet
+git clone -b llm-integration https://github.com/dlsudatasci/PASADA-abm.git ~/abm   # or: cd ~/abm && git pull
+~/thesis-env/bin/pip install eclipse-sumo==1.27.0 sumolib==1.27.0 traci==1.27.0 shapely pyproj rtree
+cd ~/abm/starosa_bayan
+~/thesis-env/bin/netconvert -c netconvert.netccfg        # bayan.net.xml (not committed)
+SUMO_HOME=$(~/thesis-env/bin/python -c "import sumo; print(sumo.SUMO_HOME)") ~/thesis-env/bin/python build.py
 ```
-It uses the models in `~/thesis_llm/models` and the knowledge base
-`~/thesis_llm/inputs/knowledge_base_factors_v1.csv` (change with `THESIS_LLM` or `KB_FILE`).
 
-**Server, each time:**
+**Each run:**
 ```bash
-tmux new -d -s bridge "bash ~/abm/llm_bridge/serve.sh > ~/bridge_log.txt 2>&1"
-tail -f ~/bridge_log.txt
+cd ~/abm
+tmux new -d -s sim "~/thesis-env/bin/python -u -m llm_bridge.run_sim --days 1 --first-args '--redo agents --agents 10' > ~/sim_log.txt 2>&1"
+tail -f ~/sim_log.txt
 ```
-By hand instead: `cd ~/abm && ~/thesis-env/bin/python -m llm_bridge.answer` (add `--model qwen`
-for another model, `--show-prompt` to print the first prompt without the model).
+- `--days 1-3`: several days (a day already done is kept).
+- `--first-args "--redo agents --agents 10"`: start fresh with 10 agents (moves old files to `demand/old/`).
+- `--model qwen`: another candidate model. `BATCH_SIZE=16` (before the command): more agents per GPU call.
+- SUMO runs headless. To watch a day, copy its `starosa_bayan/runs/<date_time>/` folder to a laptop with
+  SUMO and open it in sumo-gui.
 
-**Laptop**, from `starosa_bayan` with its venv active:
-```powershell
-python ..\llm_bridge\laptop_loop.py --day 1 --pipeline-args "--redo agents --agents 10"   # first test: 10 agents, fresh
-python ..\llm_bridge\laptop_loop.py --day 1        # day 1 again after a stop
-python ..\llm_bridge\laptop_loop.py --day 2        # the next day
-```
-`--redo agents` moves the stand-in's files (from `--llm stub` runs) into `demand/old/`, so the
-model answers from the start.
+By hand: `~/thesis-env/bin/python -m llm_bridge.answer` answers whatever the pipeline is waiting for
+(`--show-prompt` prints the first prompt without the model).
+
+## Batching
+
+`answer.py` sends `BATCH_SIZE` agents (default 8) to the model in one generate call: the prompts
+are padded on the left with an attention mask, so the padding is ignored, and each answer is
+sampled on its own with the evaluated settings. A failed answer goes into a later batch for its
+next try. Answers are equivalent to one-at-a-time generation, not bit-identical (GPU arithmetic
+differs slightly with batch size).
+
+## The other way: SUMO on a laptop, the LLM on the server (git hand-over)
+
+Slower (each hand-off waits up to about a minute each way), but sumo-gui can be watched live.
+
+- Server: `tmux new -d -s bridge "bash ~/abm/llm_bridge/serve.sh > ~/bridge_log.txt 2>&1"`
+- Laptop, from `starosa_bayan` with its venv active:
+  `python ..\llm_bridge\laptop_loop.py --day 1 --pipeline-args "--redo agents --agents 10"`
 
 ## Logs (for the methodology)
 

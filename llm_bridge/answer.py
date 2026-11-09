@@ -77,8 +77,9 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
     print(f"\n=== {task}{f' day {day}' if day else ''}: {len(entries)} agents, {len(done)} already answered "
           f"({inp.relative_to(C.ABM_DIR)} -> {out.relative_to(C.ABM_DIR)})", flush=True)
 
-    failed, first_try, tries_total, asked = [], 0, 0, 0
-    for n, entry in enumerate(entries, 1):
+    # every agent still to answer, with its prompt (built once: the same prompt on every try)
+    queue = []
+    for entry in entries:
         aid = agent_id_of(entry)
         if aid in done:
             continue
@@ -87,35 +88,40 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
             print(SYSTEM + "\n\n" + (prompt or "(no prompt: answered without the model)"))
             return True
         if prompt is None:                        # nothing for the model to decide
-            result, problems = convert("", entry, head)
-            done[aid] = result
-            partial_path.write_text(json.dumps(done, ensure_ascii=False), encoding="utf-8")
+            done[aid] = convert("", entry, head)[0]
             continue
-        asked += 1
+        queue.append({"aid": aid, "entry": entry, "prompt": prompt, "max_tokens": max_tokens, "try": 0})
+    partial_path.write_text(json.dumps(done, ensure_ascii=False), encoding="utf-8")
+
+    failed, first_try, asked, total = [], 0, len(queue), len(queue)
+    queue.sort(key=lambda q: len(q["prompt"]))     # similar lengths together: less padding
+    while queue:
+        batch, queue = queue[:C.BATCH_SIZE], queue[C.BATCH_SIZE:]
         M.load(model_name)
-        result = None
-        for attempt in range(1, C.MAX_TRIES + 1):
-            start = time.time()
-            text = M.ask(SYSTEM, prompt, max_tokens)
-            result, problems = convert(text, entry, head)
-            tries_total += 1
+        start = time.time()
+        texts = M.ask_batch(SYSTEM, [q["prompt"] for q in batch], max(q["max_tokens"] for q in batch))
+        seconds = round(time.time() - start, 1)
+        for q, text in zip(batch, texts):
+            q["try"] += 1
+            result, problems = convert(text, q["entry"], head)
             with attempts_path.open("a", encoding="utf-8") as f:
-                f.write(json.dumps({"agent_id": aid, "task": task, "day": day, "model": model_name,
-                                    "prompt_version": C.PROMPT_VERSION, "try": attempt,
-                                    "seconds": round(time.time() - start, 1), "passes": result is not None,
-                                    "problems": problems, "prompt": prompt, "output": text,
+                f.write(json.dumps({"agent_id": q["aid"], "task": task, "day": day, "model": model_name,
+                                    "prompt_version": C.PROMPT_VERSION, "try": q["try"], "batch_size": len(batch),
+                                    "batch_seconds": seconds, "passes": result is not None,
+                                    "problems": problems, "prompt": q["prompt"], "output": text,
                                     "time": datetime.now().isoformat(timespec="seconds")}, ensure_ascii=False) + "\n")
-            print(f"{task} | {aid} ({n}/{len(entries)}) | try {attempt}/{C.MAX_TRIES} | "
-                  f"{'passes' if result else 'FAILS: ' + '; '.join(problems)[:150]} | {time.time() - start:.1f}s",
-                  flush=True)
+            print(f"{task} | {q['aid']} | try {q['try']}/{C.MAX_TRIES} | "
+                  f"{'passes' if result else 'FAILS: ' + '; '.join(problems)[:150]}", flush=True)
             if result is not None:
-                first_try += attempt == 1
-                break
-        if result is None:
-            failed.append(aid)
-            continue
-        done[aid] = result
+                done[q["aid"]] = result
+                first_try += q["try"] == 1
+            elif q["try"] < C.MAX_TRIES:
+                queue.append(q)                   # regenerated in a later batch
+            else:
+                failed.append(q["aid"])
         partial_path.write_text(json.dumps(done, ensure_ascii=False), encoding="utf-8")
+        print(f"  batch of {len(batch)} in {seconds}s | {total - len(queue) - len(failed)} of {total} answered",
+              flush=True)
 
     if failed:
         print(f"\n{task}: {len(failed)} agent(s) failed all {C.MAX_TRIES} tries: {', '.join(failed)}\n"

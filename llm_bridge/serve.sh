@@ -9,7 +9,7 @@ MODEL=${MODEL:-llama}
 echo "bridge started $(date) | model $MODEL | repo $(pwd) | branch $(git branch --show-current)"
 while true; do
   git pull -q --rebase --autostash || echo "$(date +%H:%M) git pull failed; trying again in a minute"
-  $PY -m llm_bridge.answer --model "$MODEL" | grep -v "^Nothing to answer"
+  $PY -u -m llm_bridge.answer --model "$MODEL" | grep --line-buffered -v "^Nothing to answer"
   git add starosa_bayan/demand
   if ! git diff --cached --quiet; then
     git commit -q -m "LLM answers ($MODEL) $(date +%F_%H%M)"

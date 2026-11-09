@@ -34,6 +34,7 @@ GEN = {"do_sample": True, "temperature": 0.6, "top_p": 0.9, "top_k": 50, "repeti
 MAX_NEW_TOKENS = 900               # as evaluated; mode and reflection answers for many trips get more
 MAX_NEW_TOKENS_LONG = 1500
 MAX_TRIES = 3                      # manuscript 4.3.9.1: a failed answer is regenerated, up to 3 tries
+BATCH_SIZE = int(os.environ.get("BATCH_SIZE", 8))   # agents answered together in one generate call
 GPU_WAIT_MINUTES = 60              # wait this long for free GPU memory (the GPU is shared)
 
 # v0.3 = the evaluated prompts (2026-11-06). "-abm1" = the small changes the simulation needs,

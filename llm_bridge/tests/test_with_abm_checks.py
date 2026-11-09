@@ -11,8 +11,8 @@ shutil.copytree(SRC_ABM, abm)
 shutil.copytree(BRIDGE / "llm_bridge", work / "llm_bridge")
 # what she renames on the llm-integration branch: the persona's two fields
 t = (abm / "llm_tasks.py").read_text()
-t = t.replace("walking_predisposition", "walking_sensitivity").replace("cycling_predisposition", "cycling_sensitivity")
-(abm / "llm_tasks.py").write_text(t)
+pass
+pass
 os.environ["ABM_DIR"] = str(abm)
 sys.path[:0] = [str(work), str(abm)]
 
@@ -23,6 +23,7 @@ import llm_bridge.model as M
 from llm_bridge import answer as A
 rng = random.Random(1)
 CALLS = {"n": 0, "bad_first": 0}
+BROKEN = {}
 
 def block(prompt, marker):
     i = prompt.index(marker) + len(marker)
@@ -30,7 +31,9 @@ def block(prompt, marker):
 
 def fake(system, prompt, max_new_tokens=0):
     CALLS["n"] += 1
-    if CALLS["n"] % 7 == 0:                       # now and then a broken answer, to exercise regeneration
+    BROKEN.setdefault(prompt, 0)
+    if CALLS["n"] % 7 == 0 and BROKEN[prompt] < 2:  # now and then a broken answer (at most twice per prompt)
+        BROKEN[prompt] += 1
         CALLS["bad_first"] += 1
         return "Sure! Here is the persona: {not json"
     if prompt.startswith("Sample attributes"):
@@ -94,6 +97,7 @@ def fake(system, prompt, max_new_tokens=0):
 
 M.load = lambda name: None
 M.ask = fake
+M.ask_batch = lambda system, users, n=0: [fake(system, u) for u in users]
 M.CURRENT = "llama"
 
 import llm_tasks as LT
