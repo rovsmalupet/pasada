@@ -12,6 +12,7 @@ that needs a person (printed), e.g. a trip no mode can make.
 
 import argparse
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -64,17 +65,20 @@ def main(argv=None):
             if run.returncode == 0:
                 print(f"=== day {day} done ({(time.time() - started) / 60:.0f} min so far)", flush=True)
                 break
-            if "Waiting for the LLM" not in run.stdout:
+            wait = re.search(r"Waiting for the LLM: answer (\S+) in (\S+)", run.stdout)
+            if not wait:
                 print("The pipeline stopped for a reason the LLM cannot fix (above).")
                 return 1
-            todo = A.pending()
+            # answer only the file the pipeline is waiting for (an old input file may lie around)
+            inp, out = C.ABM_DIR / wait.group(1), C.ABM_DIR / wait.group(2)
+            todo = [t for t in A.pending() if t[2].resolve() == inp.resolve()]
             if not todo:
-                print("The pipeline waits for the LLM, but every input file has an answer: see above.")
+                print(f"The pipeline waits for {wait.group(2)}, but it is not a task the bridge knows: see above.")
                 return 1
-            for task, d, inp, out in todo:
-                if not A.run_task(task, d, inp, out, args.model):
-                    print(f"{task}: some agents failed every try (above). Run the same command again to retry them.")
-                    return 1
+            task, d, inp, out = todo[0]
+            if not A.run_task(task, d, inp, out, args.model):
+                print(f"{task}: some agents failed every try (above). Run the same command again to retry them.")
+                return 1
     print(f"\nAll done in {(time.time() - started) / 60:.0f} min.")
     return 0
 

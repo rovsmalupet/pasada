@@ -123,9 +123,13 @@ def habits_prompt(commuter, locations, modes):
             f"Your available transport modes are: {', '.join(modes)}. Use only these modes. "
             "The mode preference weights of each trip must add up to 1.\n"
             "Include at least one recurring trip, and include the trips that return you home.\n"
-            # INTEGRATION: the simulation follows each day's trips in order, so they must chain
+            # INTEGRATION: the simulation follows each day's trips in order, so they must chain;
+            # and the rules its checks found broken most often (v0.3-abm2, 2026-11-10)
             "On each travel day, your trips in order of departure time must start at home, leave "
-            "from where the trip before ended, and end at home.\n"
+            "from where the trip before ended, and end at home. For example: home to work at 07:00, "
+            "work to market at 17:00, market to home at 18:00.\n"
+            "Copy every location_id exactly as it is written in the location options. Each trip goes "
+            "from one place to a different place.\n"
             + JSON_ONLY
             + habits_format(modes) + "\nThe JSON Response:\n")
 

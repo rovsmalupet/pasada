@@ -38,8 +38,9 @@ BATCH_SIZE = int(os.environ.get("BATCH_SIZE", 8))   # agents answered together i
 GPU_WAIT_MINUTES = 60              # wait this long for free GPU memory (the GPU is shared)
 
 # v0.3 = the evaluated prompts (2026-11-06). "-abm1" = the small changes the simulation needs,
+# "-abm2" = plus the habits clarifications (exact location ids, different places, a chain example),
 # each marked "INTEGRATION" in prompts.py (2026-11-10).
-PROMPT_VERSION = "v0.3-abm1"
+PROMPT_VERSION = "v0.3-abm2"
 
 KB_TOP_K = 8
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
