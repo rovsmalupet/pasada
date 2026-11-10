@@ -57,17 +57,26 @@ def attempts():
 
 
 def progress_rows():
-    """One row per LLM task file: how far it is."""
+    """One row per LLM task file of the current run: how far it is. Input files older than
+    agents.json (left from an earlier run) are skipped, and only tries made since each input file
+    was written are counted."""
+    from datetime import datetime
     tries = defaultdict(list)
     for r in attempts():
         tries[(r["task"], r.get("day"))].append(r)
+    agents_file = demand() / "agents.json"
+    run_start = agents_file.stat().st_mtime if agents_file.is_file() else 0
     rows = []
     for inp in sorted((demand() / "llm_inputs").glob("*_input*.json")):
         m = re.fullmatch(r"(\w+?)_input(?:_day_(\d+))?", inp.stem)
-        if not m or m.group(1) not in ORDER:
+        if not m or m.group(1) not in ORDER or inp.stat().st_mtime < run_start:
             continue
         task, day = m.group(1), int(m.group(2)) if m.group(2) else None
-        n_agents = len((load(inp) or {}).get("agents", []))
+        data = load(inp) or {}
+        n_agents = len(data.get("agents", []))
+        ids = {a["agent"]["agent_id"] if "agent" in a else a["agent_id"] for a in data.get("agents", [])}
+        since = datetime.fromtimestamp(inp.stat().st_mtime).isoformat(timespec="seconds")
+        tries[(task, day)] = [r for r in tries[(task, day)] if r["agent_id"] in ids and r["time"] >= since]
         answer = demand() / ("personas.json" if task == "persona" else "habits.json" if task == "habits"
                              else f"{task}_day_{day}.json")
         done = len((load(answer) or {}).get("agents", [])) if answer.is_file() else None
@@ -76,13 +85,14 @@ def progress_rows():
             done = len(partial.get("answers", partial if "answers" not in partial and "input_sha256" not in partial else {}))
         t = tries[(task, day)]
         agents_tried = {r["agent_id"] for r in t}
-        first = sum(1 for r in t if r["try"] == 1 and r["passes"])
+        first = len({r["agent_id"] for r in t if r["try"] == 1 and r["passes"]})
         rows.append({"task": task, "day": day or "", "agents": n_agents, "answered": done,
                      "status": "done" if answer.is_file() else ("running / stopped" if t else "waiting"),
                      "first_try_passes": first, "agents_asked": len(agents_tried),
                      "first_try_rate": f"{first / len(agents_tried):.0%}" if agents_tried else "",
                      "regenerations": sum(1 for r in t if r["try"] > 1),
-                     "failed_all_tries": len({r["agent_id"] for r in t if r["try"] == C.MAX_TRIES and not r["passes"]}),
+                     "failed_all_tries": len({r["agent_id"] for r in t if r["try"] == C.MAX_TRIES and not r["passes"]}
+                                             - {r["agent_id"] for r in t if r["passes"]}),   # not passed since
                      "last_update": max((r["time"] for r in t), default="")})
     order = {t: i for i, t in enumerate(ORDER)}
     return sorted(rows, key=lambda r: (r["day"] or 0, order[r["task"]]))
@@ -151,9 +161,12 @@ def sheets():
             "agent_id": r["agent_id"], "experience": r["travel_experience"],
             "habit_update": json.dumps(r["habit_update"]) if r["habit_update"] else "(no change)"} for r in refl]
 
+    agents_file = demand() / "agents.json"
+    from datetime import datetime
+    since = datetime.fromtimestamp(agents_file.stat().st_mtime).isoformat(timespec="seconds") if agents_file.is_file() else ""
     out["failures"] = [{"time": r["time"], "task": r["task"], "day": r.get("day") or "", "agent_id": r["agent_id"],
                         "try": r["try"], "problems": "; ".join(r["problems"])}
-                       for r in attempts() if not r["passes"]]
+                       for r in attempts() if not r["passes"] and r["time"] >= since]
     return {k: v for k, v in out.items() if v or k == "progress"}
 
 
