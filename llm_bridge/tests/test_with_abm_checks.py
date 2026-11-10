@@ -8,6 +8,9 @@ BRIDGE = Path(sys.argv[2])             # the folder that holds llm_bridge/
 work = Path(tempfile.mkdtemp())
 abm = work / "starosa_bayan"
 shutil.copytree(SRC_ABM, abm)
+locs = SRC_ABM.parent / "sumo_track" / "data" / "placeholder" / "locations.csv"   # settings.ACTIVITIES reads it
+(work / "sumo_track" / "data" / "placeholder").mkdir(parents=True)
+shutil.copy(locs, work / "sumo_track" / "data" / "placeholder" / "locations.csv")
 shutil.copytree(BRIDGE / "llm_bridge", work / "llm_bridge")
 # what she renames on the llm-integration branch: the persona's two fields
 t = (abm / "llm_tasks.py").read_text()
@@ -45,34 +48,36 @@ def fake(system, prompt, max_new_tokens=0):
                            ["safety", "cost", "comfort", "accessibility", "availability", "efficiency", "reliability"]},
                            "general_transport_preference": "jeepney"})
     if "Describe your usual weekly travel routine" in prompt:
-        locs = block(prompt, "location options:\n")
+        opts = block(prompt, "place options:\n")
         modes = re.search(r"Your available transport modes are: (.*?)\. Use only", prompt).group(1).split(", ")
-        home = locs[0]["location_id"]
-        dest = locs[1 + rng.randrange(len(locs) - 1)]
-        role = {"school": "school", "workplace": "work", "market": "market", "mall": "mall", "terminal": "travel"}[dest["category"]]
+        dest = opts[1 + rng.randrange(len(opts) - 1)]["place"]
+        role = rng.choice(["work", "shopping", "leisure", "personal", "errand at the bank", "school"])
         w = {m: round(1 / len(modes), 4) for m in modes}
         w[modes[0]] = round(1 - sum(v for m, v in w.items() if m != modes[0]), 4)
-        return json.dumps({"frequent_locations": [{"location_id": home, "role": "home"},
-                                                  {"location_id": dest["location_id"], "role": role}],
+        return json.dumps({"frequent_locations": [{"place": "home", "role": "home"}, {"place": dest, "role": role}],
                            "recurring_trips": [
-                               {"trip_id": "R1", "origin": home, "destination": dest["location_id"], "trip_purpose": role,
+                               {"trip_id": "R1", "origin": "home", "destination": dest, "trip_purpose": role,
                                 "travel_days": ["Monday", "Tuesday", "Wednesday"], "usual_departure_time": "7:30",
                                 "mode_preference_weights": w},
-                               {"trip_id": "R2", "origin": dest["location_id"], "destination": home, "trip_purpose": "home",
+                               {"trip_id": "R2", "origin": dest, "destination": "Home", "trip_purpose": "home",
                                 "travel_days": ["Monday", "Tuesday", "Wednesday"], "usual_departure_time": "17:00",
                                 "mode_preference_weights": w}]})
     if "Write in broad strokes what you are doing" in prompt:
         h = block(prompt, "Your usual travel routine:\n")
-        home = h["frequent_locations"][0]["location_id"]
-        others = [f["location_id"] for f in h["frequent_locations"][1:]]
+        others = [f["place"] for f in h["frequent_places"][1:]]
+        if "Other kinds of place you could go to today" in prompt and rng.random() < 0.4:
+            listed = block(prompt, "straight-line distance from your home):\n")
+            if listed:
+                others = [listed[0]["place"]]
+                CALLS["other_place"] = CALLS.get("other_place", 0) + 1
         if not others or rng.random() < 0.15:
             return json.dumps({"simulation_day": 1, "schedule": [{"start_time": "00:00", "activity": "Rest at home.",
-                                                                  "location_id": home, "trip_purpose": "home"}]})
+                                                                  "place": "home", "trip_purpose": "home"}]})
         return json.dumps({"simulation_day": 1, "schedule": [
-            {"start_time": "06:00", "end_time": "07:30", "activity": "Wake up.", "location_id": home, "trip_purpose": "home"},
-            {"start_time": "08:00", "end_time": "12:00", "activity": "Work.", "location_id": others[0], "trip_purpose": "work"},
-            {"start_time": "12:00", "end_time": "17:00", "activity": "More work.", "location_id": others[0], "trip_purpose": "work"},
-            {"start_time": "17:40", "activity": "Rest.", "location_id": home, "trip_purpose": "home"}]})
+            {"start_time": "06:00", "end_time": "07:30", "activity": "Wake up.", "place": "home", "trip_purpose": "home"},
+            {"start_time": "08:00", "end_time": "12:00", "activity": "Work.", "place": others[0], "trip_purpose": "work"},
+            {"start_time": "12:00", "end_time": "17:00", "activity": "More work.", "place": others[0], "trip_purpose": "work"},
+            {"start_time": "17:40", "activity": "Rest.", "place": "home", "trip_purpose": "home"}]})
     if "Your trips today and the options for each trip are:" in prompt:
         cands = block(prompt, "Your trips today and the options for each trip are:\n")
         decisions = []
@@ -137,4 +142,5 @@ rows = [json.loads(l) for f in logs for l in f.read_text().splitlines()]
 print(f"\nmodel calls: {CALLS['n']} (broken on purpose: {CALLS['bad_first']}); logged tries: {len(rows)}; "
       f"regenerated: {sum(1 for r in rows if r['try'] > 1)}")
 assert not list((abm / "demand" / "llm_logs").glob("*.partial.json"))
+print("schedules that used a non-frequent place:", CALLS.get("other_place", 0))
 print("ALL OK")

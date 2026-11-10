@@ -74,7 +74,7 @@ Slower (each hand-off waits up to about a minute each way), but sumo-gui can be 
 version, prompt, raw answer, problems found and seconds. The regeneration rate and the time per
 answer of Sec. 4.3.9 come from these.
 
-## What differs from the evaluated prompts (prompt v0.3-abm2)
+## What differs from the evaluated prompts (prompt v0.3-abm5)
 
 Every change is marked `INTEGRATION` in `prompts.py`. They are only what the simulation needs:
 
@@ -85,6 +85,15 @@ Every change is marked `INTEGRATION` in `prompts.py`. They are only what the sim
    From v0.3-abm2 (2026-11-10, after the first 10-agent run): an example of such a day, and two
    lines asking to copy location ids exactly and not to make a trip to the same place.
    These are the three failures the first run regenerated most.
+   From v0.3-abm3 (same day, after 3 of 10 agents failed every try): each outing is asked for
+   as a round trip from home (chains of several stops failed most), and every prompt shows
+   the agent's home as `HOME` instead of `HOME_A000150` (the model made up location ids from
+   the agent's number, e.g. `LOC_000150`); the bridge maps `HOME` back.
+2b. **Schedule, from v0.3-abm4:** besides the frequent locations, the prompt lists up to 3 other
+   named places per category (the nearest the agent can reach and leave, from the habits step's
+   options), and the schedule may use them "when your day calls for it". The evaluated prompt
+   allowed only frequent locations; the manuscript (4.3.5) asks for habits to guide the schedule
+   "while still allowing reasonable day-to-day variations".
 2. **Schedule:** each place has an `end_time` (when the agent leaves it): the simulation starts a
    trip at the end of a stay. One line asks for enough time between places for the trip.
 3. **Mode:** the options are the simulation's computed ones (times, distance, fare). Where several
@@ -92,6 +101,14 @@ Every change is marked `INTEGRATION` in `prompts.py`. They are only what the sim
    mode). Two lines state the simulation's rules: a bike or car is used from where it was left,
    and an option that arrives after the next trip leaves is not picked when another would not.
 4. **Reflection:** the trip outcomes are SUMO's; one line states the daily limit of 0.2 per weight.
+
+**Since v0.3-abm5 (team meeting, 2026-11-10): places by category, never by id.** Every prompt
+names places only by their category (`home`, `workplace`, `market`, `shop`, `healthcare`, ...).
+For each agent and category, the bridge uses the agent's nearest place of that category (straight
+line from home) among the places it can reach and leave (the habits step's options), so a category
+is always the same place for that agent. Work may be at any category (`settings.ACTIVITIES`, which
+the bridge reads, so both sides share one list); `personal` (errands, check-ups, church) is a new
+activity at healthcare, services and worship places. The schedule may use any listed category.
 
 Turning one format into the other is only renaming (mode, day and field names). Where the model's
 words for an activity do not fit the place's category, the category's own activity is used (a

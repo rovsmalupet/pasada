@@ -28,17 +28,54 @@ def home_id(aid):
     return f"HOME_{aid}"
 
 
-# INTEGRATION (v0.3-abm3): the prompts show the agent's home as "HOME", not HOME_A000150: with the
-# long id the model invented ids from the agent's number (LOC_000150). Answers are mapped back.
-HOME = "HOME"
+# INTEGRATION (v0.3-abm5, team meeting 2026-11-10): the prompts never show a location id. The model
+# names a place by its category ("home", "healthcare", "market", ...), and the bridge uses the
+# agent's NEAREST place of that category (straight line from home) among those it can reach and
+# leave by one of its modes (the places llm_tasks.py offers at the habits step). The same category
+# is always the same place for an agent, so "work at healthcare" is the same clinic every day.
+HOME = "home"
+_CACHE = {}
+
+
+def _json(name):
+    import json
+    path = C.ABM_DIR / "demand" / name
+    if path not in _CACHE:
+        _CACHE[path] = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
+    return _CACHE[path]
+
+
+def category_of(lid):
+    """A location's category, from agents.json (every activity location of the run)."""
+    if "categories" not in _CACHE:
+        data = _json("agents.json") or {}
+        _CACHE["categories"] = {l["location_id"]: l["category"] for l in data.get("locations", [])}
+    return _CACHE["categories"].get(lid, "place")
+
+
+def offered_places(aid):
+    """The agent's reachable places, nearest first (habits_input.json's activity_locations)."""
+    if "offered" not in _CACHE:
+        data = _json("llm_inputs/habits_input.json") or {"agents": []}
+        _CACHE["offered"] = {a["agent"]["agent_id"]: sorted(a["activity_locations"],
+                                                            key=lambda l: l.get("distance_m") or 0)
+                             for a in data["agents"]}
+    return _CACHE["offered"].get(aid, [])
+
+
+def nearest_by_category(places):
+    out = {}
+    for l in sorted(places, key=lambda l: l.get("distance_m") or 0):
+        out.setdefault(l["category"], l)
+    return out
 
 
 def shown(lid, home):
-    return HOME if lid == home else lid
+    return HOME if lid == home else category_of(lid)
 
 
-def real(lid, home):
-    return home if str(lid).strip().upper() in (HOME, home.upper()) else lid
+def place_word(value):
+    return str(value or "").strip().lower().replace(" ", "_")
 
 
 def age_from(age_group):
@@ -191,12 +228,11 @@ def persona_answer(text, entry, head):
 
 # --------------------------------------------------------------------- 2. habits
 def habits_locations(entry):
-    a = entry["agent"]
-    home = {"location_id": HOME, "category": "home", "barangay": a.get("barangay")}
-    return [home] + [{"location_id": l["location_id"], "category": l["category"], "name": l["name"],
-                      "barangay": l.get("barangay"), "distance_m": l.get("distance_m"),
-                      "reachable_by": [C.TO_PROMPT_MODE[m] for m in l.get("reachable_by", [])]}
-                     for l in entry["activity_locations"]]
+    """The place options: home, then each category the agent can reach, with its nearest place."""
+    near = nearest_by_category(entry["activity_locations"])
+    return [{"place": HOME}] + [{"place": cat, "nearest_distance_m": l.get("distance_m"),
+                                 "reachable_by": [C.TO_PROMPT_MODE[m] for m in l.get("reachable_by", [])]}
+                                for cat, l in sorted(near.items(), key=lambda kv: kv[1].get("distance_m") or 0)]
 
 
 def habits_prompt_of(entry, head):
@@ -206,13 +242,26 @@ def habits_prompt_of(entry, head):
     return habits_prompt(commuter_of(entry["agent"]), habits_locations(entry), modes), C.MAX_NEW_TOKENS_LONG
 
 
-ACTIVITY_WORDS = {"work": "work", "job": "work", "office": "work", "school": "school", "class": "school",
-                  "study": "school", "shopping": "shopping", "shop": "shopping", "market": "shopping",
-                  "groceries": "shopping", "grocery": "shopping", "errand": "shopping", "leisure": "leisure",
-                  "recreation": "leisure", "mall": "leisure", "out_of_area": "out_of_area",
-                  "out of area": "out_of_area", "terminal": "out_of_area", "travel": "out_of_area"}
-DEFAULT_ACTIVITY = {"workplace": "work", "school": "school", "market": "shopping", "mall": "shopping",
-                    "terminal": "out_of_area"}
+ACTIVITY_WORDS = {"work": "work", "job": "work", "office": "work", "duty": "work", "shift": "work",
+                  "school": "school", "class": "school", "study": "school",
+                  "shopping": "shopping", "shop": "shopping", "market": "shopping", "groceries": "shopping",
+                  "grocery": "shopping", "buy": "shopping",
+                  "leisure": "leisure", "recreation": "leisure", "mall": "leisure", "eat": "leisure",
+                  "food": "leisure", "restaurant": "leisure", "dine": "leisure", "park": "leisure",
+                  "personal": "personal", "errand": "personal", "health": "personal", "hospital": "personal",
+                  "clinic": "personal", "doctor": "personal", "checkup": "personal", "check_up": "personal",
+                  "pharmacy": "personal", "church": "personal", "mass": "personal", "worship": "personal",
+                  "bank": "personal", "service": "personal",
+                  "out_of_area": "out_of_area", "out of area": "out_of_area", "terminal": "out_of_area",
+                  "travel": "out_of_area"}
+
+
+def default_activity(category):
+    """A category's own activity: the first one (besides work) that happens at it, else work."""
+    for act, cats in C.ACTIVITIES.items():
+        if act != "work" and category in cats:
+            return act
+    return "work"
 
 
 def activity_for(words, category, agent):
@@ -228,7 +277,7 @@ def activity_for(words, category, agent):
                 break
     if category == "school" and agent["commuter_type"] != "student":
         return "work"
-    return DEFAULT_ACTIVITY[category]
+    return default_activity(category)
 
 
 def day_of(name):
@@ -247,16 +296,23 @@ def habits_answer(text, entry, head):
     trips = h.get("recurring_trips")
     if not isinstance(trips, list) or not trips:
         return None, ["no recurring trips"]
-    offered = {l["location_id"]: l for l in entry["activity_locations"]}
+    near = nearest_by_category(entry["activity_locations"])
+    offered = {l["location_id"]: l for l in near.values()}
+
+    def to_id(place):                          # a category -> the agent's nearest place of it
+        w = place_word(place)
+        return home if w in (HOME, home.lower()) else near[w]["location_id"] if w in near else None
+
     problems = []
     roles = {}
     for f in h.get("frequent_locations") or []:
-        if isinstance(f, dict):
-            f["location_id"] = real(f.get("location_id"), home)
-        if isinstance(f, dict) and f.get("location_id") in offered:
-            roles.setdefault(f["location_id"], []).append(f.get("role"))
-        elif isinstance(f, dict) and f.get("location_id") != home:
-            problems.append(f"unknown location {f.get('location_id')!r}")
+        if not isinstance(f, dict):
+            continue
+        lid = to_id(f.get("place", f.get("location_id")))
+        if lid is None:
+            problems.append(f"unknown place {f.get('place', f.get('location_id'))!r} (use one of the place options)")
+        elif lid != home:
+            roles.setdefault(lid, []).append(f.get("role"))
     out_trips, used, keys = [], {}, set()
     for i, t in enumerate(trips):
         if not isinstance(t, dict):
@@ -268,13 +324,14 @@ def habits_answer(text, entry, head):
         if missing:
             problems.append(f"{tid} missing " + ", ".join(missing))
             continue
-        t["origin"], t["destination"] = real(t["origin"], home), real(t["destination"], home)
         if tid in keys:
             problems.append(f"{tid}: trip_id used twice")
         keys.add(tid)
         for end in ("origin", "destination"):
-            if t[end] != home and t[end] not in offered:
-                problems.append(f"{tid}: unknown location {t[end]!r}")
+            lid = to_id(t[end])
+            if lid is None:
+                problems.append(f"{tid}: unknown place {t[end]!r} (use one of the place options)")
+            t[end] = lid
         if t["origin"] == t["destination"]:
             problems.append(f"{tid}: origin and destination are the same")
         if t["destination"] in offered:
@@ -322,17 +379,38 @@ def habits_answer(text, entry, head):
 # ------------------------------------------------------------------- 3. schedule
 def schedule_habits(entry):
     a = entry["agent"]
-    frequent = [{"location_id": HOME, "category": "home", "role": "home"}] + \
-               [{"location_id": f["location_id"], "name": f["name"], "category": f["category"],
-                 "role": f["activity"]} for f in entry["frequent_locations"]]
-    return {"frequent_locations": frequent, "recurring_trips": prompt_trips(entry["recurring_trips"], a["home_id"], weights=False)}
+    frequent = [{"place": HOME, "role": "home"}] + \
+               [{"place": f["category"], "role": f["activity"]} for f in entry["frequent_locations"]]
+    return {"frequent_places": frequent,
+            "recurring_trips": prompt_trips(entry["recurring_trips"], a["home_id"], weights=False)}
+
+
+def schedule_places(entry):
+    """category -> the place it means for this agent: its frequent places first, then the nearest
+    reachable place of every other category."""
+    places = {f["category"]: f["location_id"] for f in entry["frequent_locations"]}
+    for cat, l in nearest_by_category(offered_places(entry["agent"]["agent_id"])).items():
+        places.setdefault(cat, l["location_id"])
+    return places
+
+
+
+
+def other_places(entry):
+    """INTEGRATION (v0.3-abm4/5): the categories besides the frequent ones that the schedule may
+    use, each with its nearest reachable place's distance (habits_input.json)."""
+    frequent = {f["category"] for f in entry["frequent_locations"]}
+    return [{"place": cat, "nearest_distance_m": l.get("distance_m")}
+            for cat, l in sorted(nearest_by_category(offered_places(entry["agent"]["agent_id"])).items(),
+                                 key=lambda kv: kv[1].get("distance_m") or 0) if cat not in frequent]
 
 
 def schedule_prompt_of(entry, head):
     context = {"simulation_day": head["day"], "day_of_week": C.DAY_NAMES[head["weekday"]],
                "conditions": head["simulation_context"]}
     return (schedule_prompt(commuter_of(entry["agent"]), schedule_habits(entry),
-                            prompt_experience(entry["travel_experience"]), context), C.MAX_NEW_TOKENS)
+                            prompt_experience(entry["travel_experience"]), context, other_places(entry)),
+            C.MAX_NEW_TOKENS)
 
 
 def schedule_answer(text, entry, head):
@@ -345,12 +423,16 @@ def schedule_answer(text, entry, head):
     if not isinstance(items, list) or not items or not all(isinstance(i, dict) for i in items):
         return None, ["no schedule"]
     activity = {f["location_id"]: f["activity"] for f in entry["frequent_locations"]}
+    places = schedule_places(entry)
     problems = []
-    for it in items:
-        it["location_id"] = real(it.get("location_id"), home)
     for i, it in enumerate(items):
-        if it.get("location_id") != home and it.get("location_id") not in activity:
-            problems.append(f"entry {i + 1}: {it.get('location_id')!r} is not home or a frequent location")
+        w = place_word(it.get("place", it.get("location_id")))
+        lid = home if w in (HOME, home.lower()) else places.get(w)
+        it["location_id"] = lid
+        if lid is None:
+            problems.append(f"entry {i + 1}: {it.get('place')!r} is not home or one of the listed places")
+        elif lid != home and lid not in activity:          # a category besides the frequent ones
+            activity[lid] = activity_for([it.get("trip_purpose"), it.get("activity")], w, agent)
         for key in ("start_time", "end_time"):
             if key in it and it[key] not in (None, "") and not HHMM.match(clock(it[key])):
                 problems.append(f"entry {i + 1}: {key} {it[key]!r} is not HH:MM")
@@ -441,7 +523,7 @@ def names_of(entry):
 
 def prompt_schedule(entry):
     names, home = names_of(entry), entry["agent"]["home_id"]
-    return [{k: v for k, v in {"location_id": shown(e["location_id"], home), "name": names.get(e["location_id"]),
+    return [{k: v for k, v in {"place": shown(e["location_id"], home), "name": names.get(e["location_id"]),
                                "activity": e.get("activity"), "start_time": e.get("start"),
                                "end_time": e.get("end")}.items() if v is not None}
             for e in entry["schedule"]]

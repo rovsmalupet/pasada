@@ -94,12 +94,13 @@ def persona_prompt(shown_agent, findings):
 def habits_format(modes):
     weights = ", ".join(f'"{m}": number from 0 to 1' for m in modes)
     return (
-        '{"frequent_locations": [{"location_id": "an id from the location inventory", '
+        # INTEGRATION (v0.3-abm5): places are named by category, never by an id
+        '{"frequent_locations": [{"place": "home or a place category from the place options", '
         # INTEGRATION: the simulation's activity names instead of "home, work, school, market, or
-        # another activity role" (each location's activity must fit its category)
-        '"role": "home, work, school, shopping, leisure, or out_of_area"}, ...],\n'
-        ' "recurring_trips": [{"trip_id": "R1", "origin": "location_id", '
-        '"destination": "location_id", "trip_purpose": "short purpose such as work or shopping", '
+        # another activity role" (each place's activity must fit its category)
+        '"role": "home, work, school, shopping, leisure, personal, or out_of_area"}, ...],\n'
+        ' "recurring_trips": [{"trip_id": "R1", "origin": "home or a place category", '
+        '"destination": "home or a place category", "trip_purpose": "short purpose such as work or shopping", '
         '"travel_days": ["Monday", "Tuesday", ...], "usual_departure_time": "HH:MM", '
         f'"mode_preference_weights": {{{weights}}}}}, ...]}}')
 
@@ -110,13 +111,18 @@ def habits_prompt(commuter, locations, modes):
             "before the simulation starts: the places you go to regularly and the recurring "
             "trips that connect them.\n"
             + JEEPNEY_CONTEXT +
-            "Every location must be one of the provided location options and can not be "
-            "anything else. Your home is the location HOME.\n"
-            # INTEGRATION: the options come from the simulation, with a straight-line distance
-            # from home and the modes that can make the trip there and back
-            "distance_m is the straight-line distance from your home in metres, and reachable_by "
-            "lists the transport modes that can take you there and back.\n"
-            "location options:\n" + J(locations) + "\n"
+            # INTEGRATION (v0.3-abm5): places are categories; the simulation uses the nearest one
+            "Every place must be one of the place options and can not be anything else: \"home\" "
+            "is your home, and every other option is a kind of place. You go to the nearest place "
+            "of that kind.\n"
+            "nearest_distance_m is the straight-line distance from your home to the nearest place of "
+            "that kind in metres, and reachable_by lists the transport modes that can take you there "
+            "and back.\n"
+            "You can work at any kind of place (for example an office, a shop, a market, a school, a "
+            "healthcare place, or a mall), go to school at a school, shop at a market, shop or mall, "
+            "spend leisure time at a mall, recreation or food place, and do personal errands at "
+            "healthcare, services or worship places.\n"
+            "place options:\n" + J(locations) + "\n"
             "For each recurring trip, give the origin, destination, trip purpose, the days "
             "you usually make the trip, your usual departure time in 24-hour HH:MM, and how "
             "strongly you tend toward each transport mode available to you.\n"
@@ -124,14 +130,13 @@ def habits_prompt(commuter, locations, modes):
             "The mode preference weights of each trip must add up to 1.\n"
             "Include at least one recurring trip, and include the trips that return you home.\n"
             # INTEGRATION: the simulation follows each day's trips in order, so they must chain;
-            # and the rules its checks found broken most often (v0.3-abm2, 2026-11-10). v0.3-abm3:
-            # each outing as a round trip from home (the chains of several stops failed most)
-            "Make each regular outing a round trip from home: one trip from HOME to the place and one "
-            "trip from that place back to HOME, on the same days. For example: HOME to work at 07:00 "
-            "and work to HOME at 17:00, Monday to Friday.\n"
-            "On each travel day, your trips in order of departure time must start at HOME, leave "
-            "from where the trip before ended, and end at HOME.\n"
-            "Copy every location_id exactly as it is written in the location options. Each trip goes "
+            # and the rules its checks found broken most often (v0.3-abm2/3, 2026-11-10)
+            "Make each regular outing a round trip from home: one trip from home to the place and one "
+            "trip from that place back to home, on the same days. For example: home to workplace at "
+            "07:00 and workplace to home at 17:00, Monday to Friday.\n"
+            "On each travel day, your trips in order of departure time must start at home, leave "
+            "from where the trip before ended, and end at home.\n"
+            "Write every place exactly as it is written in the place options. Each trip goes "
             "from one place to a different place.\n"
             + JSON_ONLY
             + habits_format(modes) + "\nThe JSON Response:\n")
@@ -144,22 +149,29 @@ SCHEDULE_FORMAT = (
     # INTEGRATION: the simulation needs when each stay ends (the trip to the next place leaves then)
     '"end_time": "HH:MM when you leave this place (leave it out for the last entry)", '
     '"activity": "a one sentence description of what you start doing at that time", '
-    '"location_id": "one of your frequent locations and nothing else", '
+    # INTEGRATION (v0.3-abm4): other listed places allowed too (manuscript 4.3.5: day-to-day variation)
+    '"place": "home, the kind of one of your frequent places, or one of the other kinds of place listed", '
     '"trip_purpose": "the purpose of going to this location"}, ...]}')
 
 
-def schedule_prompt(commuter, habits, travel_experience, context):
+def schedule_prompt(commuter, habits, travel_experience, context, other_places=None):
     experience = J(travel_experience) if travel_experience else "No travel experience recorded yet."
     return ("You are:\n" + J(commuter) + "\n"
             "Your usual travel routine:\n" + J(habits) + "\n"
             "Your significant travel experiences from previous days:\n" + experience + "\n"
             "Today:\n" + J(context) + "\n"
-            "Write in broad strokes what you are doing during the day. Start the day at home "
+            # INTEGRATION (v0.3-abm4): places besides the frequent ones
+            + ("Other kinds of place you could go to today (you go to the nearest one; "
+               "nearest_distance_m is its straight-line distance from your home):\n"
+               + J(other_places) + "\n" if other_places else "")
+            + "Write in broad strokes what you are doing during the day. Start the day at home "
             "and end the day at home. Follow your usual routine for this day of the week, but "
             "you may vary it reasonably because of your previous travel experiences or "
             "today's conditions.\n"
-            "Only include tasks that occur at a specific location, which must be one of your "
-            "frequent locations. Do not include any transportation or commuting tasks (for "
+            # INTEGRATION (v0.3-abm4): usually the frequent locations, but not only them
+            "Only include tasks that occur at a specific place: usually one of your frequent "
+            "places, or, when your day calls for it, one of the other kinds of place listed above. "
+            "Do not include any transportation or commuting tasks (for "
             "example, do not include actions like \"riding a jeepney\" or \"walking to work\").\n"
             "List the activities in chronological order with 24-hour times, and do not let "
             "activities overlap.\n"

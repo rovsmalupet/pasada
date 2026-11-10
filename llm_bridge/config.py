@@ -40,8 +40,10 @@ GPU_WAIT_MINUTES = 60              # wait this long for free GPU memory (the GPU
 # v0.3 = the evaluated prompts (2026-11-06). "-abm1" = the small changes the simulation needs,
 # "-abm2" = plus the habits clarifications (exact location ids, different places, a chain example),
 # "-abm3" = home shown as HOME in every prompt; habits asks for round trips from home,
+# "-abm4" = the schedule may also use listed places besides the frequent ones,
+# "-abm5" = places named by category only (no ids); the nearest place of the category is used,
 # each marked "INTEGRATION" in prompts.py (2026-11-10).
-PROMPT_VERSION = "v0.3-abm3"
+PROMPT_VERSION = "v0.3-abm5"
 
 KB_TOP_K = 8
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
@@ -54,11 +56,27 @@ TO_PROMPT_MODE = {v: k for k, v in TO_ABM_MODE.items()}
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
 DAY_NAMES = {"Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday", "Thu": "Thursday", "Fri": "Friday",
              "Sat": "Saturday", "Sun": "Sunday"}
-ACTIVITIES = {                     # activity: the location categories it may happen at
-    "work": ("workplace", "school", "market", "mall", "terminal"),
+def _simulation_settings():
+    """starosa_bayan/settings.py (it imports only the standard library), so the bridge and the
+    simulation share one list of activities and the place categories they can happen at."""
+    import importlib.util
+    path = ABM_DIR / "settings.py"
+    if not path.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location("abm_settings", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+_S = _simulation_settings()
+ACTIVITIES = dict(_S.ACTIVITIES) if _S else {   # activity: the place categories it may happen at
+    "work": ("workplace", "school", "market", "mall", "terminal", "shop", "food", "recreation", "services",
+             "healthcare", "worship"),
     "school": ("school",),
-    "shopping": ("market", "mall"),
-    "leisure": ("mall",),
+    "shopping": ("market", "mall", "shop"),
+    "leisure": ("mall", "recreation", "food"),
+    "personal": ("healthcare", "services", "worship"),
     "out_of_area": ("terminal",),
 }
 LEVELS = ("Low", "Moderate", "High")

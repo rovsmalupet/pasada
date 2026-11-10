@@ -131,11 +131,23 @@ CAR_COST_PHP_PER_KM = 6.0          # fuel only: about PHP 60 per litre at 10 km 
 
 # --- the LLM's tasks (llm_tasks.py, pipeline.py; manuscript Sec. 4.3) --------------------------
 # what people do at a place -> the location categories it can be at (the agent's home: "home")
+# 2026-11-10 (team meeting): work can be at ANY kind of place (shops, supermarkets, hospitals, schools,
+# ...), so "work" takes every category in ACTIVITY_LOCATIONS; "personal" (errands, check-ups, church) is new.
+# The LLM names places by category only, and the nearest reachable place of that category is used.
+def _location_categories():
+    import csv
+    if not ACTIVITY_LOCATIONS.is_file():
+        return ()
+    with open(ACTIVITY_LOCATIONS, encoding="utf-8", newline="") as f:
+        return tuple(sorted({row["category"] for row in csv.DictReader(f) if row.get("category")}))
+
+
 ACTIVITIES = {
-    "work": ("workplace", "school", "market", "mall", "terminal"),   # teachers, vendors and shop staff too
+    "work": _location_categories(),   # any kind of place: offices, shops, markets, schools, hospitals...
     "school": ("school",),
-    "shopping": ("market", "mall"),
-    "leisure": ("mall",),
+    "shopping": ("market", "mall", "shop"),
+    "leisure": ("mall", "recreation", "food"),
+    "personal": ("healthcare", "services", "worship"),   # errands, check-ups, church
     "out_of_area": ("terminal",),  # leaves the study area by bus from a terminal and comes back the same way
 }
 WEEKDAYS = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
