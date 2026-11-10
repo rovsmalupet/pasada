@@ -28,6 +28,19 @@ def home_id(aid):
     return f"HOME_{aid}"
 
 
+# INTEGRATION (v0.3-abm3): the prompts show the agent's home as "HOME", not HOME_A000150: with the
+# long id the model invented ids from the agent's number (LOC_000150). Answers are mapped back.
+HOME = "HOME"
+
+
+def shown(lid, home):
+    return HOME if lid == home else lid
+
+
+def real(lid, home):
+    return home if str(lid).strip().upper() in (HOME, home.upper()) else lid
+
+
 def age_from(age_group):
     m = re.match(r"\s*(\d+)", str(age_group))
     return int(m.group(1)) if m else 0
@@ -84,11 +97,12 @@ def prompt_weights(w):
     return {C.TO_PROMPT_MODE[m]: v for m, v in w.items()}
 
 
-def prompt_trips(recurring, weights=True):
+def prompt_trips(recurring, home, weights=True):
     """The simulation's recurring trips in the evaluated prompts' fields."""
     out = []
     for t in recurring:
-        row = {"trip_id": t["trip_key"], "origin": t["origin"], "destination": t["destination"],
+        row = {"trip_id": t["trip_key"], "origin": shown(t["origin"], home),
+               "destination": shown(t["destination"], home),
                "trip_purpose": t["purpose"], "travel_days": [C.DAY_NAMES[d] for d in t["days"]],
                "usual_departure_time": t["usual_departure"]}
         if weights and "mode_preference_weights" in t:
@@ -178,7 +192,7 @@ def persona_answer(text, entry, head):
 # --------------------------------------------------------------------- 2. habits
 def habits_locations(entry):
     a = entry["agent"]
-    home = {"location_id": a["home_id"], "category": "home", "barangay": a.get("barangay")}
+    home = {"location_id": HOME, "category": "home", "barangay": a.get("barangay")}
     return [home] + [{"location_id": l["location_id"], "category": l["category"], "name": l["name"],
                       "barangay": l.get("barangay"), "distance_m": l.get("distance_m"),
                       "reachable_by": [C.TO_PROMPT_MODE[m] for m in l.get("reachable_by", [])]}
@@ -237,6 +251,8 @@ def habits_answer(text, entry, head):
     problems = []
     roles = {}
     for f in h.get("frequent_locations") or []:
+        if isinstance(f, dict):
+            f["location_id"] = real(f.get("location_id"), home)
         if isinstance(f, dict) and f.get("location_id") in offered:
             roles.setdefault(f["location_id"], []).append(f.get("role"))
         elif isinstance(f, dict) and f.get("location_id") != home:
@@ -252,6 +268,7 @@ def habits_answer(text, entry, head):
         if missing:
             problems.append(f"{tid} missing " + ", ".join(missing))
             continue
+        t["origin"], t["destination"] = real(t["origin"], home), real(t["destination"], home)
         if tid in keys:
             problems.append(f"{tid}: trip_id used twice")
         keys.add(tid)
@@ -305,10 +322,10 @@ def habits_answer(text, entry, head):
 # ------------------------------------------------------------------- 3. schedule
 def schedule_habits(entry):
     a = entry["agent"]
-    frequent = [{"location_id": a["home_id"], "category": "home", "role": "home"}] + \
+    frequent = [{"location_id": HOME, "category": "home", "role": "home"}] + \
                [{"location_id": f["location_id"], "name": f["name"], "category": f["category"],
                  "role": f["activity"]} for f in entry["frequent_locations"]]
-    return {"frequent_locations": frequent, "recurring_trips": prompt_trips(entry["recurring_trips"], weights=False)}
+    return {"frequent_locations": frequent, "recurring_trips": prompt_trips(entry["recurring_trips"], a["home_id"], weights=False)}
 
 
 def schedule_prompt_of(entry, head):
@@ -329,6 +346,8 @@ def schedule_answer(text, entry, head):
         return None, ["no schedule"]
     activity = {f["location_id"]: f["activity"] for f in entry["frequent_locations"]}
     problems = []
+    for it in items:
+        it["location_id"] = real(it.get("location_id"), home)
     for i, it in enumerate(items):
         if it.get("location_id") != home and it.get("location_id") not in activity:
             problems.append(f"entry {i + 1}: {it.get('location_id')!r} is not home or a frequent location")
@@ -407,7 +426,8 @@ def candidates_of(entry):
             row["cost_php"] = o["cost_php"]
             modes.append(row)
         # INTEGRATION: the trip's planned departure (the simulation's), not the next start time
-        out.append({"trip_id": t["trip_id"], "origin": t["from"], "destination": t["to"],
+        home = entry["agent"]["home_id"]
+        out.append({"trip_id": t["trip_id"], "origin": shown(t["from"], home), "destination": shown(t["to"], home),
                     "destination_name": t.get("to_name"), "departure_time": t["depart"],
                     "trip_purpose": t.get("trip_type", ""), "candidate_modes": modes})
     return out
@@ -420,15 +440,15 @@ def names_of(entry):
 
 
 def prompt_schedule(entry):
-    names = names_of(entry)
-    return [{k: v for k, v in {"location_id": e["location_id"], "name": names.get(e["location_id"]),
+    names, home = names_of(entry), entry["agent"]["home_id"]
+    return [{k: v for k, v in {"location_id": shown(e["location_id"], home), "name": names.get(e["location_id"]),
                                "activity": e.get("activity"), "start_time": e.get("start"),
                                "end_time": e.get("end")}.items() if v is not None}
             for e in entry["schedule"]]
 
 
 def modes_prompt_of(entry, head):
-    habits = {"recurring_trips": prompt_trips(entry["recurring_trips"])}
+    habits = {"recurring_trips": prompt_trips(entry["recurring_trips"], entry["agent"]["home_id"])}
     return (mode_prompt(commuter_of(entry["agent"]), habits, prompt_experience(entry["travel_experience"]),
                         {"simulation_day": head["day"], "schedule": prompt_schedule(entry)},
                         candidates_of(entry)), C.MAX_NEW_TOKENS_LONG)
@@ -491,7 +511,8 @@ def sim_outputs_of(entry):
     rows = []
     for t in entry["trips"]:
         o = t.get("outcome")
-        row = {"trip_id": t["trip_id"], "origin": t["from"], "destination": t["to"],
+        home = entry["agent"]["home_id"]
+        row = {"trip_id": t["trip_id"], "origin": shown(t["from"], home), "destination": shown(t["to"], home),
                "destination_name": t.get("to_name"), "scheduled_time": t["depart"]}
         if o is None:
             rows.append({**row, "events": ["this trip did not start before the simulation ended"]})
@@ -520,7 +541,7 @@ def sim_outputs_of(entry):
 
 
 def reflection_prompt_of(entry, head):
-    habits = {"recurring_trips": prompt_trips(entry["recurring_trips"])}
+    habits = {"recurring_trips": prompt_trips(entry["recurring_trips"], entry["agent"]["home_id"])}
     if not habits["recurring_trips"]:
         habits["recurring_trips"] = []
     return (reflection_prompt(commuter_of(entry["agent"]), habits, prompt_experience(entry["travel_experience"]),

@@ -111,7 +111,7 @@ def habits_prompt(commuter, locations, modes):
             "trips that connect them.\n"
             + JEEPNEY_CONTEXT +
             "Every location must be one of the provided location options and can not be "
-            "anything else. Your home is the location with category \"home\".\n"
+            "anything else. Your home is the location HOME.\n"
             # INTEGRATION: the options come from the simulation, with a straight-line distance
             # from home and the modes that can make the trip there and back
             "distance_m is the straight-line distance from your home in metres, and reachable_by "
@@ -124,10 +124,13 @@ def habits_prompt(commuter, locations, modes):
             "The mode preference weights of each trip must add up to 1.\n"
             "Include at least one recurring trip, and include the trips that return you home.\n"
             # INTEGRATION: the simulation follows each day's trips in order, so they must chain;
-            # and the rules its checks found broken most often (v0.3-abm2, 2026-11-10)
-            "On each travel day, your trips in order of departure time must start at home, leave "
-            "from where the trip before ended, and end at home. For example: home to work at 07:00, "
-            "work to market at 17:00, market to home at 18:00.\n"
+            # and the rules its checks found broken most often (v0.3-abm2, 2026-11-10). v0.3-abm3:
+            # each outing as a round trip from home (the chains of several stops failed most)
+            "Make each regular outing a round trip from home: one trip from HOME to the place and one "
+            "trip from that place back to HOME, on the same days. For example: HOME to work at 07:00 "
+            "and work to HOME at 17:00, Monday to Friday.\n"
+            "On each travel day, your trips in order of departure time must start at HOME, leave "
+            "from where the trip before ended, and end at HOME.\n"
             "Copy every location_id exactly as it is written in the location options. Each trip goes "
             "from one place to a different place.\n"
             + JSON_ONLY

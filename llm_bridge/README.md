@@ -74,7 +74,7 @@ Slower (each hand-off waits up to about a minute each way), but sumo-gui can be 
 version, prompt, raw answer, problems found and seconds. The regeneration rate and the time per
 answer of Sec. 4.3.9 come from these.
 
-## What differs from the evaluated prompts (prompt v0.3-abm1)
+## What differs from the evaluated prompts (prompt v0.3-abm2)
 
 Every change is marked `INTEGRATION` in `prompts.py`. They are only what the simulation needs:
 
@@ -82,6 +82,9 @@ Every change is marked `INTEGRATION` in `prompts.py`. They are only what the sim
    home and `reachable_by`); the roles use the simulation's activity names (work, school,
    shopping, leisure, out_of_area); and one line says each day's trips must start and end at home
    and follow on from each other.
+   From v0.3-abm2 (2026-11-10, after the first 10-agent run): an example of such a day, and two
+   lines asking to copy location ids exactly and not to make a trip to the same place.
+   These are the three failures the first run regenerated most.
 2. **Schedule:** each place has an `end_time` (when the agent leaves it): the simulation starts a
    trip at the end of a stay. One line asks for enough time between places for the trip.
 3. **Mode:** the options are the simulation's computed ones (times, distance, fare). Where several
