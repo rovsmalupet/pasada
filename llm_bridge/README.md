@@ -20,6 +20,7 @@ pipeline.py goes on                   ◄──pull──                ◄─�
 | `prompts.py` | The five prompts, copied from the notebook; the few changes the simulation needs are marked `INTEGRATION` |
 | `kb.py`, `model.py`, `config.py` | Knowledge-base retrieval, model loading (4-bit, as evaluated) and settings, from the notebook |
 | `run_sim.py` | Everything on the server: the pipeline day by day, answering each LLM task when it stops |
+| `report.py` | A readable Excel of everything so far (also while running): progress, personas, habits, each day's schedule, modes, outcomes and reflections, and failures |
 | `serve.sh` | Server loop for the git hand-over: every minute pull, answer, push |
 | `laptop_loop.py` | Laptop loop: run the pipeline, push its inputs, wait for the answers, go on |
 
