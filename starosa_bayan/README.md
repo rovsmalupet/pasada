@@ -110,6 +110,13 @@ Each run's folder holds the trip outcomes (`outcomes_day_<n>.json`) and the even
 (`events.jsonl`): every jeepney stop, boarding, alighting and full pass-by, each commuter's
 state changes, and each jeepney's passengers every minute, as the manuscript's Sec. 4.4.2 asks.
 
+To check the simulation itself with scripted test agents (manuscript Sec. 4.4.3.3; see
+`validation/README.md`):
+
+```powershell
+python validation/validate.py      # the five checks, PASS or FAIL (about 1.5 min)
+```
+
 ## Files
 
 | File | What it does |
@@ -131,6 +138,7 @@ state changes, and each jeepney's passengers every minute, as the manuscript's S
 | `make_background.py` | Random background car and motorcycle trips over the day → `generated/` |
 | `traffic_meter.py` | Optional meter of how motorcycles, cars and jeepneys share the road (`run.py --meter`) |
 | `demand/` | The hand-over: `README.md`, the JSON schemas, the agents, the LLM's inputs and answers, options and outcomes per day |
+| `validation/` | The scripted test agents (`cases/`, from `make_cases.py`), the five checks (`validate.py`) and the latest result (`report.md`) |
 | `data/` | The barangay boundaries, the study area, the activity locations (`locations_9_barangays.csv`) and the base agents (`base_agents.json`, copied from PASADA-llm), each with provenance |
 
 `generated/`, `runs/`, `demand/old/` and `bayan.net.xml` are not committed.

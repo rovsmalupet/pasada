@@ -1,0 +1,412 @@
+{
+  "made_by": "validation/make_cases.py (scripted test agents, no LLM)",
+  "about": "What each test case is for, and what validate.py expects of each trip (expect_disrupted: true, false, or null when not checked).",
+  "network": {
+    "edges": 10305,
+    "lines": {
+      "N1_N": 3066.5,
+      "N1_S": 3066.5,
+      "RIZ-FRS_N": 4885.7,
+      "RIZ-FRS_S": 4801.0,
+      "RIZ-N1_N": 3981.4,
+      "RIZ-N1_S": 4005.1
+    }
+  },
+  "cases": {
+    "capacity": {
+      "line": "RIZ-FRS_N",
+      "group": [
+        "V_CAP_G01",
+        "V_CAP_G02",
+        "V_CAP_G03",
+        "V_CAP_G04",
+        "V_CAP_G05",
+        "V_CAP_G06",
+        "V_CAP_G07",
+        "V_CAP_G08",
+        "V_CAP_G09",
+        "V_CAP_G10",
+        "V_CAP_G11",
+        "V_CAP_G12",
+        "V_CAP_G13",
+        "V_CAP_G14",
+        "V_CAP_G15",
+        "V_CAP_G16",
+        "V_CAP_G17",
+        "V_CAP_G18",
+        "V_CAP_G19",
+        "V_CAP_G20",
+        "V_CAP_G21",
+        "V_CAP_G22"
+      ],
+      "probes": [
+        "V_CAP_P1",
+        "V_CAP_P2",
+        "V_CAP_P3"
+      ],
+      "drop_off": "LOC_0114",
+      "group_spot": {
+        "edge": "-92878383#9",
+        "pos": 105.2,
+        "route_offset_m": 2054,
+        "walk_m": 96
+      },
+      "probe_spot": {
+        "edge": "-90551784#4",
+        "pos": 10.0,
+        "route_offset_m": 2698,
+        "walk_m": 43
+      },
+      "drop_off_spot": {
+        "edge": "-33299084#3",
+        "pos": 59.8,
+        "route_offset_m": 3321
+      }
+    },
+    "line": {
+      "N1": {
+        "agent_id": "V_LINE_N1",
+        "out": "N1_N",
+        "back": "N1_S",
+        "place": "LOC_1375",
+        "ride_m": [
+          2298,
+          2298
+        ]
+      },
+      "RIZ-FRS": {
+        "agent_id": "V_LINE_RIZ-FRS",
+        "out": "RIZ-FRS_N",
+        "back": "RIZ-FRS_S",
+        "place": "LOC_1382",
+        "ride_m": [
+          4658,
+          4523
+        ]
+      },
+      "RIZ-N1": {
+        "agent_id": "V_LINE_RIZ-N1",
+        "out": "RIZ-N1_N",
+        "back": "RIZ-N1_S",
+        "place": "LOC_1382",
+        "ride_m": [
+          3287,
+          3176
+        ]
+      }
+    },
+    "walk": {
+      "agent_id": "V_WALK",
+      "place": "LOC_0822",
+      "walk_m": [
+        619,
+        619
+      ]
+    },
+    "bike": {
+      "agent_id": "V_BIKE",
+      "place": "LOC_1305",
+      "ride_m": [
+        1598,
+        1693
+      ]
+    },
+    "car": {
+      "agent_id": "V_CAR",
+      "place": "LOC_0483",
+      "drive_m": [
+        2302,
+        1924
+      ]
+    },
+    "delayed": {
+      "agent_id": "V_DELAY",
+      "trip_id": "V_DELAY_D01_T01",
+      "place": "LOC_0772",
+      "drive_m": 4521,
+      "estimate_s": 748,
+      "slow_edges": [
+        "-185601452#3",
+        "-185601452#2",
+        "-185601452#0",
+        "-1085449252",
+        "-1085449253",
+        "32083295#0",
+        "32083295#1"
+      ],
+      "slow_lanes": [
+        "-185601452#3_1",
+        "-185601452#2_1",
+        "-185601452#0_1",
+        "-1085449252_1",
+        "-1085449253_1",
+        "32083295#0_1",
+        "32083295#1_1"
+      ],
+      "slow_length_m": 711,
+      "slow_speed_ms": 0.58,
+      "added_s": 1140
+    }
+  },
+  "trips": {
+    "V_CAP_G01_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G01",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G02_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G02",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G03_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G03",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G04_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G04",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G05_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G05",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G06_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G06",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G07_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G07",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G08_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G08",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G09_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G09",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G10_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G10",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G11_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G11",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G12_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G12",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G13_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G13",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G14_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G14",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G15_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G15",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G16_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G16",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G17_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G17",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G18_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G18",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G19_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G19",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G20_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G20",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G21_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G21",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_G22_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_G22",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_P1_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_P1",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_P2_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_P2",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_CAP_P3_D01_T01": {
+      "case": "capacity",
+      "agent_id": "V_CAP_P3",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": null
+    },
+    "V_LINE_N1_D01_T01": {
+      "case": "line",
+      "agent_id": "V_LINE_N1",
+      "mode": "jeepney",
+      "route_id": "N1_N",
+      "expect_disrupted": false
+    },
+    "V_LINE_N1_D01_T02": {
+      "case": "line",
+      "agent_id": "V_LINE_N1",
+      "mode": "jeepney",
+      "route_id": "N1_S",
+      "expect_disrupted": false
+    },
+    "V_LINE_RIZ-FRS_D01_T01": {
+      "case": "line",
+      "agent_id": "V_LINE_RIZ-FRS",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_N",
+      "expect_disrupted": false
+    },
+    "V_LINE_RIZ-FRS_D01_T02": {
+      "case": "line",
+      "agent_id": "V_LINE_RIZ-FRS",
+      "mode": "jeepney",
+      "route_id": "RIZ-FRS_S",
+      "expect_disrupted": false
+    },
+    "V_LINE_RIZ-N1_D01_T01": {
+      "case": "line",
+      "agent_id": "V_LINE_RIZ-N1",
+      "mode": "jeepney",
+      "route_id": "RIZ-N1_N",
+      "expect_disrupted": false
+    },
+    "V_LINE_RIZ-N1_D01_T02": {
+      "case": "line",
+      "agent_id": "V_LINE_RIZ-N1",
+      "mode": "jeepney",
+      "route_id": "RIZ-N1_S",
+      "expect_disrupted": false
+    },
+    "V_WALK_D01_T01": {
+      "case": "walk",
+      "agent_id": "V_WALK",
+      "mode": "walk",
+      "expect_disrupted": false
+    },
+    "V_WALK_D01_T02": {
+      "case": "walk",
+      "agent_id": "V_WALK",
+      "mode": "walk",
+      "expect_disrupted": false
+    },
+    "V_BIKE_D01_T01": {
+      "case": "bike",
+      "agent_id": "V_BIKE",
+      "mode": "bike",
+      "expect_disrupted": false
+    },
+    "V_BIKE_D01_T02": {
+      "case": "bike",
+      "agent_id": "V_BIKE",
+      "mode": "bike",
+      "expect_disrupted": false
+    },
+    "V_CAR_D01_T01": {
+      "case": "car",
+      "agent_id": "V_CAR",
+      "mode": "car",
+      "expect_disrupted": false
+    },
+    "V_CAR_D01_T02": {
+      "case": "car",
+      "agent_id": "V_CAR",
+      "mode": "car",
+      "expect_disrupted": false
+    },
+    "V_DELAY_D01_T01": {
+      "case": "delayed",
+      "agent_id": "V_DELAY",
+      "mode": "car",
+      "expect_disrupted": true
+    }
+  }
+}
