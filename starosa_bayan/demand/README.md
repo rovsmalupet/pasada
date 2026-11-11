@@ -66,12 +66,13 @@ persona suit the agent?) is not checked here: that is the rubric evaluation of S
 
 - **The base agents are the LLM team's** (`PASADA-llm/base_commuter_agents`). `make_agents.py`
   copies their file into `../data/base_agents.json` with its provenance whenever it changes.
-- It keeps only agents living in the study area's 14 barangays, and not under 5.
-  `settings.SAMPLE_AGENTS` of them are drawn at random (100 now; 0 = all 739).
+- It keeps only agents living in the study area's 9 barangays, and not under 5.
+  `settings.SAMPLE_AGENTS` of them are drawn at random (100 now; 0 = all 402).
 - Each gets a home inside their own barangay: a street drawn in proportion to the people living
   near it (the population grid). `home_id` is the home's place id in every file.
-- `locations` lists the 162 activity locations: `location_id`, `category` (workplace, school,
-  market, mall, terminal), `name`, `barangay`, lat/lon.
+- `locations` lists the 756 activity locations: `location_id`, `category`, `name`, `barangay`,
+  lat/lon. The categories are workplace, school, market, mall and terminal, and also healthcare,
+  services, worship, food, recreation and shop, which no activity uses yet.
 - **Modes are jeepney, walk, bike and car** (manuscript Sec. 4.5.1). Household motorcycle access
   is passed on, but no motorcycle mode exists.
 
@@ -202,7 +203,7 @@ carries the same options:
 ```json
 {"trip_id": "A000150_D01_T01", "from": "HOME_A000150", "to": "LOC_0001", "to_name": "Alabang Jeepney Terminal",
  "trip_type": "home_to_out_of_area", "depart": "07:01", "options": [
-   {"mode": "jeepney", "route_id": "RIZ-N1_NW", "distance_m": 1713, "access_walk_m": 125, "in_vehicle_m": 1560,
+   {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1713, "access_walk_m": 125, "in_vehicle_m": 1560,
     "egress_walk_m": 28, "estimated_total_time_s": 429, "access_time_s": 90, "waiting_time_s": 150,
     "in_vehicle_time_s": 169, "egress_time_s": 20, "cost_php": 14.0},
    {"mode": "bike", "distance_m": 2157, "access_walk_m": 0, "in_vehicle_m": 2157, "egress_walk_m": 0,
@@ -244,8 +245,8 @@ with their options (above).
 ```json
 {"day": 1, "made_by": "model, prompt version", "agents": [
   {"agent_id": "A000150", "selections": [
-     {"trip_id": "A000150_D01_T01", "mode": "jeepney", "route_id": "RIZ-N1_NW", "reasoning": "cheap, and quick enough"},
-     {"trip_id": "A000150_D01_T02", "mode": "jeepney", "route_id": "RIZ-N1_SE"}]}
+     {"trip_id": "A000150_D01_T01", "mode": "jeepney", "route_id": "RIZ-N1_N", "reasoning": "cheap, and quick enough"},
+     {"trip_id": "A000150_D01_T02", "mode": "jeepney", "route_id": "RIZ-N1_S"}]}
 ]}
 ```
 
@@ -265,7 +266,7 @@ with their options (above).
 grouped by agent (the plan's trip outcome, Part D.4).
 
 ```json
-{"trip_id": "A000150_D01_T01", "realized_mode": "jeepney", "route_id": "RIZ-N1_NW",
+{"trip_id": "A000150_D01_T01", "realized_mode": "jeepney", "route_id": "RIZ-N1_N",
  "departure": "07:01", "arrival": "07:11", "actual_departure_s": 25260, "arrival_time_s": 25913,
  "actual_total_time_s": 653, "estimated_total_time_s": 429, "delay_ratio": 1.52,
  "actual_access_time_s": 99, "actual_waiting_time_s": 256, "actual_in_vehicle_time_s": 276,

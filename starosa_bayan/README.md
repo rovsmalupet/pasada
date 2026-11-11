@@ -1,4 +1,4 @@
-# starosa_bayan — the multi-line prototype on 14 barangays of Santa Rosa
+# starosa_bayan — the multi-line prototype on 9 barangays of Santa Rosa
 
 A copy of `../starosa_prototype/`'s multi-line setup (`run.py`), made on 2026-11-03 to run the
 same simulation on a bigger, better-defined map. It now runs **a whole simulated day from the
@@ -23,15 +23,17 @@ This is a prototype: every value in `settings.py` is a stand-in, not a thesis as
 
 ## The map
 
-**The study area is 14 barangays: all of Santa Rosa north-east of SLEX except Malitlit**, which
-SLEX cuts through. They are Tagapo, Pooc, Dila, Labas, Sinalhan, Macabling, Market Area,
-Caingin, Malusak, Ibaba, Kanluran, Aplaya, Balibago and Dita: 22.8 km², about 313,000 people
-on the population grid (`settings.AREA_BARANGAYS`).
+**The study area is 9 barangays**, chosen by the group on 2026-11-10: Tagapo, Pooc, Labas,
+Macabling, Market Area, Malusak, Ibaba, Kanluran and Balibago. They are 13.58 km², with about
+214,000 people on the population grid (`settings.AREA_BARANGAYS`). Before that, the area was
+the 14 barangays north-east of SLEX, which also had Dila, Sinalhan, Caingin, Aplaya and Dita.
 
 - The boundaries are official: COD-AB from NAMRIA and PSA, via OCHA/HDX, CC BY-IGO
   (`get_barangays.py` → `data/santa_rosa_barangays.geojson`).
-- **Homes and destinations are only inside the area.** The roads are every OSM way touching
-  it, kept whole, so roads crossing its edge stick out a little, as in a Web Wizard box.
+- **Homes and destinations are only inside the area.** The places are
+  `data/locations_9_barangays.csv`: sumo_track's OSM activity locations cut to the 9 barangays.
+  The roads are every OSM way touching the area, kept whole, so roads crossing its edge stick
+  out a little, as in a Web Wizard box.
 - SLEX and its ramps are left out.
 - **Speed limits** follow RA 4136 and JMC 2018-001 for cars: 40 km/h on trunk and primary roads
   (national roads, "through streets"), 30 km/h on the others ("city and municipal streets"),
@@ -43,10 +45,10 @@ on the population grid (`settings.AREA_BARANGAYS`).
   | `N1` | National Highway 1 |
   | `RIZ-FRS` | Rizal Boulevard, then on to Felix Reyes Street |
   | `RIZ-N1` | Rizal Boulevard, then back onto National Highway 1 |
-  | `JPRS` | J. P. Rizal Street |
 
   No line runs on Arcillas Boulevard or the Biñan–Santa Rosa Access Road (removed by choice),
-  nor on F. Gomez, Zavalla or Arambulo Street (shorter than a 500 m ride).
+  nor on F. Gomez, Zavalla or Arambulo Street (shorter than a 500 m ride). The `JPRS` line
+  (J. P. Rizal Street) was dropped with the 9 barangays: that street lies in Dita.
 
 To rebuild the map (only needed if the area or the OSM data changes):
 
@@ -56,7 +58,7 @@ python make_map.py        # data/area.geojson, bayan.osm (from ../sumo_track/dat
 python build.py           # jeepney lines, vehicle types, background traffic
 ```
 
-`bayan.net.xml` (67 MB) is not committed. Rebuild it from the committed `bayan.osm` with
+`bayan.net.xml` (37 MB) is not committed. Rebuild it from the committed `bayan.osm` with
 `netconvert -c netconvert.netccfg`. `make_map.py` also needs
 `../sumo_track/data/raw/santa_rosa_buffered.osm`, sumo_track's local download, which is not on this branch.
 
@@ -66,7 +68,7 @@ This branch holds only this folder and what it reads from outside it:
 
 | Path | Why |
 |---|---|
-| `../sumo_track/data/placeholder/locations.csv` | The activity locations, with its provenance file; `../sumo_track/config/activity_categories.yaml` has the rules that made it |
+| `../sumo_track/data/placeholder/locations.csv` | All of Santa Rosa's activity locations, with its provenance file; `../sumo_track/config/activity_categories.yaml` has the rules that made it. Not read at run time: `data/locations_9_barangays.csv` is its rows inside the 9 barangays, and its provenance gives this file's sha256 |
 | `../population_extraction/output/Santa_Rosa_Population_Density_2020.csv` | People per ~30 m cell, for the homes, with its summary file and `../population_extraction/README.md` |
 | `../population_extraction/obtain_boundary.py` | Used by `get_barangays.py` |
 
@@ -124,6 +126,6 @@ python run.py --demand FILE --modes FILE   # another day's schedule and modes
 | `make_background.py` | Random background car and motorcycle trips over the day → `generated/` |
 | `traffic_meter.py` | Optional meter of how motorcycles, cars and jeepneys share the road (`run.py --meter`) |
 | `demand/` | The hand-over: `README.md`, the JSON schemas, the agents, the LLM's inputs and answers, options and outcomes per day |
-| `data/` | The barangay boundaries, the study area, and the base agents (`base_agents.json`, copied from PASADA-llm, with provenance) |
+| `data/` | The barangay boundaries, the study area, the activity locations (`locations_9_barangays.csv`) and the base agents (`base_agents.json`, copied from PASADA-llm), each with provenance |
 
 `generated/`, `runs/`, `demand/old/` and `bayan.net.xml` are not committed.

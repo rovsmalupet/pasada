@@ -9,8 +9,8 @@ works out every route, position and time.
 
   * TRIPS by sumo_track's fixed rule (Plan Phase 5, step 1): a trip whenever two consecutive
     schedule entries are at different places, leaving when the earlier entry ends.
-  * PLACES: activity locations (ACTIVITY_LOCATIONS, sumo_track's OSM placeholder) snapped to the
-    nearest walkable edge within LOCATION_SNAP_M; homes (demand/agents.json, from
+  * PLACES: activity locations (ACTIVITY_LOCATIONS, sumo_track's OSM placeholder cut to the area)
+    snapped to the nearest walkable edge within LOCATION_SNAP_M; homes (demand/agents.json, from
     make_agents.py) to the nearest home street within HOME_SNAP_M, at its middle.
   * LEGS, by mode:
       - jeepney: of the lines serving the trip, the one with the shortest total walk. Boarding

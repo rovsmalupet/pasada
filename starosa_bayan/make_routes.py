@@ -9,7 +9,7 @@ so the route follows it and only leaves it where the network forces a short deto
 A line drives its first road end to end, then joins each next road at the edge nearest by road
 (the shortest drive, at most CONNECT_M) and drives it to its end. Its reverse drives the same
 roads backwards: it leaves each road where the next one is nearest and drives the last one end to
-end. Lines are named by their key and the compass direction from start to end, e.g. N1_SE,
+end. Lines are named by their key and the compass direction from start to end, e.g. N1_S,
 RIZ-FRS_S. Copied from ../starosa_prototype (ported there from ../sumo_track_prototype), where
 every line was one road.
 

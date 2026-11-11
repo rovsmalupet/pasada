@@ -37,25 +37,21 @@ SCHEDULE_FILE = day_file("schedule", 1)          # the LLM: where and when (no m
 CHOICES_FILE = day_file("choices", 1)            # make_choices.py: each trip's options with their numbers
 MODES_FILE = day_file("modes", 1)                # the LLM: an option per trip; run.py reads the schedule and these
 
-# MAP: the study area, the 14 barangays of Santa Rosa entirely north-east of SLEX (all of that side
-# but Malitlit, which SLEX cuts through), chosen by the user on 2026-11-03. make_map.py joins them
-# into AREA_FILE, cuts OSM_SOURCE to the roads touching it (OSM_FILE) and builds NET_FILE from it
-# (netconvert.netccfg: sidewalks, oncoming-lane overtaking). After a rebuild, rerun build.py.
+# MAP: the study area, 9 barangays of Santa Rosa chosen by the group on 2026-11-10 (13.58 km²,
+# about 214,000 people); until then the 14 entirely north-east of SLEX (2026-11-03).
+# make_map.py joins them into AREA_FILE, cuts OSM_SOURCE to the roads touching it (OSM_FILE) and
+# builds NET_FILE from it (netconvert.netccfg: sidewalks, oncoming-lane overtaking). After a
+# rebuild, rerun build.py.
 AREA_BARANGAYS = [                 # adm4_pcode in BARANGAYS_FILE (get_barangays.py)
     "PH0403428023",                # Tagapo
     "PH0403428016",                # Pook (Pooc)
-    "PH0403428004",                # Dila
     "PH0403428008",                # Labas
-    "PH0403428022",                # Sinalhan
     "PH0403428009",                # Macabling
     "PH0403428012",                # Market Area (Pob.)
-    "PH0403428003",                # Caingin
     "PH0403428011",                # Malusak (Pob.)
     "PH0403428007",                # Ibaba
     "PH0403428015",                # Kanluran (Pob.)
-    "PH0403428001",                # Aplaya
     "PH0403428002",                # Balibago
-    "PH0403428005",                # Dita
 ]
 BARANGAYS_FILE = HERE / "data" / "santa_rosa_barangays.geojson"
 AREA_FILE = HERE / "data" / "area.geojson"
@@ -74,15 +70,15 @@ LINE_ROAD_TYPES = ("highway.trunk", "highway.primary", "highway.secondary")
 # MAP: the lines, chosen by the user (2026-11-03): jeepneys on the main roads in both directions, but
 # none on Arcillas Boulevard or the Binan-Santa Rosa Access Road; Rizal Boulevard's jeepneys go on
 # either to Felix Reyes Street or back onto National Highway 1. F. Gomez, Zavalla and Arambulo
-# Streets are under MIN_RIDE. Each line: the roads it follows in order, each with the compass
-# direction of travel on it (make_routes.py prints each road's two). The first road is driven end
-# to end; each next one is joined where it is nearest and driven to its end. make_routes.py also
-# makes the reverse line: the same roads backwards, the last one end to end.
+# Streets are under MIN_RIDE. Line JPRS (J. P. Rizal Street, "E") went with the 9 barangays
+# (2026-11-10): the street lies wholly in Dita. Each line: the roads it follows in order, each with
+# the compass direction of travel on it (make_routes.py prints each road's two). The first road is
+# driven end to end; each next one is joined where it is nearest and driven to its end.
+# make_routes.py also makes the reverse line: the same roads backwards, the last one end to end.
 JEEPNEY_LINES = {
-    "N1": [("National Highway 1", "SE")],
-    "JPRS": [("J. P. Rizal Street", "E")],
+    "N1": [("National Highway 1", "S")],             # "SE" with the 14 barangays (it reached Dita)
     "RIZ-FRS": [("Rizal Boulevard", "S"), ("Felix Reyes Street", "SW")],
-    "RIZ-N1": [("Rizal Boulevard", "S"), ("National Highway 1", "SE")],
+    "RIZ-N1": [("Rizal Boulevard", "S"), ("National Highway 1", "S")],
 }
 OFF_HIGHWAY_PENALTY = 10.0         # routing: a metre off the road costs as much as this many on it
 JEEPNEY_VCLASS = "bus"
@@ -110,7 +106,8 @@ KERB_MARGIN = 10.0                 # m: jeepneys stop at least this far from eit
 # where commuters live and go (make_agents.py, convert_demand.py): homes and destinations only
 # inside AREA_FILE. Outside it the network has only the ends of roads crossing the edge
 POPULATION_GRID = HERE.parent / "population_extraction" / "output" / "Santa_Rosa_Population_Density_2020.csv"
-ACTIVITY_LOCATIONS = HERE.parent / "sumo_track" / "data" / "placeholder" / "locations.csv"
+# sumo_track's OSM placeholder (data/placeholder/locations.csv) cut to the 9 barangays, with a barangay column
+ACTIVITY_LOCATIONS = HERE / "data" / "locations_9_barangays.csv"
 HOME_SNAP_M = 100.0                # m: a grid cell's people go to the nearest home street within this
 LOCATION_SNAP_M = 200.0            # m: an activity location goes to the nearest walkable edge within this
 # feasibility, checked by convert_demand.py for every trip
@@ -165,9 +162,9 @@ DISRUPTION_MIN_S = 600.0
 
 # --- background traffic: random trips across the whole network ---------------------------------
 # MAP: sumo_track_prototype's 1,800/h per type on the whole city, scaled by car-lane length
-# (628.2 km here, printed by make_map.py, vs 1,996.5 km there; starosa_prototype: 145.6 km, 131/h),
-# so x1 is equally dense in every folder.
-BACKGROUND_PER_HOUR = {"car": 566, "motorcycle": 566}
+# (413.3 km here, printed by make_map.py, vs 1,996.5 km there; the 14 barangays: 628.2 km, 566/h;
+# starosa_prototype: 145.6 km, 131/h), so x1 is equally dense in every folder.
+BACKGROUND_PER_HOUR = {"car": 373, "motorcycle": 373}
 BACKGROUND_SCALE = 10.0            # as dense as sumo_track_prototype's x10
 # share of that rate in each hour of the day (1.0 = the peak). A stand-in shape with morning and
 # evening peaks until traffic counts (Sec. 4.2.6) give a real one.
