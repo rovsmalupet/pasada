@@ -149,6 +149,7 @@ MAX_WEIGHT_CHANGE = 0.2            # reflection: largest change of one mode's we
 # --- flag-down controller ----------------------------------------------------------------------
 DWELL_S = 15.0                     # minimum stop length
 LOOKAHEAD_M = 200.0                # a waiting commuter flags jeepneys within this distance
+OCCUPANCY_SAMPLE_S = 60            # run.py's event log: each jeepney's passengers, every this many seconds
 
 # --- trip outcomes (run.py -> runs/<date_time>/outcomes_day_<n>.json, Plan Part D.4) -------------
 # A trip is disrupted when it took at least DISRUPTION_RATIO times its estimate AND at least

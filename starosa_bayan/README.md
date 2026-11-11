@@ -103,7 +103,12 @@ python run.py --nogui              # headless: event log and summary
 python run.py --no-background      # without background cars and motorcycles (much faster)
 python run.py --end 36000          # stop at 10:00 (simulated seconds; default a whole day)
 python run.py --demand FILE --modes FILE   # another day's schedule and modes
+python run.py --additional FILE    # also load a SUMO additional file, e.g. speed changes
 ```
+
+Each run's folder holds the trip outcomes (`outcomes_day_<n>.json`) and the event log
+(`events.jsonl`): every jeepney stop, boarding, alighting and full pass-by, each commuter's
+state changes, and each jeepney's passengers every minute, as the manuscript's Sec. 4.4.2 asks.
 
 ## Files
 
@@ -116,7 +121,7 @@ python run.py --demand FILE --modes FILE   # another day's schedule and modes
 | `make_agents.py` | The LLM team's base agents in the area, a sample, homes in their barangays → `demand/agents.json` |
 | `make_choices.py` | Every way each trip of a schedule can be made (distance, time and its parts, cost) |
 | `convert_demand.py` | Checks a schedule and modes, and turns them into SUMO persons and vehicles |
-| `run.py` | Runs SUMO with the flag-down controller and writes `runs/<date_time>/`, with every trip's outcome |
+| `run.py` | Runs SUMO with the flag-down controller and writes `runs/<date_time>/`, with every trip's outcome and the event log |
 | `get_barangays.py` | Santa Rosa's 18 official barangay boundaries → `data/santa_rosa_barangays.geojson` and its provenance |
 | `make_map.py` | The study area (`data/area.geojson`), its OSM extract (`bayan.osm`) and network (`bayan.net.xml`) |
 | `netconvert.netccfg`, `typemap.typ.xml` | How `bayan.net.xml` is built from `bayan.osm` (bicycles allowed on trunk roads, urban speed limits, no SLEX) |

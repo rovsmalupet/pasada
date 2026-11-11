@@ -26,7 +26,19 @@ lines:
 
 The run covers a day (END_S) and stops early once every commuter is home. Each run writes
 runs/<date_time>/: the demand (above), the SUMO config, gui settings, tripinfo.xml,
-collisions.xml, summary.json and outcomes_day_<n>.json, so runs never overwrite each other.
+collisions.xml, stops.xml (SUMO's record of every vehicle stop), summary.json, events.jsonl and
+outcomes_day_<n>.json, so runs never overwrite each other.
+
+events.jsonl is the event log of the manuscript (Sec. 4.4.2.1-2): one JSON object per line, in
+time order, each with "t" (simulated seconds) and "event":
+  * jeepneys: stop (with until, dwell_s and who boarded and alighted), boarding, alighting,
+    full_pass_by, and occupancy (every OCCUPANCY_SAMPLE_S, each jeepney on the road);
+  * commuters: depart, waiting (at the roadside), flagdown, missed, vehicle_depart and
+    vehicle_arrive (their own car or bike), arrived.
+Changes SUMO made (departing, arriving, stopping, boarding, alighting) are stamped with the step
+they happened in, as in tripinfo.xml and the outcomes; TraCI reports them one step later. The
+controller's own decisions (flagdown, missed, full_pass_by) and the samples carry the time it
+made them.
 
 outcomes_day_<n>.json is what the LLM reflects on at the end of the day (Plan B.3 step 7, the trip
 outcome of Part D.4): one record per trip that departed, grouped by agent, with what happened
@@ -41,6 +53,7 @@ agents whose day was left out, with why.
     python run.py --end 36000        # stop at 10:00 (simulated seconds; default settings.END_S)
     python run.py --demand FILE      # another schedule (default settings.SCHEDULE_FILE), or one file with modes
     python run.py --modes FILE       # another modes file (default settings.MODES_FILE)
+    python run.py --additional FILE  # also load this SUMO additional file (repeatable), e.g. speed changes
 """
 
 import argparse
@@ -49,6 +62,7 @@ import sys
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from datetime import datetime
+from pathlib import Path
 
 import sumolib
 import traci
@@ -99,19 +113,20 @@ def load_trips(path):
     return trips
 
 
-def write_run_files(run_dir, end, background, lines, net, commuters_file):
+def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=()):
     routes = [S.GENERATED / "jeepney.rou.xml", commuters_file]
     if background:
         routes += [trips_file(v) for v in S.BACKGROUND_PER_HOUR]
     missing = [p.name for p in routes + [S.GENERATED / "vtypes.add.xml"] if not p.is_file()]
     if missing:
         raise SystemExit(f"Missing generated/{', generated/'.join(missing)}: run python build.py first")
+    additional = [S.GENERATED / "vtypes.add.xml", *extra]
     cfg = run_dir / "run.sumocfg"
     cfg.write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <input>
         <net-file value="{S.NET_FILE}"/>
-        <additional-files value="{S.GENERATED / 'vtypes.add.xml'}"/>
+        <additional-files value="{','.join(str(a) for a in additional)}"/>
         <route-files value="{','.join(str(r) for r in routes)}"/>
     </input>
     <time><begin value="0"/><end value="{end}"/><step-length value="1"/></time>
@@ -126,6 +141,8 @@ def write_run_files(run_dir, end, background, lines, net, commuters_file):
         <tripinfo-output value="tripinfo.xml"/>
         <tripinfo-output.write-unfinished value="true"/>
         <collision-output value="collisions.xml"/>
+        <stop-output value="stops.xml"/>
+        <stop-output.write-unfinished value="true"/>
     </output>
     <report><no-step-log value="true"/></report>
 </configuration>
@@ -199,7 +216,13 @@ def main():
     parser.add_argument("--demand", default=str(S.SCHEDULE_FILE),
                         help="the schedule (step 1), or one file with the modes in it (JSON)")
     parser.add_argument("--modes", default=str(S.MODES_FILE), help="the modes file (step 3)")
+    parser.add_argument("--additional", action="append", default=[],
+                        help="also load this SUMO additional file (repeatable), e.g. speed changes")
     args = parser.parse_args()
+    extra = [Path(a).resolve() for a in args.additional]
+    missing = [str(a) for a in extra if not a.is_file()]
+    if missing:
+        raise SystemExit(f"No additional file at {', '.join(missing)}")
 
     run_dir = S.RUNS / datetime.now().strftime("%Y-%m-%d_%H%M%S")
     run_dir.mkdir(parents=True)
@@ -221,7 +244,7 @@ def main():
     # where a commuter walking along their line's route may flag a jeepney (edge -> length)
     kerb = {line: {e.getID(): e.getLength() for e, _ in kerb_edges(net, r["edges"])} for line, r in lines.items()}
 
-    cfg, gui_settings = write_run_files(run_dir, args.end, not args.no_background, lines, net, commuters_file)
+    cfg, gui_settings = write_run_files(run_dir, args.end, not args.no_background, lines, net, commuters_file, extra)
     per_mode = Counter(t["mode"] for t in trip_info.values())
     agents = {t["agent_id"] for t in trip_info.values()}
     print(f"Run folder: {run_dir.relative_to(S.HERE).as_posix()} | {len(agents)} commuters, {len(trip_info)} "
@@ -244,6 +267,12 @@ def main():
     promised = Counter()
     done = 0                                         # commuter trips arrived
     t = 0.0                                          # the time the run has reached
+    events = []                                      # the event log (events.jsonl)
+    stopped = {}                                     # jeepney -> its stop under way (a "stop" event)
+    line_of = {}                                     # jeepney -> its line
+
+    def event(time, kind, **fields):
+        events.append({"t": int(time), "event": kind, **fields})
 
     def board_stop(c):
         return c["board_edge"], c["board_pos"], c["board_lane"]
@@ -279,6 +308,8 @@ def main():
                 if (veh, pid) not in full_logged:
                     full_logged.add((veh, pid))
                     log(t, f"FULL     {veh} passes {pid}")
+                    event(t, "full_pass_by", vehicle=veh, person=pid, edge=board[0], pos=board[1],
+                          aboard=traci.vehicle.getPersonNumber(veh), promised=promised[veh])
                 continue
             speed = traci.vehicle.getSpeed(veh)
             if dist <= speed * traci.vehicle.getTau(veh) + speed ** 2 / (2 * traci.vehicle.getDecel(veh)):
@@ -312,18 +343,31 @@ def main():
                 line = traci.vehicle.getLine(v)
                 if line in jeepneys:
                     jeepneys[line].add(v)
+                    line_of[v] = line
+                elif v.endswith("_veh") and v[:-4] in trips:          # a commuter's own car or bike
+                    event(t - 1, "vehicle_depart", vehicle=v, person=v[:-4])
             for i in traci.simulation.getDepartedPersonIDList():
                 if i in trips:
                     trips[i]["depart"] = t
+                    event(t - 1, "depart", person=i, mode=trip_info[i]["mode"])
             for v in traci.simulation.getArrivedIDList():
                 for vs in jeepneys.values():
                     vs.discard(v)
+                if v.endswith("_veh") and v[:-4] in trips:
+                    event(t - 1, "vehicle_arrive", vehicle=v, person=v[:-4])
             for i in traci.simulation.getArrivedPersonIDList():
                 if i in trips:
                     trips[i]["arrive"] = t
                     done += 1
+                    event(t - 1, "arrived", person=i)
                     if trip_info[i]["mode"] != "jeepney":
                         log(t, f"ARRIVED  {i} ({trip_info[i]['mode']}, {(t - trips[i]['depart']) / 60:.1f} min)")
+            # jeepneys stop only where run.py booked a stop, so ask SUMO only while one is booked
+            for v in traci.simulation.getStopStartingVehiclesIDList() if stop_users else ():
+                if v in line_of:
+                    stopped[v] = {"t": int(t - 1), "event": "stop", "vehicle": v, "line": line_of[v],
+                                  "edge": traci.vehicle.getRoadID(v), "pos": round(traci.vehicle.getLanePosition(v), 1),
+                                  "until": None, "dwell_s": None, "boarded": [], "alighted": []}
             persons = set(traci.person.getIDList())
 
             # --- 1. person state: at the roadside, boarded, alighted, arrived ---
@@ -336,12 +380,17 @@ def main():
                     if "kerb" not in times[pid] and traci.person.getStage(pid).type == tc.STAGE_DRIVING:
                         times[pid]["kerb"] = t
                         log(t, f"WAITING  {pid} at {c['board_edge']}@{c['board_pos']}")
+                        event(t - 1, "waiting", person=pid, line=c["line"], edge=c["board_edge"], pos=c["board_pos"])
                     continue
                 waiting.pop(pid)
                 riding[pid] = veh
                 times[pid].setdefault("kerb", t)
                 times[pid].update(board=t, veh=veh)
-                log(t, f"BOARDED  {pid} -> {veh} ({traci.vehicle.getPersonNumber(veh)}/{seats(veh)} aboard)")
+                aboard = traci.vehicle.getPersonNumber(veh)
+                log(t, f"BOARDED  {pid} -> {veh} ({aboard}/{seats(veh)} aboard)")
+                event(t - 1, "boarding", vehicle=veh, person=pid, edge=c["board_edge"], pos=c["board_pos"], aboard=aboard)
+                if veh in stopped:
+                    stopped[veh]["boarded"].append(pid)
                 flagged = assigned.pop(pid, None)
                 if flagged == veh:
                     release_stop(stop_users, veh, *board_stop(c), pid, cancel=False)
@@ -357,13 +406,22 @@ def main():
                 if pid in persons and traci.person.getVehicle(pid):
                     continue
                 veh = riding.pop(pid)
-                release_stop(stop_users, veh, *alight_stop(commuters[pid]), pid, cancel=False)
+                c = commuters[pid]
+                release_stop(stop_users, veh, *alight_stop(c), pid, cancel=False)
                 times[pid]["alight"] = t
                 log(t, f"ALIGHTED {pid} from {veh}")
+                event(t - 1, "alighting", vehicle=veh, person=pid, edge=c["alight_edge"], pos=c["alight_pos"])
+                if veh in stopped:
+                    stopped[veh]["alighted"].append(pid)
             for pid in traci.simulation.getArrivedPersonIDList():
                 if pid in times:
                     times[pid]["arrive"] = t
                     log(t, f"ARRIVED  {pid}")
+            for v in traci.simulation.getStopEndingVehiclesIDList() if stopped else ():   # after boarding: it happens during the stop
+                if v in stopped:
+                    stop = stopped.pop(v)
+                    stop.update(until=int(t - 1), dwell_s=int(t - 1) - stop["t"])
+                    events.append(stop)
 
             # --- 2. flag-downs ---
             promised = Counter(assigned.values())
@@ -378,6 +436,9 @@ def main():
                     c["board_edge"], c["board_pos"], c["board_lane"] = spot
                     times[pid]["kerb"] = t
                     log(t, f"FLAGDOWN {pid} flags {veh} while walking ({dist:.0f} m away)")
+                    event(t - 1, "waiting", person=pid, line=c["line"], edge=spot[0], pos=spot[1])
+                    event(t, "flagdown", person=pid, vehicle=veh, edge=spot[0], pos=spot[1], distance_m=round(dist),
+                          walking=True)
                     continue
                 if pid in assigned:
                     veh = assigned[pid]
@@ -388,16 +449,31 @@ def main():
                     release_stop(stop_users, veh, *board_stop(c), pid, cancel=False)
                     release_stop(stop_users, veh, *alight_stop(c), pid, cancel=True)
                     log(t, f"MISSED   {veh} passed {pid}; flagging the next one")
+                    event(t, "missed", person=pid, vehicle=veh)
                 flagged = flag(pid, c, board_stop(c), t)
                 if flagged:
                     log(t, f"FLAGDOWN {pid} flags {flagged[0]} ({flagged[1]:.0f} m away)")
+                    event(t, "flagdown", person=pid, vehicle=flagged[0], edge=c["board_edge"], pos=c["board_pos"],
+                          distance_m=round(flagged[1]), walking=False)
+
+            # --- 3. occupancy samples ---
+            if int(t) % S.OCCUPANCY_SAMPLE_S == 0:
+                for line, vs in jeepneys.items():
+                    for v in sorted(vs):
+                        event(t, "occupancy", vehicle=v, line=line, persons=traci.vehicle.getPersonNumber(v),
+                              edge=traci.vehicle.getRoadID(v), pos=round(traci.vehicle.getLanePosition(v), 1))
     except traci.FatalTraCIError:
         closed = True
         print("\nsumo-gui was closed - stopping early.")
     if done == len(trips) and not closed:
         log(traci.simulation.getTime(), "every commuter is home: stopping")
+    events += stopped.values()                       # stops still under way: until null
+    events.sort(key=lambda e: e["t"])                # stable: same-second events keep their order
+    with open(run_dir / "events.jsonl", "w", encoding="utf-8") as f:
+        f.writelines(json.dumps(e, ensure_ascii=False) + "\n" for e in events)
 
     summary = summarise(commuters, times, lines, teleports, len(collisions))
+    summary["events"] = dict(Counter(e["event"] for e in events))
     summary["modes"] = summarise_modes(trip_info, trips, t)
     passes = Counter(pid for _, pid in full_logged)          # full jeepneys that passed each commuter
     summary["outcomes"] = write_outcomes(run_dir, day, records, trips, times, passes, left_out, t,
