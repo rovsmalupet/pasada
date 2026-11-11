@@ -66,7 +66,7 @@ def fake(system, prompt, max_new_tokens=0):
         h = block(prompt, "Your usual travel routine:\n")
         others = [f["place"] for f in h["frequent_places"][1:]]
         if "Other kinds of place you could go to today" in prompt and rng.random() < 0.4:
-            listed = block(prompt, "straight-line distance from your home):\n")
+            listed = block(prompt, "Other kinds of place you could go to today:\n")
             if listed:
                 others = [listed[0]["place"]]
                 CALLS["other_place"] = CALLS.get("other_place", 0) + 1
@@ -114,8 +114,11 @@ def run_and_check(task, day, check):
     keep = out.with_suffix(".orig")
     shutil.move(out, keep)
     inp = abm / "demand" / "llm_inputs" / (f"{task}_input.json" if day is None else f"{task}_input_day_{day}.json")
-    ok = A.run_task(task, day, inp, out, "llama")
-    assert ok, f"{task} {day} did not finish"
+    for attempt in range(10):          # like the real runner: run again to retry the agents that failed
+        if A.run_task(task, day, inp, out, "llama"):
+            break
+    else:
+        raise AssertionError(f"{task} {day} did not finish")
     ans = json.loads(out.read_text())
     errors = check(ans)
     print(f"--> {task} day {day}: {len(ans['agents'])} agents, simulation's own check: "

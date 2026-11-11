@@ -35,6 +35,7 @@ def home_id(aid):
 # is always the same place for an agent, so "work at healthcare" is the same clinic every day.
 HOME = "home"
 _CACHE = {}
+NOTES = []                         # what the simulation side decided for an answer (logged by answer.py)
 
 
 def _json(name):
@@ -61,6 +62,41 @@ def offered_places(aid):
                                                             key=lambda l: l.get("distance_m") or 0)
                              for a in data["agents"]}
     return _CACHE["offered"].get(aid, [])
+
+
+def _coords(aid, lid):
+    if "coords" not in _CACHE:
+        data = _json("agents.json") or {}
+        c = {l["location_id"]: (l["lat"], l["lon"]) for l in data.get("locations", [])}
+        c.update({a["home_id"]: (a["home"]["lat"], a["home"]["lon"]) for a in data.get("agents", []) if a.get("home")})
+        _CACHE["coords"] = c
+    return _CACHE["coords"].get(lid)
+
+
+def _km(a, b):
+    import math
+    if a is None or b is None:
+        return 0.0
+    f1, f2 = math.radians(a[0]), math.radians(b[0])
+    h = math.sin((f2 - f1) / 2) ** 2 + math.cos(f1) * math.cos(f2) * math.sin(math.radians(b[1] - a[1]) / 2) ** 2
+    return 2 * 6371 * math.asin(math.sqrt(h))
+
+
+def resolve(aid, kind, activity, from_lid, places):
+    """INTEGRATION (v0.3-abm7): which place a kind means for this trip, decided on the simulation
+    side: the place of that kind NEAREST TO WHERE THE AGENT IS COMING FROM (straight line), among
+    the places the agent can reach and come back from (`places`, the habits step's options). If
+    there is none of that kind, the nearest such place where the same activity can happen.
+    Returns (location, note) or (None, None)."""
+    here = _coords(aid, from_lid)
+    same = [l for l in places if l["category"] == kind]
+    if same:
+        return min(same, key=lambda l: _km(here, _coords(aid, l["location_id"]))), None
+    alike = [l for l in places if l["category"] in C.ACTIVITIES.get(activity, ())]
+    if not alike:
+        return None, None
+    l = min(alike, key=lambda x: _km(here, _coords(aid, x["location_id"])))
+    return l, f"{aid}: no reachable {kind}; {activity} at the nearest reachable {l['category']} instead"
 
 
 def nearest_by_category(places):
@@ -227,12 +263,16 @@ def persona_answer(text, entry, head):
 
 
 # --------------------------------------------------------------------- 2. habits
+def all_kinds():
+    """Every kind of place in the study area (the categories the activities can happen at)."""
+    return sorted({c for cats in C.ACTIVITIES.values() for c in cats})
+
+
 def habits_locations(entry):
-    """The place options: home, then each category the agent can reach, with its nearest place."""
-    near = nearest_by_category(entry["activity_locations"])
-    return [{"place": HOME}] + [{"place": cat, "nearest_distance_m": l.get("distance_m"),
-                                 "reachable_by": [C.TO_PROMPT_MODE[m] for m in l.get("reachable_by", [])]}
-                                for cat, l in sorted(near.items(), key=lambda kv: kv[1].get("distance_m") or 0)]
+    """INTEGRATION (v0.3-abm6): the place options are home and every kind of place in the study
+    area, with no distance and no reachability: the agent decides what kind of place it goes to,
+    the simulation decides which one (the nearest it can reach) and how (team decision 2026-11-11)."""
+    return [{"place": HOME}] + [{"place": k} for k in all_kinds()]
 
 
 def habits_prompt_of(entry, head):
@@ -297,23 +337,21 @@ def habits_answer(text, entry, head):
     if not isinstance(trips, list) or not trips:
         return None, ["no recurring trips"]
     near = nearest_by_category(entry["activity_locations"])
-    offered = {l["location_id"]: l for l in near.values()}
-
-    def to_id(place):                          # a category -> the agent's nearest place of it
-        w = place_word(place)
-        return home if w in (HOME, home.lower()) else near[w]["location_id"] if w in near else None
-
+    kinds = set(all_kinds())
     problems = []
-    roles = {}
+
+    def kind_of(place):
+        w = place_word(place)
+        return HOME if w in (HOME, home.lower()) else w
+
+    # 1. what the model said: the kind of each place, and what it does there
+    words = {}                                 # kind -> words for the activity (roles, trip purposes)
     for f in h.get("frequent_locations") or []:
-        if not isinstance(f, dict):
-            continue
-        lid = to_id(f.get("place", f.get("location_id")))
-        if lid is None:
-            problems.append(f"unknown place {f.get('place', f.get('location_id'))!r} (use one of the place options)")
-        elif lid != home:
-            roles.setdefault(lid, []).append(f.get("role"))
-    out_trips, used, keys = [], {}, set()
+        if isinstance(f, dict):
+            k = kind_of(f.get("place", f.get("location_id")))
+            if k != HOME:
+                words.setdefault(k, []).append(f.get("role"))
+    raw_trips = []
     for i, t in enumerate(trips):
         if not isinstance(t, dict):
             problems.append(f"trip {i + 1} is not an object")
@@ -324,21 +362,62 @@ def habits_answer(text, entry, head):
         if missing:
             problems.append(f"{tid} missing " + ", ".join(missing))
             continue
+        o, d = kind_of(t["origin"]), kind_of(t["destination"])
+        for k in (o, d):
+            if k != HOME and k not in kinds:
+                problems.append(f"{tid}: unknown place {k!r} (use one of the place options)")
+        if d != HOME:
+            words.setdefault(d, []).append(t["trip_purpose"])
+        if o != HOME:
+            words.setdefault(o, [])
+        raw_trips.append((tid, o, d, t))
+    unknown = [k for k in words if k not in kinds]
+    for k in unknown:
+        if not any(k in p for p in problems):
+            problems.append(f"unknown place {k!r} (use one of the place options)")
+    if problems:
+        return None, problems
+
+    # 2. where, decided by the simulation side (v0.3-abm7): trips in order of departure; a kind's place
+    # is the one nearest to the origin of the first trip that goes there, and stays that place
+    activity_of_kind = {k: activity_for(w, k, agent) for k, w in words.items()}
+    place_of_kind = {}
+
+    def place(k, from_lid):
+        if k == HOME or k in place_of_kind:
+            return
+        l, note = resolve(aid, k, activity_of_kind[k], from_lid, entry["activity_locations"])
+        if l is None:
+            problems.append(f"no place for {activity_of_kind[k]} ({k} or similar) that this agent can reach")
+            return
+        place_of_kind[k] = l
+        if note:
+            NOTES.append(note)
+
+    for tid, o, d, t in sorted(raw_trips, key=lambda r: clock(r[3]["usual_departure_time"])):
+        place(o, home)                             # an origin met first: from home
+        if o == HOME or o in place_of_kind:
+            place(d, home if o == HOME else place_of_kind[o]["location_id"])
+    for k in activity_of_kind:                     # a frequent place with no trip: from home
+        place(k, home)
+    if problems:
+        return None, problems
+
+    def to_id(k):
+        return home if k == HOME else place_of_kind[k]["location_id"]
+
+    activity = {}
+    for k, l in place_of_kind.items():
+        activity.setdefault(l["location_id"], activity_of_kind[k])
+    out_trips, keys = [], set()
+    for tid, o, d, t in raw_trips:
         if tid in keys:
             problems.append(f"{tid}: trip_id used twice")
         keys.add(tid)
-        for end in ("origin", "destination"):
-            lid = to_id(t[end])
-            if lid is None:
-                problems.append(f"{tid}: unknown place {t[end]!r} (use one of the place options)")
-            t[end] = lid
-        if t["origin"] == t["destination"]:
-            problems.append(f"{tid}: origin and destination are the same")
-        if t["destination"] in offered:
-            used.setdefault(t["destination"], []).append(t["trip_purpose"])
-        if t["origin"] in offered:
-            used.setdefault(t["origin"], [])
-        days = [day_of(d) for d in t["travel_days"]] if isinstance(t["travel_days"], list) else [None]
+        origin, destination = to_id(o), to_id(d)
+        if origin == destination:
+            problems.append(f"{tid}: origin and destination are the same place")
+        days = [day_of(x) for x in t["travel_days"]] if isinstance(t["travel_days"], list) else [None]
         if not days or None in days or len(set(days)) != len(days):
             problems.append(f"{tid}: travel_days must be different days of the week")
         dep = clock(t["usual_departure_time"])
@@ -346,13 +425,11 @@ def habits_answer(text, entry, head):
             problems.append(f"{tid} time {t['usual_departure_time']!r} is not HH:MM")
         weights, more = weight_problems(tid, t["mode_preference_weights"], entry["usable_modes"])
         problems += more
-        out_trips.append({"trip_key": tid, "origin": t["origin"], "destination": t["destination"],
+        out_trips.append({"trip_key": tid, "origin": origin, "destination": destination,
                           "purpose": None, "days": days, "usual_departure": dep,
                           "mode_preference_weights": weights})
     if problems:
         return None, problems
-    activity = {lid: activity_for(roles.get(lid, []) + used.get(lid, []), offered[lid]["category"], agent)
-                for lid in list(roles) + [u for u in used if u not in roles]}
     for t in out_trips:
         t["purpose"] = "home" if t["destination"] == home else activity[t["destination"]]
     for day in C.WEEKDAYS:                     # each day's trips: a round from home back home
@@ -400,9 +477,7 @@ def other_places(entry):
     """INTEGRATION (v0.3-abm4/5): the categories besides the frequent ones that the schedule may
     use, each with its nearest reachable place's distance (habits_input.json)."""
     frequent = {f["category"] for f in entry["frequent_locations"]}
-    return [{"place": cat, "nearest_distance_m": l.get("distance_m")}
-            for cat, l in sorted(nearest_by_category(offered_places(entry["agent"]["agent_id"])).items(),
-                                 key=lambda kv: kv[1].get("distance_m") or 0) if cat not in frequent]
+    return [{"place": k} for k in all_kinds() if k not in frequent]   # v0.3-abm6: no distances
 
 
 def schedule_prompt_of(entry, head):
@@ -423,16 +498,33 @@ def schedule_answer(text, entry, head):
     if not isinstance(items, list) or not items or not all(isinstance(i, dict) for i in items):
         return None, ["no schedule"]
     activity = {f["location_id"]: f["activity"] for f in entry["frequent_locations"]}
-    places = schedule_places(entry)
-    problems = []
+    frequent = {f["category"]: f["location_id"] for f in entry["frequent_locations"]}   # the habit's places
+    today, prev, problems = {}, home, []
     for i, it in enumerate(items):
         w = place_word(it.get("place", it.get("location_id")))
-        lid = home if w in (HOME, home.lower()) else places.get(w)
-        it["location_id"] = lid
-        if lid is None:
+        if w in (HOME, home.lower()):
+            lid = home
+        elif w in frequent:
+            lid = frequent[w]
+        elif w in today:
+            lid = today[w]
+        elif w in all_kinds():                 # another kind of place: nearest to where they are (v0.3-abm7)
+            act = activity_for([it.get("trip_purpose"), it.get("activity")], w, agent)
+            l, note = resolve(aid, w, act, prev, offered_places(aid))
+            if l is None:
+                problems.append(f"entry {i + 1}: no place for {act} ({w} or similar) this agent can reach")
+                lid = None
+            else:
+                lid = today[w] = l["location_id"]
+                activity.setdefault(lid, act)
+                if note:
+                    NOTES.append(note)
+        else:
             problems.append(f"entry {i + 1}: {it.get('place')!r} is not home or one of the listed places")
-        elif lid != home and lid not in activity:          # a category besides the frequent ones
-            activity[lid] = activity_for([it.get("trip_purpose"), it.get("activity")], w, agent)
+            lid = None
+        it["location_id"] = lid
+        if lid is not None:
+            prev = lid
         for key in ("start_time", "end_time"):
             if key in it and it[key] not in (None, "") and not HHMM.match(clock(it[key])):
                 problems.append(f"entry {i + 1}: {key} {it[key]!r} is not HH:MM")

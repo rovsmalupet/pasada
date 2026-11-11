@@ -75,7 +75,7 @@ Slower (each hand-off waits up to about a minute each way), but sumo-gui can be 
 version, prompt, raw answer, problems found and seconds. The regeneration rate and the time per
 answer of Sec. 4.3.9 come from these.
 
-## What differs from the evaluated prompts (prompt v0.3-abm5)
+## What differs from the evaluated prompts (prompt v0.3-abm7)
 
 Every change is marked `INTEGRATION` in `prompts.py`. They are only what the simulation needs:
 
@@ -110,6 +110,20 @@ line from home) among the places it can reach and leave (the habits step's optio
 is always the same place for that agent. Work may be at any category (`settings.ACTIVITIES`, which
 the bridge reads, so both sides share one list); `personal` (errands, check-ups, church) is a new
 activity at healthcare, services and worship places. The schedule may use any listed category.
+
+**Since v0.3-abm6 (2026-11-11): the LLM does not know where places are.** The habits and schedule
+prompts list every kind of place in the study area, with no distance and no reachability. The
+simulation side decides where: the nearest place of that kind the agent can reach and come back from
+(the walking, cycling and jeepney limits in `starosa_bayan/settings.py`). If the agent can reach no
+place of that kind, it goes to the nearest reachable place where the same activity can happen
+(shopping at a market instead of a shop); only if there is none is the answer regenerated. Every
+such substitution is logged (`simulation_notes` in `demand/llm_logs/*.attempts.jsonl`).
+
+**Since v0.3-abm7 (2026-11-11, no prompt change): nearest to where the trip starts.** A kind of
+place resolves to the place of that kind nearest to the trip's origin (straight line), not always to
+home: work then market goes to the market nearest the workplace. Habits resolve in order of departure
+and a kind keeps its place for that agent (the same market every day). In a day schedule, the
+habit's places are kept, and any other kind resolves to the place nearest to the stay before.
 
 Turning one format into the other is only renaming (mode, day and field names). Where the model's
 words for an activity do not fit the place's category, the category's own activity is used (a

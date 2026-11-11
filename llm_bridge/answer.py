@@ -107,14 +107,17 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
         start = time.time()
         texts = M.ask_batch(SYSTEM, [q["prompt"] for q in batch], max(q["max_tokens"] for q in batch))
         seconds = round(time.time() - start, 1)
+        from . import tasks as T
         for q, text in zip(batch, texts):
             q["try"] += 1
+            T.NOTES.clear()
             result, problems = convert(text, q["entry"], head)
+            notes = list(T.NOTES)
             with attempts_path.open("a", encoding="utf-8") as f:
                 f.write(json.dumps({"agent_id": q["aid"], "task": task, "day": day, "model": model_name,
                                     "prompt_version": C.PROMPT_VERSION, "try": q["try"], "batch_size": len(batch),
                                     "batch_seconds": seconds, "passes": result is not None,
-                                    "problems": problems, "prompt": q["prompt"], "output": text,
+                                    "problems": problems, "simulation_notes": notes, "prompt": q["prompt"], "output": text,
                                     "time": datetime.now().isoformat(timespec="seconds")}, ensure_ascii=False) + "\n")
             print(f"{task} | {q['aid']} | try {q['try']}/{C.MAX_TRIES} | "
                   f"{'passes' if result else 'FAILS: ' + '; '.join(problems)[:150]}", flush=True)

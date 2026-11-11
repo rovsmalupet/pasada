@@ -113,11 +113,7 @@ def habits_prompt(commuter, locations, modes):
             + JEEPNEY_CONTEXT +
             # INTEGRATION (v0.3-abm5): places are categories; the simulation uses the nearest one
             "Every place must be one of the place options and can not be anything else: \"home\" "
-            "is your home, and every other option is a kind of place. You go to the nearest place "
-            "of that kind.\n"
-            "nearest_distance_m is the straight-line distance from your home to the nearest place of "
-            "that kind in metres, and reachable_by lists the transport modes that can take you there "
-            "and back.\n"
+            "is your home, and every other option is a kind of place in Santa Rosa.\n"
             "You can work at any kind of place (for example an office, a shop, a market, a school, a "
             "healthcare place, or a mall), go to school at a school, shop at a market, shop or mall, "
             "spend leisure time at a mall, recreation or food place, and do personal errands at "
@@ -161,9 +157,8 @@ def schedule_prompt(commuter, habits, travel_experience, context, other_places=N
             "Your significant travel experiences from previous days:\n" + experience + "\n"
             "Today:\n" + J(context) + "\n"
             # INTEGRATION (v0.3-abm4): places besides the frequent ones
-            + ("Other kinds of place you could go to today (you go to the nearest one; "
-               "nearest_distance_m is its straight-line distance from your home):\n"
-               + J(other_places) + "\n" if other_places else "")
+            + ("Other kinds of place you could go to today:\n" + J(other_places) + "\n"
+               if other_places else "")
             + "Write in broad strokes what you are doing during the day. Start the day at home "
             "and end the day at home. Follow your usual routine for this day of the week, but "
             "you may vary it reasonably because of your previous travel experiences or "
