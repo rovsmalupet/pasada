@@ -2,14 +2,14 @@
   "made_by": "validation/make_cases.py (scripted test agents, no LLM)",
   "about": "What each test case is for, and what validate.py expects of each trip (expect_disrupted: true, false, or null when not checked).",
   "network": {
-    "edges": 10305,
+    "edges": 10424,
     "lines": {
-      "N1_N": 3066.5,
-      "N1_S": 3066.5,
-      "RIZ-FRS_N": 4885.7,
-      "RIZ-FRS_S": 4801.0,
-      "RIZ-N1_N": 3981.4,
-      "RIZ-N1_S": 4005.1
+      "N1_N": 6433.2,
+      "N1_S": 6469.1,
+      "RIZ-FRS_N": 7622.5,
+      "RIZ-FRS_S": 7533.9,
+      "RIZ-N1_N": 6595.4,
+      "RIZ-N1_S": 6655.0
     }
   },
   "cases": {
@@ -44,23 +44,23 @@
         "V_CAP_P2",
         "V_CAP_P3"
       ],
-      "drop_off": "LOC_0114",
+      "drop_off": "LOC_0002",
       "group_spot": {
-        "edge": "-92878383#9",
-        "pos": 105.2,
-        "route_offset_m": 2054,
-        "walk_m": 96
+        "edge": "309494388#0",
+        "pos": 52.7,
+        "route_offset_m": 2064,
+        "walk_m": 99
       },
       "probe_spot": {
-        "edge": "-90551784#4",
+        "edge": "-145507700#7",
         "pos": 10.0,
-        "route_offset_m": 2698,
-        "walk_m": 43
+        "route_offset_m": 2666,
+        "walk_m": 67
       },
       "drop_off_spot": {
-        "edge": "-33299084#3",
-        "pos": 59.8,
-        "route_offset_m": 3321
+        "edge": "-39469992#3",
+        "pos": 10.0,
+        "route_offset_m": 3272
       }
     },
     "line": {
@@ -70,82 +70,70 @@
         "back": "N1_S",
         "place": "LOC_1375",
         "ride_m": [
-          2298,
-          2298
+          2470,
+          2490
         ]
       },
       "RIZ-FRS": {
         "agent_id": "V_LINE_RIZ-FRS",
         "out": "RIZ-FRS_N",
         "back": "RIZ-FRS_S",
-        "place": "LOC_1382",
+        "place": "LOC_1369",
         "ride_m": [
-          4658,
-          4523
+          4602,
+          4487
         ]
       },
       "RIZ-N1": {
         "agent_id": "V_LINE_RIZ-N1",
         "out": "RIZ-N1_N",
         "back": "RIZ-N1_S",
-        "place": "LOC_1382",
+        "place": "LOC_1369",
         "ride_m": [
-          3287,
-          3176
+          3373,
+          3417
         ]
       }
     },
     "walk": {
       "agent_id": "V_WALK",
-      "place": "LOC_0822",
+      "place": "LOC_1332",
       "walk_m": [
-        619,
-        619
+        614,
+        614
       ]
     },
     "bike": {
       "agent_id": "V_BIKE",
-      "place": "LOC_1305",
+      "place": "LOC_0719",
       "ride_m": [
-        1598,
-        1693
+        2022,
+        1738
       ]
     },
     "car": {
       "agent_id": "V_CAR",
-      "place": "LOC_0483",
+      "place": "LOC_1130",
       "drive_m": [
-        2302,
-        1924
+        2807,
+        2822
       ]
     },
     "delayed": {
       "agent_id": "V_DELAY",
       "trip_id": "V_DELAY_D01_T01",
-      "place": "LOC_0772",
-      "drive_m": 4521,
-      "estimate_s": 748,
+      "place": "LOC_0219",
+      "drive_m": 2397,
+      "estimate_s": 501,
       "slow_edges": [
-        "-185601452#3",
-        "-185601452#2",
-        "-185601452#0",
-        "-1085449252",
-        "-1085449253",
-        "32083295#0",
-        "32083295#1"
+        "-90546150#0"
       ],
       "slow_lanes": [
-        "-185601452#3_1",
-        "-185601452#2_1",
-        "-185601452#0_1",
-        "-1085449252_1",
-        "-1085449253_1",
-        "32083295#0_1",
-        "32083295#1_1"
+        "-90546150#0_1"
       ],
-      "slow_length_m": 711,
-      "slow_speed_ms": 0.58,
-      "added_s": 1140
+      "slow_length_m": 506,
+      "slow_speed_ms": 0.52,
+      "added_s": 912
     }
   },
   "trips": {
