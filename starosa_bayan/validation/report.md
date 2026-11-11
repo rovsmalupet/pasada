@@ -1,6 +1,6 @@
 # Simulation validation: PASS
 
-Scripted test agents (manuscript Sec. 4.4.3.3), run `runs/2026-11-12_033608`, 2026-11-12 03:36, 79 s. Made by `python validation/validate.py`.
+Scripted test agents (manuscript Sec. 4.4.3.3), run `runs/2026-11-12_042015`, 2026-11-12 04:21, 116 s. Made by `python validation/validate.py`.
 
 Test day: 32 agents, 38 trips, no background traffic (`validation/cases/`, from `make_cases.py`).
 
@@ -18,23 +18,23 @@ Test day: 32 agents, 38 trips, no background traffic (`validation/cases/`, from 
 - PASS: every activity location reachable on foot from LOC_0421 (the most central) and back
 - PASS: 32 test agents' homes on a home street within HOME_SNAP_M and reachable on foot both ways
 - PASS: 100 demand/ agents' homes on a home street within HOME_SNAP_M and reachable on foot both ways
-- PASS: line N1_N: 94 edges, 6.43 km, continuous for bus; 47 edges people can wait on
-- PASS: line N1_S: 94 edges, 6.47 km, continuous for bus; 47 edges people can wait on
-- PASS: line RIZ-FRS_N: 124 edges, 7.62 km, continuous for bus; 70 edges people can wait on
-- PASS: line RIZ-FRS_S: 119 edges, 7.53 km, continuous for bus; 66 edges people can wait on
-- PASS: line RIZ-N1_N: 93 edges, 6.60 km, continuous for bus; 55 edges people can wait on
-- PASS: line RIZ-N1_S: 94 edges, 6.66 km, continuous for bus; 55 edges people can wait on
+- PASS: line N1_N: 80 edges, 3.94 km, continuous for bus; 39 edges people can wait on
+- PASS: line N1_S: 80 edges, 3.94 km, continuous for bus; 39 edges people can wait on
+- PASS: line RIZ-FRS_N: 123 edges, 6.54 km, continuous for bus; 69 edges people can wait on
+- PASS: line RIZ-FRS_S: 118 edges, 6.45 km, continuous for bus; 65 edges people can wait on
+- PASS: line RIZ-N1_N: 82 edges, 4.83 km, continuous for bus; 48 edges people can wait on
+- PASS: line RIZ-N1_S: 83 edges, 4.86 km, continuous for bus; 48 edges people can wait on
 - PASS: all 38 scripted trips offered their mode (and line) by make_choices.py
 - PASS: 31 jeepney trips board and alight on their line's edges, 10 m clear of the ends
 
 ## 2. Jeepney operation: PASS
 
-- PASS: 224 jeepneys finished their whole route (N1_N 38, N1_S 38, RIZ-FRS_N 37, RIZ-FRS_S 37, RIZ-N1_N 37, RIZ-N1_S 37): from the line's first edge to its last, never rerouted, driven length within 1 m of the line's edges and junctions (N1_N 7363 m, N1_S 7367 m, RIZ-FRS_N 9016 m, RIZ-FRS_S 8871 m, RIZ-N1_N 7642 m, RIZ-N1_S 7697 m)
+- PASS: 232 jeepneys finished their whole route (N1_N 39, N1_S 39, RIZ-FRS_N 38, RIZ-FRS_S 38, RIZ-N1_N 39, RIZ-N1_S 39): from the line's first edge to its last, never rerouted, driven length within 1 m of the line's edges and junctions, by the lanes it may take (N1_N 4722 m, N1_S 4719 m, RIZ-FRS_N 7885 m, RIZ-FRS_S 7740 m, RIZ-N1_N 5763 m, RIZ-N1_S 5811 m)
 - PASS: 16 jeepney stops (SUMO's stops.xml), every one with someone getting on or off
 - PASS: every stop lasts at least DWELL_S (15 s) and boardingDuration (2 s) per person boarding; the busiest: 22 on, 0 off, 44 s
 - PASS: no jeepney ever carried more than personCapacity (22): at most 22 aboard
 - PASS: capacity case: the 22 agents at one spot of RIZ-FRS_N all boarded one jeepney (RIZ-FRS_N.0), 22 aboard: full
-- PASS: capacity case: the full jeepney passed the 3 agents waiting further on without stopping, logged as full_pass_by (and counted in their outcomes); a later one took them: V_CAP_P1: passed by RIZ-FRS_N.0 at 312 s, boarded RIZ-FRS_N.1 at 595 s; V_CAP_P2: passed by RIZ-FRS_N.0 at 312 s, boarded RIZ-FRS_N.1 at 596 s; V_CAP_P3: passed by RIZ-FRS_N.0 at 312 s, boarded RIZ-FRS_N.1 at 598 s
+- PASS: capacity case: the full jeepney passed the 3 agents waiting further on without stopping, logged as full_pass_by (and counted in their outcomes); a later one took them: V_CAP_P1: passed by RIZ-FRS_N.0 at 453 s, boarded RIZ-FRS_N.1 at 669 s; V_CAP_P2: passed by RIZ-FRS_N.0 at 453 s, boarded RIZ-FRS_N.1 at 670 s; V_CAP_P3: passed by RIZ-FRS_N.0 at 453 s, boarded RIZ-FRS_N.1 at 672 s
 - PASS: event log: 16 stop events for SUMO's 16 stops, each with its times (within 1 s) and the people who got on and off
 - PASS: event log: all 62 boardings and alightings happened during a stop of that jeepney, at the person's spot
 
@@ -45,9 +45,9 @@ Test day: 32 agents, 38 trips, no background traffic (`validation/cases/`, from 
 
 ## 4. Disruption detection: PASS
 
-- PASS: the delayed trip's route still runs over the 1 slowed edges (506 m at 0.52 m/s)
-- PASS: V_DELAY_D01_T01 (delayed, slowed on purpose) is disrupted: 1630 s against an estimate of 501 s; took 3.3x the estimate (19 min longer)
-- PASS: the 12 trips expected normal (line, walk, bike, car cases) are not disrupted: delay ratios 0.87-1.60
+- PASS: the delayed trip's route still runs over the 7 slowed edges (711 m at 0.58 m/s)
+- PASS: V_DELAY_D01_T01 (delayed, slowed on purpose) is disrupted: 2138 s against an estimate of 748 s; took 2.9x the estimate (23 min longer)
+- PASS: the 12 trips expected normal (line, walk, bike, car cases) are not disrupted: delay ratios 0.80-1.54
 
 ## 5. Record completeness: PASS
 

@@ -193,8 +193,8 @@ def check_offers(check, cases, choices, persons, kerbs):
 
 
 def junction_length(net, a, b):
-    """Metres through the junction from edge a into edge b: its internal lanes (the shortest
-    connection, if there are several)."""
+    """(shortest, longest) metres through the junction from edge a into edge b: its internal
+    lanes, over the lane connections there are."""
     lengths = []
     for conn in net.getEdge(a).getConnections(net.getEdge(b)):
         length, via = 0.0, conn.getViaLaneID()
@@ -203,7 +203,7 @@ def junction_length(net, a, b):
             length += lane.getLength()
             via = next((c.getViaLaneID() for c in lane.getOutgoing() if c.getViaLaneID()), None)
         lengths.append(length)
-    return min(lengths, default=0.0)
+    return min(lengths, default=0.0), max(lengths, default=0.0)
 
 
 def check_jeepneys(check, cases, lines, events, stops, tripinfo, outcomes, persons):
@@ -211,21 +211,26 @@ def check_jeepneys(check, cases, lines, events, stops, tripinfo, outcomes, perso
     boarding_s = float(S.JEEPNEY["boardingDuration"])
     # route following: SUMO's routeLength counts the junctions too, and starts at the jeepney's front
     net = sumolib.net.readNet(str(S.NET_FILE), withInternal=True)
-    expected = {line: r["length_m"] + sum(junction_length(net, a, b) for a, b in zip(r["edges"], r["edges"][1:]))
-                - float(S.JEEPNEY["length"]) for line, r in lines.items()}
+    expected = {}                      # line -> (shortest, longest) driven length, by the lanes it may take
+    for line, r in lines.items():
+        through = [junction_length(net, a, b) for a, b in zip(r["edges"], r["edges"][1:])]
+        lanes = [[l.getLength() for l in net.getEdge(e).getLanes() if l.allows(S.JEEPNEY_VCLASS)] for e in r["edges"]]
+        start = min(float(S.JEEPNEY["length"]), min(lanes[0]))   # its front, unless the first edge is shorter
+        expected[line] = tuple(sum(f(x) for x in lanes) + sum(f(j) for j in through) - start for f in (min, max))
     done = [ti for ti in tripinfo if ti.get("vType") == "jeepney" and float(ti.get("arrival", -1)) >= 0]
     off = []
     for ti in done:
         line = ti.get("id").rsplit(".", 1)[0]
-        edges = lines[line]["edges"]
-        if (abs(float(ti.get("routeLength")) - expected[line]) > ROUTE_TOL_M or ti.get("rerouteNo", "0") != "0"
+        edges, (lo, hi) = lines[line]["edges"], expected[line]
+        if (not lo - ROUTE_TOL_M <= float(ti.get("routeLength")) <= hi + ROUTE_TOL_M or ti.get("rerouteNo", "0") != "0"
                 or ti.get("departLane").rsplit("_", 1)[0] != edges[0] or ti.get("arrivalLane").rsplit("_", 1)[0] != edges[-1]):
             off.append(f"{ti.get('id')} {float(ti.get('routeLength')):.0f} m")
     per_line = Counter(ti.get("id").rsplit(".", 1)[0] for ti in done)
     check.item(done and not off and set(per_line) == set(lines),
                f"{len(done)} jeepneys finished their whole route (" + ", ".join(f"{l} {n}" for l, n in sorted(per_line.items()))
                + f"): from the line's first edge to its last, never rerouted, driven length within {ROUTE_TOL_M:g} m "
-               "of the line's edges and junctions (" + ", ".join(f"{l} {m:.0f} m" for l, m in sorted(expected.items())) + ")"
+               "of the line's edges and junctions, by the lanes it may take (" + ", ".join(
+                   f"{l} {lo:.0f}" + (f"-{hi:.0f}" if hi - lo >= 0.5 else "") + " m" for l, (lo, hi) in sorted(expected.items())) + ")"
                + (f"; not: {listed(off)}" if off else ""))
     # stops: only for someone, long enough
     empty = [f"{s['vehicle']} at {s['edge']} {s['started']:.0f} s" for s in stops if s["on"] + s["off"] == 0]
