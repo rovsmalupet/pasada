@@ -59,9 +59,11 @@ OSM_SOURCE = HERE.parent / "sumo_track" / "data" / "raw" / "santa_rosa_buffered.
 OSM_FILE = HERE / "bayan.osm"
 NET_FILE = HERE / "bayan.net.xml"
 # MAP: approach roads, so jeepneys and through traffic come in from outside instead of appearing at
-# the area's edge (the user, 2026-11-12). Besides every way touching the area, the map keeps the
-# main roads (APPROACH_HIGHWAYS) with a node within APPROACH_M of it that join it through main roads.
-APPROACH_M = 1000.0
+# the area's edge (the user, 2026-11-12). The map keeps the main roads (APPROACH_HIGHWAYS) up to
+# APPROACH_M outside the area, joined to it through main roads, and cuts them there: their ends are
+# where jeepneys and gateway traffic come in and go out. 1,000 m at first; 500 m by the user's
+# choice ("1km is too long"), the same day.
+APPROACH_M = 500.0
 APPROACH_HIGHWAYS = ("trunk", "trunk_link", "primary", "primary_link", "secondary", "secondary_link")
 
 SEED = 42
@@ -88,8 +90,9 @@ JEEPNEY_LINES = {
     "RIZ-N1": [("Rizal Boulevard", "S"), ("National Highway 1", "S")],
 }
 # jeepneys come in from outside the area and leave it again (the user, 2026-11-12): a line whose
-# roads start or end closer than this outside the area is led in or out along main roads
-LINE_OUTSIDE_M = 500.0
+# roads start or end closer than this outside the area is led in or out along main roads. Just
+# short of APPROACH_M, so every line starts and ends where the main roads are cut
+LINE_OUTSIDE_M = APPROACH_M - 25.0
 LEAD_MAX_M = 3000.0                # m: longest lead-in or lead-out looked for
 OFF_HIGHWAY_PENALTY = 10.0         # routing: a metre off the road costs as much as this many on it
 JEEPNEY_VCLASS = "bus"
@@ -186,17 +189,19 @@ BACKGROUND_SCALE = 10.0            # as dense as sumo_track_prototype's x10
 BACKGROUND_PROFILE = [0.10, 0.05, 0.05, 0.05, 0.10, 0.30, 0.70, 1.00, 1.00, 0.80, 0.60, 0.60,
                       0.60, 0.60, 0.60, 0.70, 0.90, 1.00, 1.00, 0.80, 0.60, 0.40, 0.30, 0.20]
 BACKGROUND_MIN_TRIP_M = 300.0
-# 2. Gateways: MAP, the main roads bringing traffic into the area from outside (the user,
-# 2026-11-12: more of it on the main road at both ends of the area). Each: the road and its
-# direction of travel INTO the area (as make_routes.py names them), and the vehicles per hour
-# coming in there at the peak, per type. As many go out again: GATEWAY_THROUGH_SHARE of those
-# coming in drive on through to another gateway (picked in proportion to its traffic); the rest
-# end inside the area, and as many leave from inside through this gateway.
+# 2. Gateways: MAP, the main roads bringing traffic into and out of the area (the user,
+# 2026-11-12: more of it on the main road at both ends of the area, and more leaving). Each: the
+# road and its direction of travel INTO the area (as make_routes.py names them), then the vehicles
+# per hour at the peak coming IN there and going OUT there, per type: what a camera at that road
+# counts in each direction. Traffic comes in and goes out at the road's cut end (APPROACH_M out).
+# GATEWAY_THROUGH_SHARE of those coming in drive on through to another gateway (picked in
+# proportion to its OUT traffic); the rest end inside the area. Those going out that are not
+# through traffic start inside the area.
 GATEWAYS = {
-    "N1 north": ("National Highway 1", "S", {"car": 600, "motorcycle": 600}),
-    "N1 south": ("National Highway 1", "N", {"car": 600, "motorcycle": 600}),
-    "Tagaytay Road": ("Santa Rosa-Tagaytay Road", "NE", {"car": 200, "motorcycle": 200}),
-    "Access Road": ("Biñan - Santa Rosa Access Road", "E", {"car": 200, "motorcycle": 200}),
+    "N1 north": ("National Highway 1", "S", {"car": 600, "motorcycle": 600}, {"car": 900, "motorcycle": 900}),
+    "N1 south": ("National Highway 1", "N", {"car": 600, "motorcycle": 600}, {"car": 900, "motorcycle": 900}),
+    "Tagaytay Road": ("Santa Rosa-Tagaytay Road", "NE", {"car": 200, "motorcycle": 200}, {"car": 300, "motorcycle": 300}),
+    "Access Road": ("Biñan - Santa Rosa Access Road", "E", {"car": 200, "motorcycle": 200}, {"car": 300, "motorcycle": 300}),
 }
 GATEWAY_THROUGH_SHARE = 0.5
 # 3. Jeepney riders: jeepneys come in from outside with passengers aboard (the user, 2026-11-12:

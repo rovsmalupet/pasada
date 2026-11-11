@@ -4,10 +4,11 @@ group's video counts replace it.
 
   * inside trips: random trips between edges inside the study area, BACKGROUND_PER_HOUR x
     BACKGROUND_SCALE per type at the peak;
-  * gateway trips: at each GATEWAYS road end, vehicles coming in from outside: GATEWAY_THROUGH_SHARE
-    of them drive through to another gateway (picked in proportion to its traffic), the rest end
-    at a random edge inside; and as many of those again leave from inside through it. They enter
-    at the road's outer end (make_map.py's approach roads), up to 1.5 km outside;
+  * gateway trips: at each GATEWAYS road end, its IN vehicles come in from outside:
+    GATEWAY_THROUGH_SHARE of them drive through to another gateway (picked in proportion to its OUT
+    traffic), the rest end at a random edge inside. Its OUT vehicles leave there: the through
+    traffic expected from the other gateways, and the rest from a random edge inside. All come in
+    and go out at the road's cut end (make_map.py), APPROACH_M outside the area;
   both by the hour, scaled by BACKGROUND_PROFILE and spread evenly over the hour. Origins and
   destinations inside are drawn at random, every edge the type may use equally likely, at least
   BACKGROUND_MIN_TRIP_M apart in a straight line. SUMO routes each trip when it departs and drops
@@ -94,7 +95,7 @@ class Ends:
 def gateways(net, area):
     """{name: (entry edge, exit edge)}: where each GATEWAYS road comes in from outside."""
     out = {}
-    for name, (road, direction, _) in S.GATEWAYS.items():
+    for name, (road, direction, *_) in S.GATEWAYS.items():
         paths, _ = road_paths(net, road, area)
         if direction not in paths:
             raise SystemExit(f"GATEWAYS['{name}']: {road} runs {' or '.join(paths)}, not {direction}")
@@ -111,18 +112,22 @@ def write_trips(net, area, gates, vtype_id, rng):
     for t in spread(hourly(S.BACKGROUND_PER_HOUR[vtype_id] * S.BACKGROUND_SCALE), rng):
         trips.append((t, *ends.pair(rng), False))
         kinds["inside"] += 1
-    peak = {name: S.GATEWAYS[name][2][vtype_id] for name in gates}
+    peak_in = {name: S.GATEWAYS[name][2][vtype_id] for name in gates}
+    peak_out = {name: S.GATEWAYS[name][3][vtype_id] for name in gates}
+    others = {name: [g for g in gates if g != name] for name in gates}
     for name, (entry, exit_) in gates.items():
-        others = [g for g in gates if g != name]
-        for t in spread(hourly(peak[name]), rng):
-            if others and rng.random() < S.GATEWAY_THROUGH_SHARE:
-                to = gates[rng.choices(others, weights=[peak[g] for g in others])[0]][1]
+        for t in spread(hourly(peak_in[name]), rng):
+            if others[name] and rng.random() < S.GATEWAY_THROUGH_SHARE:
+                to = gates[rng.choices(others[name], weights=[peak_out[g] for g in others[name]])[0]][1]
                 kinds["through"] += 1
             else:
                 to = ends.pair(rng, origin=entry)[1]
                 kinds["in"] += 1
             trips.append((t, entry, to, True))
-        for t in spread(hourly(peak[name] * (1 - S.GATEWAY_THROUGH_SHARE)), rng):
+        # going out here: the through traffic expected from the other gateways, the rest from inside
+        through = sum(peak_in[g] * S.GATEWAY_THROUGH_SHARE * peak_out[name] / sum(peak_out[k] for k in others[g])
+                      for g in others[name])
+        for t in spread(hourly(max(0.0, peak_out[name] - through)), rng):
             trips.append((t, ends.pair(rng, destination=exit_)[0], exit_, False))
             kinds["out"] += 1
     trips.sort(key=lambda x: x[0])
