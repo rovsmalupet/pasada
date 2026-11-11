@@ -77,9 +77,11 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
     # saved progress counts only for this exact input file (same contents): never answers to an old one
     input_sha = hashlib.sha256(inp.read_bytes()).hexdigest()
     saved = json.loads(partial_path.read_text(encoding="utf-8")) if partial_path.is_file() else {}
-    done = saved.get("answers", {}) if saved.get("input_sha256") == input_sha else {}
-    if saved and not done:
-        print(f"  (saved progress in {partial_path.name} was for another input file: not used)", flush=True)
+    # ...and only for answers made with the same prompt version (a prompt change answers everyone again)
+    same = saved.get("input_sha256") == input_sha and saved.get("prompt_version") == C.PROMPT_VERSION
+    done = saved.get("answers", {}) if same else {}
+    if saved and not same:
+        print(f"  (saved progress in {partial_path.name} was for another input file or prompt version: not used)", flush=True)
     print(f"\n=== {task}{f' day {day}' if day else ''}: {len(entries)} agents, {len(done)} already answered "
           f"({inp.relative_to(C.ABM_DIR)} -> {out.relative_to(C.ABM_DIR)})", flush=True)
 
@@ -97,7 +99,7 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
             done[aid] = convert("", entry, head)[0]
             continue
         queue.append({"aid": aid, "entry": entry, "prompt": prompt, "max_tokens": max_tokens, "try": 0})
-    partial_path.write_text(json.dumps({"input_sha256": input_sha, "answers": done}, ensure_ascii=False), encoding="utf-8")
+    partial_path.write_text(json.dumps({"input_sha256": input_sha, "prompt_version": C.PROMPT_VERSION, "answers": done}, ensure_ascii=False), encoding="utf-8")
 
     failed, first_try, asked, total = [], 0, len(queue), len(queue)
     queue.sort(key=lambda q: len(q["prompt"]))     # similar lengths together: less padding
@@ -128,7 +130,7 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
                 queue.append(q)                   # regenerated in a later batch
             else:
                 failed.append(q["aid"])
-        partial_path.write_text(json.dumps({"input_sha256": input_sha, "answers": done}, ensure_ascii=False), encoding="utf-8")
+        partial_path.write_text(json.dumps({"input_sha256": input_sha, "prompt_version": C.PROMPT_VERSION, "answers": done}, ensure_ascii=False), encoding="utf-8")
         print(f"  batch of {len(batch)} in {seconds}s | {total - len(queue) - len(failed)} of {total} answered",
               flush=True)
 

@@ -132,6 +132,10 @@ def habits_prompt(commuter, locations, modes):
             "07:00 and workplace to home at 17:00, Monday to Friday.\n"
             "On each travel day, your trips in order of departure time must start at home, leave "
             "from where the trip before ended, and end at home.\n"
+            # INTEGRATION abm8: Llama overlapped two outings on one day (A000933, 2026-11-11)
+            "Outings on the same day must not overlap: come back home from one outing before you "
+            "leave home for the next, or go straight from one place to the next. "
+            "Give each trip on a day a different departure time.\n"
             "Write every place exactly as it is written in the place options. Each trip goes "
             "from one place to a different place.\n"
             + JSON_ONLY
