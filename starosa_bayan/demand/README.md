@@ -21,7 +21,7 @@ explains why.
 
 ## Running it
 
-From the folder above, with the venv's Python (`..\sumo_track\.venv\Scripts\python.exe`):
+From the folder above, with the venv active (made as in `../README.md`, Setup):
 
 ```powershell
 python pipeline.py --day 1 --llm stub     # the whole day, with llm_stub.py standing in for the LLM
