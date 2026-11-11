@@ -427,9 +427,9 @@ def main():
                 riding[pid] = veh
                 times[pid].setdefault("kerb", t)
                 times[pid].update(board=t, veh=veh)
-                aboard = traci.vehicle.getPersonNumber(veh)
-                log(t, f"BOARDED  {pid} -> {veh} ({aboard}/{seats(veh)} aboard)")
-                event(t - 1, "boarding", vehicle=veh, person=pid, edge=c["board_edge"], pos=c["board_pos"], aboard=aboard)
+                on = traci.vehicle.getPersonNumber(veh)
+                log(t, f"BOARDED  {pid} -> {veh} ({on}/{seats(veh)} aboard)")
+                event(t - 1, "boarding", vehicle=veh, person=pid, edge=c["board_edge"], pos=c["board_pos"], aboard=on)
                 if veh in stopped:
                     stopped[veh]["boarded"].append(pid)
                 flagged = assigned.pop(pid, None)
