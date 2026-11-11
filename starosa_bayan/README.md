@@ -34,6 +34,9 @@ the 14 barangays north-east of SLEX, which also had Dila, Sinalhan, Caingin, Apl
   `data/locations_9_barangays.csv`: sumo_track's OSM activity locations cut to the 9 barangays.
   The roads are every OSM way touching the area, kept whole, so roads crossing its edge stick
   out a little, as in a Web Wizard box.
+- **Approach roads:** the main roads leading into the area continue up to about 1 km outside it
+  (`APPROACH_M`; 1.0–1.5 km at the ends of National Highway 1), without their side streets. So
+  jeepneys and through traffic come in from outside instead of appearing at the edge.
 - SLEX and its ramps are left out.
 - **Speed limits** follow RA 4136 and JMC 2018-001 for cars: 40 km/h on trunk and primary roads
   (national roads, "through streets"), 30 km/h on the others ("city and municipal streets"),
@@ -51,6 +54,21 @@ the 14 barangays north-east of SLEX, which also had Dila, Sinalhan, Caingin, Apl
   No line runs on Arcillas Boulevard or the Biñan–Santa Rosa Access Road (removed by choice),
   nor on F. Gomez, Zavalla or Arambulo Street (shorter than a 500 m ride). The `JPRS` line
   (J. P. Rizal Street) was dropped with the 9 barangays: that street lies in Dita.
+
+  Every line starts and ends at least 500 m outside the area (`LINE_OUTSIDE_M`): jeepneys enter
+  already moving and leave it again. Where a line's roads stop at the edge, it is led in and out
+  along the main road outside: Rizal Boulevard's lines along National Highway 1 to the north, and
+  Felix Reyes Street's along the Santa Rosa–Tagaytay Road.
+- **Background traffic** (`make_background.py`; every number a stand-in until the video counts):
+  - random car and motorcycle trips inside the area (`BACKGROUND_PER_HOUR` × `BACKGROUND_SCALE`);
+  - traffic coming in and going out at the main road ends (`GATEWAYS`): National Highway 1 north
+    and south, the Santa Rosa–Tagaytay Road and the Biñan–Santa Rosa Access Road. Half of what
+    comes in drives straight through (`GATEWAY_THROUGH_SHARE`);
+  - jeepneys come in with passengers aboard, about half full at the peak (`JEEPNEY_ENTRY_LOAD`).
+    They get off at random roadside spots inside the area, or ride on out of it. They are not
+    agents: no LLM, no outcome; they only take seats;
+  - all of it follows one daily shape with morning and evening peaks (`BACKGROUND_PROFILE`).
+    `--no-background` leaves all of it out.
 
 To rebuild the map (only needed if the area or the OSM data changes):
 

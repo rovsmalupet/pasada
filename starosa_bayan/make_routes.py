@@ -4,16 +4,23 @@ Each line follows one or more roads: a road is the edges with its name (matched 
 punctuation) that are of LINE_ROAD_TYPES (trunk, primary, secondary) and that jeepneys may use.
 For each road, road_paths finds its two far ends and routes a jeepney from one to the other, both
 ways. The routing prefers the road itself (every metre off it costs OFF_HIGHWAY_PENALTY metres),
-so the route follows it and only leaves it where the network forces a short detour.
+so the route follows it and only leaves it where the network forces a short detour. A road's two
+directions (the compass names in JEEPNEY_LINES) are those of its part inside the study area, so
+they stay put when the approach roads (make_map.py) make it longer outside.
 
 A line drives its first road end to end, then joins each next road at the edge nearest by road
 (the shortest drive, at most CONNECT_M) and drives it to its end. Its reverse drives the same
 roads backwards: it leaves each road where the next one is nearest and drives the last one end to
-end. Lines are named by their key and the compass direction from start to end, e.g. N1_S,
-RIZ-FRS_S. Copied from ../starosa_prototype (ported there from ../sumo_track_prototype), where
-every line was one road.
+end. A line whose roads start or end less than LINE_OUTSIDE_M outside the area gets a lead-in or
+lead-out: the shortest drive along main roads (APPROACH_HIGHWAYS) from or to a point that far
+out, so its jeepneys come in from outside, already moving, and leave the area again. Lines are
+named by their key and the compass direction of their part inside the area, e.g. N1_S, RIZ-FRS_S.
+Copied from ../starosa_prototype (ported there from ../sumo_track_prototype), where every line
+was one road.
 
-Writes generated/jeepney_routes.json and generated/jeepney.rou.xml (routes + one flow per line).
+Writes generated/jeepney_routes.json and generated/jeepney.rou.xml: the routes, and one jeepney
+per line every JEEPNEY_HEADWAY_S over the day. Each is its own vehicle, named as a flow would name
+it (<line>.<n>), so make_background.py can put passengers aboard it.
 
     python make_routes.py
 """
@@ -24,6 +31,8 @@ import math
 import re
 
 import sumolib
+from shapely.geometry import Point, Polygon, shape
+from shapely.ops import unary_union
 from sumolib import geomhelper
 
 import settings as S
@@ -100,21 +109,62 @@ def compass(p_from, p_to):
     return ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][round(angle / 45) % 8]
 
 
-def road_paths(net, name):
-    """({compass direction: route} driving the whole road each way, the road's edges)."""
+def study_area(net):
+    """The study area (AREA_FILE) in network coordinates, metres."""
+    geom = shape(json.loads(S.AREA_FILE.read_text(encoding="utf-8"))["geometry"])
+    parts = geom.geoms if geom.geom_type == "MultiPolygon" else [geom]
+    return unary_union([Polygon([net.convertLonLat2XY(*c[:2]) for c in p.exterior.coords]) for p in parts])
+
+
+def road_paths(net, name, area):
+    """({compass direction: route} driving the whole road each way, the road's edges). The
+    directions are those of the road's part inside area (all of it if under 2 edges are inside)."""
     edges = [e for e in net.getEdges() if norm(e.getName()) == norm(name)
              and e.getType() in S.LINE_ROAD_TYPES and e.allows(S.JEEPNEY_VCLASS)]
     if len(edges) < 2:
         raise SystemExit(f"No road '{name}' of {', '.join(S.LINE_ROAD_TYPES)} with 2+ edges {S.JEEPNEY_VCLASS} may use")
-    a, b = far_ends(edges)
+    inside = [e for e in edges if area.contains(Point(midpoint(e)))]
+    a, b = far_ends(inside if len(inside) >= 2 else edges)
+    # the whole road's ends: its edges furthest along the line from a to b, either way
+    along = sorted((midpoint(e) for e in edges), key=lambda p: (p[0] - a[0]) * (b[0] - a[0]) + (p[1] - a[1]) * (b[1] - a[1]))
     paths = {}
-    for p_from, p_to in ((a, b), (b, a)):
+    for p_from, p_to, direction in ((along[0], along[-1], compass(a, b)), (along[-1], along[0], compass(b, a))):
         first, last = end_edges(edges, p_from, p_to)
         path = preferred_path(first, last, set(edges), S.JEEPNEY_VCLASS, S.OFF_HIGHWAY_PENALTY)
         if path is None:
             raise SystemExit(f"No {S.JEEPNEY_VCLASS} route along {name} from {first.getID()} to {last.getID()}")
-        paths[compass(p_from, p_to)] = path
+        paths[direction] = path
     return paths, set(edges)
+
+
+def lead(area, edge, forward):
+    """The shortest drive along main roads (APPROACH_HIGHWAYS) a jeepney may take from edge out to
+    a point LINE_OUTSIDE_M outside area (forward: a lead-out, in driving order, without edge), or
+    from such a point to edge (a lead-in); [] if there is none within LEAD_MAX_M."""
+    main = {f"highway.{h}" for h in S.APPROACH_HIGHWAYS}
+    best, prev, counter = {edge: 0.0}, {}, 0
+    heap = [(0.0, counter, edge)]
+    while heap:
+        cost, _, e = heapq.heappop(heap)
+        if cost > best[e]:
+            continue
+        node = e.getToNode() if forward else e.getFromNode()
+        if e is not edge and area.distance(Point(node.getCoord())) >= S.LINE_OUTSIDE_M:
+            chain = [e]
+            while chain[-1] is not edge:
+                chain.append(prev[chain[-1]])
+            return chain[::-1][1:] if forward else chain[:-1]
+        if forward:
+            steps = [n for n in e.getOutgoing() if can_drive(e, n, S.JEEPNEY_VCLASS)]
+        else:
+            steps = [n for n in e.getIncoming() if can_drive(n, e, S.JEEPNEY_VCLASS)]
+        for nxt in steps:
+            c = cost + nxt.getLength()
+            if nxt.getType() in main and c <= S.LEAD_MAX_M and c < best.get(nxt, math.inf):
+                best[nxt], prev[nxt] = c, e
+                counter += 1
+                heapq.heappush(heap, (c, counter, nxt))
+    return []
 
 
 def nearest_by_road(start, targets, forward):
@@ -183,9 +233,10 @@ def main():
         raise SystemExit(f"No network at {S.NET_FILE}: build it first (python make_map.py)")
     net = sumolib.net.readNet(str(S.NET_FILE))
     roads = {road for spec in S.JEEPNEY_LINES.values() for road, _ in spec}
+    area = study_area(net)
     paths, road_edges = {}, {}
     for road in sorted(roads):
-        paths[road], road_edges[road] = road_paths(net, road)
+        paths[road], road_edges[road] = road_paths(net, road, area)
         print(f"{road}: directions {', '.join(paths[road])}")
     lines = {}
     for key, spec in S.JEEPNEY_LINES.items():
@@ -194,36 +245,57 @@ def main():
                 raise SystemExit(f"JEEPNEY_LINES['{key}']: {road} runs {' or '.join(paths[road])}, not {d}")
         back = [(road, OPPOSITE[d]) for road, d in reversed(spec)]
         for drive, first_whole in ((spec, True), (back, False)):
-            route = line_route(paths, drive, first_whole)
-            start, end = route[0].getFromNode().getCoord(), route[-1].getToNode().getCoord()
-            line = f"{key}_{compass(start, end)}"
+            service = line_route(paths, drive, first_whole)
+            # in from outside and out again: a lead where the roads end too close to the area
+            out_by = [area.distance(Point(p)) for p in (service[0].getFromNode().getCoord(), service[-1].getToNode().getCoord())]
+            lead_in = lead(area, service[0], forward=False) if out_by[0] < S.LINE_OUTSIDE_M else []
+            lead_out = lead(area, service[-1], forward=True) if out_by[1] < S.LINE_OUTSIDE_M else []
+            route = lead_in + service + lead_out
+            for a, b in zip(route, route[1:]):
+                if not can_drive(a, b, S.JEEPNEY_VCLASS):
+                    raise SystemExit(f"Broken route for {drive}: {a.getID()} -> {b.getID()}")
+            inside = [e for e in route if area.contains(Point(midpoint(e)))]
+            line = f"{key}_{compass(inside[0].getFromNode().getCoord(), inside[-1].getToNode().getCoord())}"
             if line in lines:
                 raise SystemExit(f"Two lines named {line}")
             on_roads = set().union(*(road_edges[road] for road, _ in drive))
             length = sum(e.getLength() for e in route)
-            on = sum(e.getLength() for e in route if e in on_roads)
+            on = sum(e.getLength() for e in service if e in on_roads) / sum(e.getLength() for e in service)
+            start, end = route[0].getFromNode().getCoord(), route[-1].getToNode().getCoord()
             lon0, lat0 = net.convertXY2LonLat(*start)
             lon1, lat1 = net.convertXY2LonLat(*end)
             lines[line] = {
                 "key": key, "roads": [road for road, _ in drive], "highway": " + ".join(road for road, _ in drive),
                 "edges": [e.getID() for e in route],
-                "length_m": round(length, 1), "on_highway_share": round(on / length, 3),
+                "length_m": round(length, 1), "inside_m": round(sum(e.getLength() for e in inside), 1),
+                "lead_in_m": round(sum(e.getLength() for e in lead_in), 1),
+                "lead_out_m": round(sum(e.getLength() for e in lead_out), 1), "on_highway_share": round(on, 3),
                 "freeflow_s": round(sum(e.getLength() / min(e.getSpeed(), S.JEEPNEY["maxSpeed"]) for e in route)),
                 "from_lat_lon": [round(lat0, 5), round(lon0, 5)], "to_lat_lon": [round(lat1, 5), round(lon1, 5)],
+                "starts_outside_m": round(area.distance(Point(start))), "ends_outside_m": round(area.distance(Point(end))),
             }
-            print(f"{line:11s} {' -> '.join(f'{r} {d}' for r, d in drive)}: {len(route)} edges, {length / 1000:.2f} km, "
-                  f"{100 * on / length:.0f}% on its roads, free-flow {lines[line]['freeflow_s'] / 60:.1f} min, "
-                  f"from {lat0:.5f},{lon0:.5f} to {lat1:.5f},{lon1:.5f}")
+            r = lines[line]
+            print(f"{line:11s} {' -> '.join(f'{rd} {d}' for rd, d in drive)}: {len(route)} edges, {length / 1000:.2f} km "
+                  f"({r['inside_m'] / 1000:.2f} km inside the area; lead-in {r['lead_in_m']:.0f} m, lead-out "
+                  f"{r['lead_out_m']:.0f} m), starts {r['starts_outside_m']} m and ends {r['ends_outside_m']} m outside, "
+                  f"{100 * on:.0f}% on its roads, free-flow {r['freeflow_s'] / 60:.1f} min")
+            if min(r["starts_outside_m"], r["ends_outside_m"]) < S.LINE_OUTSIDE_M:
+                print(f"  note: no main road leads {S.LINE_OUTSIDE_M:.0f} m out of the area at its "
+                      + ("start" if r["starts_outside_m"] < S.LINE_OUTSIDE_M else "end"))
 
     (S.GENERATED / "jeepney_routes.json").write_text(json.dumps(lines, indent=2) + "\n", encoding="utf-8")
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
-           "<!-- Generated by make_routes.py. Do not edit: rerun it. -->", "<routes>"]
+           "<!-- Generated by make_routes.py. Do not edit: rerun it. One jeepney per line every "
+           f"JEEPNEY_HEADWAY_S ({S.JEEPNEY_HEADWAY_S} s), named as a flow would name it. -->", "<routes>"]
     xml += [f'    <route id="r_{line}" edges="{" ".join(r["edges"])}"/>' for line, r in lines.items()]
-    xml += [f'    <flow id="{line}" type="jeepney" route="r_{line}" line="{line}" begin="0" '
-            f'end="{S.END_S}" period="{S.JEEPNEY_HEADWAY_S}" departLane="best"/>' for line in lines]
+    departures = sorted((k * S.JEEPNEY_HEADWAY_S, line, k) for line in lines
+                        for k in range(math.ceil(S.END_S / S.JEEPNEY_HEADWAY_S)))
+    xml += [f'    <vehicle id="{line}.{k}" type="jeepney" route="r_{line}" line="{line}" depart="{depart}" '
+            'departLane="best"/>' for depart, line, k in departures]
     xml.append("</routes>")
     (S.GENERATED / "jeepney.rou.xml").write_text("\n".join(xml) + "\n", encoding="utf-8")
-    print(f"Wrote {len(lines)} lines to generated/jeepney_routes.json and generated/jeepney.rou.xml")
+    print(f"Wrote {len(lines)} lines and {len(departures)} jeepneys to generated/jeepney_routes.json and "
+          "generated/jeepney.rou.xml")
 
 
 if __name__ == "__main__":

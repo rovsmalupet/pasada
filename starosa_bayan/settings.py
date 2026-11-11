@@ -39,9 +39,9 @@ MODES_FILE = day_file("modes", 1)                # the LLM: an option per trip; 
 
 # MAP: the study area, 9 barangays of Santa Rosa chosen by the group on 2026-11-10 (13.58 km²,
 # about 214,000 people); until then the 14 entirely north-east of SLEX (2026-11-03).
-# make_map.py joins them into AREA_FILE, cuts OSM_SOURCE to the roads touching it (OSM_FILE) and
-# builds NET_FILE from it (netconvert.netccfg: sidewalks, oncoming-lane overtaking). After a
-# rebuild, rerun build.py.
+# make_map.py joins them into AREA_FILE, cuts OSM_SOURCE to the roads touching it and their
+# approach roads (OSM_FILE) and builds NET_FILE from it (netconvert.netccfg: sidewalks,
+# oncoming-lane overtaking). After a rebuild, rerun build.py.
 AREA_BARANGAYS = [                 # adm4_pcode in BARANGAYS_FILE (get_barangays.py)
     "PH0403428023",                # Tagapo
     "PH0403428016",                # Pook (Pooc)
@@ -58,6 +58,11 @@ AREA_FILE = HERE / "data" / "area.geojson"
 OSM_SOURCE = HERE.parent / "sumo_track" / "data" / "raw" / "santa_rosa_buffered.osm"   # Overpass, 2026-10-16
 OSM_FILE = HERE / "bayan.osm"
 NET_FILE = HERE / "bayan.net.xml"
+# MAP: approach roads, so jeepneys and through traffic come in from outside instead of appearing at
+# the area's edge (the user, 2026-11-12). Besides every way touching the area, the map keeps the
+# main roads (APPROACH_HIGHWAYS) with a node within APPROACH_M of it that join it through main roads.
+APPROACH_M = 1000.0
+APPROACH_HIGHWAYS = ("trunk", "trunk_link", "primary", "primary_link", "secondary", "secondary_link")
 
 SEED = 42
 END_S = 86400                      # simulated seconds per run: a whole day, as in sumo_track (day_length_s);
@@ -73,14 +78,19 @@ LINE_ROAD_TYPES = ("highway.trunk", "highway.primary", "highway.secondary")
 # either to Felix Reyes Street or back onto National Highway 1. F. Gomez, Zavalla and Arambulo
 # Streets are under MIN_RIDE. Line JPRS (J. P. Rizal Street, "E") went with the 9 barangays
 # (2026-11-10): the street lies wholly in Dita. Each line: the roads it follows in order, each with
-# the compass direction of travel on it (make_routes.py prints each road's two). The first road is
-# driven end to end; each next one is joined where it is nearest and driven to its end.
-# make_routes.py also makes the reverse line: the same roads backwards, the last one end to end.
+# the compass direction of travel on it inside the area (make_routes.py prints each road's two).
+# The first road is driven end to end; each next one is joined where it is nearest and driven to
+# its end. make_routes.py also makes the reverse line: the same roads backwards, the last one end
+# to end.
 JEEPNEY_LINES = {
     "N1": [("National Highway 1", "S")],             # "SE" with the 14 barangays (it reached Dita)
     "RIZ-FRS": [("Rizal Boulevard", "S"), ("Felix Reyes Street", "SW")],
     "RIZ-N1": [("Rizal Boulevard", "S"), ("National Highway 1", "S")],
 }
+# jeepneys come in from outside the area and leave it again (the user, 2026-11-12): a line whose
+# roads start or end closer than this outside the area is led in or out along main roads
+LINE_OUTSIDE_M = 500.0
+LEAD_MAX_M = 3000.0                # m: longest lead-in or lead-out looked for
 OFF_HIGHWAY_PENALTY = 10.0         # routing: a metre off the road costs as much as this many on it
 JEEPNEY_VCLASS = "bus"
 JEEPNEY_HEADWAY_S = 300            # one jeepney per line every 5 min (a stand-in: the routes are real, the gap is not)
@@ -162,17 +172,39 @@ OCCUPANCY_SAMPLE_S = 60            # run.py's event log: each jeepney's passenge
 DISRUPTION_RATIO = 2.0
 DISRUPTION_MIN_S = 600.0
 
-# --- background traffic: random trips across the whole network ---------------------------------
+# --- background traffic (make_background.py): not commuters, no LLM ------------------------------
+# Every number here is a stand-in until the group's video counts on the jeepney lines replace it.
+# 1. Inside trips: random trips between edges inside the study area.
 # MAP: sumo_track_prototype's 1,800/h per type on the whole city, scaled by car-lane length
-# (413.3 km here, printed by make_map.py, vs 1,996.5 km there; the 14 barangays: 628.2 km, 566/h;
-# starosa_prototype: 145.6 km, 131/h), so x1 is equally dense in every folder.
-BACKGROUND_PER_HOUR = {"car": 373, "motorcycle": 373}
+# (395.4 km inside the area, printed by make_map.py, vs 1,996.5 km there; the 14 barangays:
+# 628.2 km, 566/h; starosa_prototype: 145.6 km, 131/h), so x1 is equally dense in every folder.
+# Until 2026-11-12: 373, from the whole 9-barangay network's 413.3 km.
+BACKGROUND_PER_HOUR = {"car": 357, "motorcycle": 357}
 BACKGROUND_SCALE = 10.0            # as dense as sumo_track_prototype's x10
-# share of that rate in each hour of the day (1.0 = the peak). A stand-in shape with morning and
-# evening peaks until traffic counts (Sec. 4.2.6) give a real one.
+# share of each hourly rate in each hour of the day (1.0 = the peak), for all background traffic
+# and the jeepney riders. A stand-in shape with morning and evening peaks.
 BACKGROUND_PROFILE = [0.10, 0.05, 0.05, 0.05, 0.10, 0.30, 0.70, 1.00, 1.00, 0.80, 0.60, 0.60,
                       0.60, 0.60, 0.60, 0.70, 0.90, 1.00, 1.00, 0.80, 0.60, 0.40, 0.30, 0.20]
 BACKGROUND_MIN_TRIP_M = 300.0
+# 2. Gateways: MAP, the main roads bringing traffic into the area from outside (the user,
+# 2026-11-12: more of it on the main road at both ends of the area). Each: the road and its
+# direction of travel INTO the area (as make_routes.py names them), and the vehicles per hour
+# coming in there at the peak, per type. As many go out again: GATEWAY_THROUGH_SHARE of those
+# coming in drive on through to another gateway (picked in proportion to its traffic); the rest
+# end inside the area, and as many leave from inside through this gateway.
+GATEWAYS = {
+    "N1 north": ("National Highway 1", "S", {"car": 600, "motorcycle": 600}),
+    "N1 south": ("National Highway 1", "N", {"car": 600, "motorcycle": 600}),
+    "Tagaytay Road": ("Santa Rosa-Tagaytay Road", "NE", {"car": 200, "motorcycle": 200}),
+    "Access Road": ("Biñan - Santa Rosa Access Road", "E", {"car": 200, "motorcycle": 200}),
+}
+GATEWAY_THROUGH_SHARE = 0.5
+# 3. Jeepney riders: jeepneys come in from outside with passengers aboard (the user, 2026-11-12:
+# more at the peak). Each seat is taken at entry with probability JEEPNEY_ENTRY_LOAD x
+# BACKGROUND_PROFILE[hour] (so about half full at the peak). A rider gets off at a random roadside
+# spot of the line inside the area, or (RIDER_THROUGH_SHARE) rides on out of it.
+JEEPNEY_ENTRY_LOAD = 0.5
+RIDER_THROUGH_SHARE = 0.3
 CAR = dict(latAlignment="nice", minGapLat=0.4)                    # rest: SUMO defaults
 MOTORCYCLE = dict(width=0.75, latAlignment="arbitrary", minGapLat=0.15)
 BICYCLE = {}                                                      # commuters' bikes: SUMO defaults

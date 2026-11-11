@@ -32,7 +32,9 @@ outcomes_day_<n>.json, so runs never overwrite each other.
 events.jsonl is the event log of the manuscript (Sec. 4.4.2.1-2): one JSON object per line, in
 time order, each with "t" (simulated seconds) and "event":
   * jeepneys: stop (with until, dwell_s and who boarded and alighted), boarding, alighting,
-    full_pass_by, and occupancy (every OCCUPANCY_SAMPLE_S, each jeepney on the road);
+    full_pass_by, and occupancy (every OCCUPANCY_SAMPLE_S, each jeepney on the road). The
+    passengers a jeepney comes in with from outside (make_background.py, background traffic only)
+    board where it starts and get off at the stop run.py books for them: background true;
   * commuters: depart, waiting (at the roadside), flagdown, missed, vehicle_depart and
     vehicle_arrive (their own car or bike), arrived.
 Changes SUMO made (departing, arriving, stopping, boarding, alighting) are stamped with the step
@@ -48,7 +50,7 @@ agents whose day was left out, with why.
 
     python run.py                    # sumo-gui, press play
     python run.py --nogui            # headless: event log and summary
-    python run.py --no-background    # without background cars and motorcycles (much faster)
+    python run.py --no-background    # without background cars, motorcycles and jeepney riders (much faster)
     python run.py --meter            # also measure motorcycle filtering (slower)
     python run.py --end 36000        # stop at 10:00 (simulated seconds; default settings.END_S)
     python run.py --demand FILE      # another schedule (default settings.SCHEDULE_FILE), or one file with modes
@@ -70,7 +72,7 @@ import traci.constants as tc
 
 import settings as S
 import traffic_meter
-from make_background import trips_file
+from make_background import LOADED_JEEPNEYS, trips_file
 from convert_demand import MODES, clock, convert, kerb_edges
 
 
@@ -113,8 +115,20 @@ def load_trips(path):
     return trips
 
 
+def load_riders(path, net):
+    """{person id: {veh, alight_edge, alight_pos, alight_lane}}: the passengers each jeepney comes
+    in with (make_background.py), aboard from its start (depart="triggered")."""
+    riders = {}
+    for person in ET.parse(path).getroot().iter("person"):
+        ride = person.find("ride")
+        riders[person.get("id")] = {"veh": ride.get("lines"), "alight_edge": ride.get("to"),
+                                    "alight_pos": float(ride.get("arrivalPos")), "alight_lane": stop_lane(net, ride.get("to"))}
+    return riders
+
+
 def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=()):
-    routes = [S.GENERATED / "jeepney.rou.xml", commuters_file]
+    # with the background, the jeepneys come in with passengers (make_background.py)
+    routes = [LOADED_JEEPNEYS if background else S.GENERATED / "jeepney.rou.xml", commuters_file]
     if background:
         routes += [trips_file(v) for v in S.BACKGROUND_PER_HOUR]
     missing = [p.name for p in routes + [S.GENERATED / "vtypes.add.xml"] if not p.is_file()]
@@ -245,6 +259,12 @@ def main():
     kerb = {line: {e.getID(): e.getLength() for e, _ in kerb_edges(net, r["edges"])} for line, r in lines.items()}
 
     cfg, gui_settings = write_run_files(run_dir, args.end, not args.no_background, lines, net, commuters_file, extra)
+    riders = {} if args.no_background else load_riders(LOADED_JEEPNEYS, net)
+    riders_of = defaultdict(list)                    # jeepney -> the riders it comes in with
+    for pid, r in riders.items():
+        riders_of[r["veh"]].append(pid)
+    aboard = {}                                      # rider -> jeepney, until they get off
+    rider_count = Counter()
     per_mode = Counter(t["mode"] for t in trip_info.values())
     agents = {t["agent_id"] for t in trip_info.values()}
     print(f"Run folder: {run_dir.relative_to(S.HERE).as_posix()} | {len(agents)} commuters, {len(trip_info)} "
@@ -344,8 +364,27 @@ def main():
                 if line in jeepneys:
                     jeepneys[line].add(v)
                     line_of[v] = line
+                    if riders_of.get(v):                              # it comes in with riders: book their stops
+                        edge, pos = traci.vehicle.getRoadID(v), round(traci.vehicle.getLanePosition(v), 1)
+                        for pid in riders_of[v]:
+                            r = riders[pid]
+                            try:
+                                reserve_stop(stop_users, v, r["alight_edge"], r["alight_pos"], r["alight_lane"], pid)
+                            except traci.TraCIException:
+                                rider_count["no stop booked"] += 1
+                            aboard[pid] = v
+                            rider_count["came in"] += 1
+                            event(t - 1, "boarding", vehicle=v, person=pid, edge=edge, pos=pos, aboard=len(riders_of[v]),
+                                  background=True)
                 elif v.endswith("_veh") and v[:-4] in trips:          # a commuter's own car or bike
                     event(t - 1, "vehicle_depart", vehicle=v, person=v[:-4])
+            # jeepneys stop only where run.py booked a stop, so ask SUMO only while one is booked.
+            # Before anyone's getting off: a rider whose ride ends there gets off the same step
+            for v in traci.simulation.getStopStartingVehiclesIDList() if stop_users else ():
+                if v in line_of:
+                    stopped[v] = {"t": int(t - 1), "event": "stop", "vehicle": v, "line": line_of[v],
+                                  "edge": traci.vehicle.getRoadID(v), "pos": round(traci.vehicle.getLanePosition(v), 1),
+                                  "until": None, "dwell_s": None, "boarded": [], "alighted": []}
             for i in traci.simulation.getDepartedPersonIDList():
                 if i in trips:
                     trips[i]["depart"] = t
@@ -362,12 +401,14 @@ def main():
                     event(t - 1, "arrived", person=i)
                     if trip_info[i]["mode"] != "jeepney":
                         log(t, f"ARRIVED  {i} ({trip_info[i]['mode']}, {(t - trips[i]['depart']) / 60:.1f} min)")
-            # jeepneys stop only where run.py booked a stop, so ask SUMO only while one is booked
-            for v in traci.simulation.getStopStartingVehiclesIDList() if stop_users else ():
-                if v in line_of:
-                    stopped[v] = {"t": int(t - 1), "event": "stop", "vehicle": v, "line": line_of[v],
-                                  "edge": traci.vehicle.getRoadID(v), "pos": round(traci.vehicle.getLanePosition(v), 1),
-                                  "until": None, "dwell_s": None, "boarded": [], "alighted": []}
+                elif i in aboard:                                     # a rider got off: their trip ends there
+                    veh, r = aboard.pop(i), riders[i]
+                    release_stop(stop_users, veh, r["alight_edge"], r["alight_pos"], r["alight_lane"], i, cancel=False)
+                    event(t - 1, "alighting", vehicle=veh, person=i, edge=r["alight_edge"], pos=r["alight_pos"],
+                          background=True)
+                    rider_count["got off"] += 1
+                    if veh in stopped:
+                        stopped[veh]["alighted"].append(i)
             persons = set(traci.person.getIDList())
 
             # --- 1. person state: at the roadside, boarded, alighted, arrived ---
@@ -474,6 +515,11 @@ def main():
 
     summary = summarise(commuters, times, lines, teleports, len(collisions))
     summary["events"] = dict(Counter(e["event"] for e in events))
+    if riders:
+        rider_count["still aboard"] = len(aboard)
+        summary["riders"] = dict(rider_count)
+        print(f"  jeepney riders (background): {rider_count['came in']} came in aboard, {rider_count['got off']} got off, "
+              f"{len(aboard)} still aboard when the run stopped, {rider_count['no stop booked']} stops not booked")
     summary["modes"] = summarise_modes(trip_info, trips, t)
     passes = Counter(pid for _, pid in full_logged)          # full jeepneys that passed each commuter
     summary["outcomes"] = write_outcomes(run_dir, day, records, trips, times, passes, left_out, t,
