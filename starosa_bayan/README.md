@@ -38,7 +38,9 @@ the 14 barangays north-east of SLEX, which also had Dila, Sinalhan, Caingin, Apl
 - **Speed limits** follow RA 4136 and JMC 2018-001 for cars: 40 km/h on trunk and primary roads
   (national roads, "through streets"), 30 km/h on the others ("city and municipal streets"),
   unless OSM tags a road (`typemap.typ.xml`).
-- **Jeepney lines** (`settings.JEEPNEY_LINES`), each in both directions:
+- **Jeepney lines** (`settings.JEEPNEY_LINES`), each in both directions. These are the routes
+  jeepneys actually run in the area, from a group member who lives there. Their frequency is
+  still a stand-in: one jeepney every 5 minutes on each line (`JEEPNEY_HEADWAY_S`).
 
   | Line | Route |
   |---|---|

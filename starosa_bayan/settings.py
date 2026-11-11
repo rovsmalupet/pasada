@@ -67,7 +67,8 @@ LATERAL_RESOLUTION = 0.4           # m: sublane strips (sandbox 11)
 # --- jeepney lines ------------------------------------------------------------------------------
 # Main roads: nobody lives on them (convert_demand.street_exclusions).
 LINE_ROAD_TYPES = ("highway.trunk", "highway.primary", "highway.secondary")
-# MAP: the lines, chosen by the user (2026-11-03): jeepneys on the main roads in both directions, but
+# MAP: the lines, chosen by the user (2026-11-03), who lives in the area: the jeepney routes that
+# actually run there (confirmed 2026-11-12). Jeepneys on the main roads in both directions, but
 # none on Arcillas Boulevard or the Binan-Santa Rosa Access Road; Rizal Boulevard's jeepneys go on
 # either to Felix Reyes Street or back onto National Highway 1. F. Gomez, Zavalla and Arambulo
 # Streets are under MIN_RIDE. Line JPRS (J. P. Rizal Street, "E") went with the 9 barangays
@@ -82,7 +83,7 @@ JEEPNEY_LINES = {
 }
 OFF_HIGHWAY_PENALTY = 10.0         # routing: a metre off the road costs as much as this many on it
 JEEPNEY_VCLASS = "bus"
-JEEPNEY_HEADWAY_S = 300            # one jeepney per line every 5 min
+JEEPNEY_HEADWAY_S = 300            # one jeepney per line every 5 min (a stand-in: the routes are real, the gap is not)
 JEEPNEY = dict(length=7.0, width=2.1, maxSpeed=16.67, accel=1.0, decel=3.0, personCapacity=22,
                boardingDuration=2.0, latAlignment="right", minGapLat=0.4)
 
