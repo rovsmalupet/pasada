@@ -116,7 +116,11 @@ ACTIVITY_LOCATIONS = HERE.parent / "sumo_track" / "data" / "placeholder" / "loca
 HOME_SNAP_M = 100.0                # m: a grid cell's people go to the nearest home street within this
 LOCATION_SNAP_M = 200.0            # m: an activity location goes to the nearest walkable edge within this
 # feasibility, checked by convert_demand.py for every trip
-WALK_TRIP_LIMIT = 1500.0           # m: longest walk all the way to the destination
+WALK_TRIP_LIMIT = 10000.0          # m: longest walk all the way to the destination
+                                   # 2026-11-13: was 1500. Walking is the last resort: with 1500, agents whose
+                                   # home has no school/market within 1.5 km and no jeepney line or bike could
+                                   # reach no such place at all (100-agent run: A000472, A000993, A000197).
+                                   # The LLM still sees each walk's time and picks a jeepney when one is offered.
 MIN_TRIP_M = 20.0                  # m: places closer than this on foot are the same place: no trip between them
 BIKE_TRIP_LIMIT = 5000.0           # m: longest bike ride
 PARK_SNAP_M = 200.0                # m: a car or bike is parked on the nearest edge within this of the home or
