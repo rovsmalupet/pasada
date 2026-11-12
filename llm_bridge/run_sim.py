@@ -83,11 +83,19 @@ def simulate(args, first):
                 break
             wait = re.search(r"Waiting for the LLM: answer (\S+) in (\S+)", run.stdout)
             stuck = re.search(r"cannot be made by any mode the agent has: (.+?)\. The schedule must change", run.stdout)
-            if not wait and stuck and redos.get(day, 0) < 3:
+            # the same problem when the pipeline kept an old choices file and went on to modes anyway
+            empty = trips_without_options(day) if (stuck or (wait and "modes_input" in wait.group(1))) else []
+            if empty and redos.get(day, 0) >= 2:
+                # last resort, simulation side: the agent skips the stop it cannot get to
+                drop_unmakeable(day, empty)
+                first = ["--redo", "choices"]
+                redos[day] = 0
+                continue
+            if empty:
                 # a trip no mode can make (e.g. between two places, not from home): ask ONLY those agents
                 # for a new day; every other agent keeps its schedule (answer.py reads the .keep file)
                 redos[day] = redos.get(day, 0) + 1
-                bad = sorted(set(re.findall(r"(A\d+)_D\d+_T\d+", stuck.group(1))))
+                bad = sorted(set(re.findall(r"(A\d+)_D\d+_T\d+", " ".join(empty))))
                 done = C.ABM_DIR / "demand" / f"schedule_day_{day}.json"
                 keep = {e["agent_id"]: e for e in json.loads(done.read_text(encoding="utf-8"))["agents"]
                         if e.get("agent_id") not in bad}
@@ -97,7 +105,8 @@ def simulate(args, first):
                     {"prompt_version": C.PROMPT_VERSION, "why": f"no mode for {stuck.group(1)}", "answers": keep},
                     ensure_ascii=False), encoding="utf-8")
                 print(f"\n>>> day {day}: a new schedule only for {', '.join(bad)} (a trip no mode can make); "
-                      f"the other {len(keep)} agents keep theirs (redo {redos[day]} of 3)", flush=True)
+                      f"the other {len(keep)} agents keep theirs (try {redos[day]} of 2, then the stop is skipped)",
+                      flush=True)
                 first = ["--redo", "schedule"]
                 continue
             if not wait:
@@ -115,6 +124,73 @@ def simulate(args, first):
                 return 1
     print(f"\nAll done in {(time.time() - started) / 60:.0f} min.")
     return 0
+
+
+def _walk(node):
+    if isinstance(node, dict):
+        yield node
+        for v in node.values():
+            yield from _walk(v)
+    elif isinstance(node, list):
+        for v in node:
+            yield from _walk(v)
+
+
+def trips_without_options(day):
+    """Trip ids of the day's choices file with no way to make them (empty options)."""
+    path = C.ABM_DIR / "demand" / f"choices_day_{day}.json"
+    if not path.is_file():
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return sorted({d["trip_id"] for d in _walk(data) if "trip_id" in d and "options" in d and not d["options"]})
+
+
+def drop_unmakeable(day, trip_ids):
+    """LAST RESORT (simulation side), after the LLM was asked twice: the agent skips a stop it has no way
+    to get to (its stay is removed and the stays around it join up), so the day can be simulated.
+    Logged in demand/llm_logs/simulation_adjustments.jsonl."""
+    path = C.ABM_DIR / "demand" / f"schedule_day_{day}.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    log = C.ABM_DIR / "demand" / "llm_logs" / "simulation_adjustments.jsonl"
+    for agent in data["agents"]:
+        if not any(t.startswith(agent["agent_id"] + "_") for t in trip_ids):
+            continue
+        stays, drop = agent["schedule"], set()
+        # trip n is the n-th move between two different places; skip the stop a failing trip goes TO
+        # (the trip out of a skipped stop then disappears with it); never skip home
+        moves = [i for i in range(1, len(stays)) if stays[i]["location_id"] != stays[i - 1]["location_id"]]
+        failing = sorted(int(m.group(1)) for t in trip_ids if t.startswith(agent["agent_id"] + "_")
+                         if (m := re.search(r"_T(\d+)$", t)))
+        for n in failing:
+            if n - 1 >= len(moves):
+                continue
+            i = moves[n - 1]
+            if i - 1 in drop:                       # the trip out of a stop already skipped
+                continue
+            j = i if not stays[i]["location_id"].startswith("HOME") else i - 1
+            if not stays[j]["location_id"].startswith("HOME"):
+                drop.add(j)
+        merged = []
+        for i, stay in enumerate(stays):
+            if i in drop:
+                continue
+            if merged and merged[-1]["location_id"] == stay["location_id"]:
+                if "end" in stay:
+                    merged[-1]["end"] = stay["end"]
+                else:
+                    merged[-1].pop("end", None)
+            else:
+                merged.append(dict(stay))
+        removed = [stays[i]["location_id"] for i in sorted(drop)]
+        agent["schedule"] = merged
+        with log.open("a", encoding="utf-8") as f:
+            f.write(json.dumps({"day": day, "agent_id": agent["agent_id"], "trips": [t for t in trip_ids
+                                if t.startswith(agent["agent_id"] + "_")], "skipped_stays": removed,
+                                "why": "no mode can make these trips; the LLM was asked twice"}) + "\n")
+        print(f">>> day {day}: {agent['agent_id']} skips {', '.join(removed)} (no way to get there; "
+              f"logged in simulation_adjustments.jsonl)", flush=True)
+    head = {k: v for k, v in data.items() if k != "agents"}
+    A.write(path, head, data["agents"])
 
 
 if __name__ == "__main__":
