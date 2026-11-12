@@ -33,7 +33,9 @@ DEFAULT_MODEL = "llama"            # the baseline (manuscript 4.3.8); change wit
 GEN = {"do_sample": True, "temperature": 0.6, "top_p": 0.9, "top_k": 50, "repetition_penalty": 1.0}
 MAX_NEW_TOKENS = 900               # as evaluated; mode and reflection answers for many trips get more
 MAX_NEW_TOKENS_LONG = 1500
-MAX_TRIES = 3                      # manuscript 4.3.9.1: a failed answer is regenerated, up to 3 tries
+MAX_TRIES = int(os.environ.get("MAX_TRIES", 3))   # manuscript 4.3.9.1: up to 3 tries in the evaluation;
+                                   # the simulation may allow more (MAX_TRIES=10), so one stubborn agent does not
+                                   # stop the whole run; every try is still logged and counted
 BATCH_SIZE = int(os.environ.get("BATCH_SIZE", 8))   # agents answered together in one generate call
 GPU_WAIT_MINUTES = 60              # wait this long for free GPU memory (the GPU is shared)
 

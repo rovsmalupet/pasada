@@ -6,7 +6,9 @@ waiting. Run it in tmux so it survives a dropped connection:
     cd ~/abm && ~/thesis-env/bin/python -m llm_bridge.run_sim --days 1-3          # go on, days 1 to 3
     --model qwen (another candidate), BATCH_SIZE=16 (environment: agents answered together)
 
-A day already done is kept (the pipeline keeps every finished step). Stops at the first problem
+A day already done is kept (the pipeline keeps every finished step). Every run is kept in its own
+folder, starosa_bayan/llm_runs/run_NNN_<date>_<N>agents/ (archive.py): brought up to date at the end of
+each command, and a new one started by --redo agents, so a run never overwrites another. Stops at the first problem
 that needs a person (printed), e.g. a trip no mode can make.
 """
 
@@ -19,6 +21,7 @@ import sys
 import time
 
 from . import answer as A
+from . import archive
 from . import config as C
 
 
@@ -49,9 +52,20 @@ def main(argv=None):
     ap.add_argument("--first-args", default="", help='pipeline.py arguments for the first call only, e.g. '
                                                     '"--redo agents --agents 10"')
     ap.add_argument("--pipeline-args", default="", help='pipeline.py arguments for every call, e.g. "--background"')
+    ap.add_argument("--note", default="", help="a line about this run, kept in its llm_runs/ folder")
     args = ap.parse_args(argv)
-    env = sumo_env()
     first = shlex.split(args.first_args)
+    fresh = "--redo" in first and first[first.index("--redo") + 1:first.index("--redo") + 2] == ["agents"]
+    if fresh:
+        archive.save("saved before a fresh start (--redo agents)", new_run=True)   # the old run is kept
+    try:
+        return simulate(args, first)
+    finally:
+        archive.save(args.note)            # this run's folder in llm_runs/, up to date (also after a stop)
+
+
+def simulate(args, first):
+    env = sumo_env()
     every = shlex.split(args.pipeline_args)
     started = time.time()
     for day in days_of(args.days):
