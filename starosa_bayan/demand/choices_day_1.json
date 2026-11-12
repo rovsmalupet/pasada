@@ -1,0 +1,156 @@
+{
+  "day": 1,
+  "made_by": "make_choices.py from schedule_day_1.json",
+  "about": "Every way each trip of the schedule can be made, with its numbers. Choose one per trip in the modes file (demand/README.md).",
+  "rules": ["Choose one option per trip: its mode, and for a jeepney its route_id (the line).", "Times are estimates on empty roads, in seconds. estimated_total_time_s is the sum of access (walking to the jeepney or vehicle, and getting the car), waiting (for a jeepney), in-vehicle and egress (parking, walking on) times; a walk has only the total.", "Distances are in metres; access_walk_m and egress_walk_m are the walks at each end. cost_php is the jeepney fare or the car's running cost.", "A bike or car trip needs the vehicle where the trip starts: at home at the start of the day, then where it was last left. Someone who walks to work cannot drive home."],
+  "agents": [
+    {"agent_id": "A000033", "has_car": false, "has_bike": false, "trips": [
+            {"trip_id": "A000033_D01_T01", "from": "HOME_A000033", "to": "LOC_0220", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:45", "options": [
+                {"mode": "walk", "distance_m": 218, "estimated_total_time_s": 157, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000033_D01_T02", "from": "LOC_0220", "to": "HOME_A000033", "to_name": "home", "trip_type": "work_to_home", "depart": "17:30", "options": [
+                {"mode": "walk", "distance_m": 218, "estimated_total_time_s": 157, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000033_D01_T03", "from": "HOME_A000033", "to": "LOC_1121", "to_name": "Eldar's Speciality Shop", "trip_type": "home_to_shopping", "depart": "18:00", "options": [
+                {"mode": "walk", "distance_m": 466, "estimated_total_time_s": 335, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000033_D01_T04", "from": "LOC_1121", "to": "HOME_A000033", "to_name": "home", "trip_type": "shopping_to_home", "depart": "19:00", "options": [
+                {"mode": "walk", "distance_m": 466, "estimated_total_time_s": 335, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000150", "has_car": false, "has_bike": true, "trips": [
+            {"trip_id": "A000150_D01_T01", "from": "HOME_A000150", "to": "LOC_0105", "to_name": "Balibago Polyclinic", "trip_type": "home_to_work", "depart": "08:00", "options": [
+                {"mode": "walk", "distance_m": 1333, "estimated_total_time_s": 959, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 1639, "access_walk_m": 0, "in_vehicle_m": 1639, "egress_walk_m": 0, "estimated_total_time_s": 340, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 340, "egress_time_s": 0, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000150_D01_T02", "from": "LOC_0105", "to": "HOME_A000150", "to_name": "home", "trip_type": "work_to_home", "depart": "17:30", "options": [
+                {"mode": "walk", "distance_m": 1333, "estimated_total_time_s": 959, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 1474, "access_walk_m": 0, "in_vehicle_m": 1474, "egress_walk_m": 0, "estimated_total_time_s": 291, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 291, "egress_time_s": 0, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000150_D01_T03", "from": "HOME_A000150", "to": "LOC_0036", "to_name": "Puregold", "trip_type": "home_to_shopping", "depart": "20:00", "options": [
+                {"mode": "bike", "distance_m": 2764, "access_walk_m": 0, "in_vehicle_m": 2764, "egress_walk_m": 0, "estimated_total_time_s": 538, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 538, "egress_time_s": 0, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000150_D01_T04", "from": "LOC_0036", "to": "HOME_A000150", "to_name": "home", "trip_type": "shopping_to_home", "depart": "21:30", "options": [
+                {"mode": "bike", "distance_m": 2092, "access_walk_m": 0, "in_vehicle_m": 2092, "egress_walk_m": 0, "estimated_total_time_s": 422, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 422, "egress_time_s": 0, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000164", "has_car": false, "has_bike": false, "trips": [
+            {"trip_id": "A000164_D01_T01", "from": "HOME_A000164", "to": "LOC_0167", "to_name": "Santa Rosa Hospital & Medical Center", "trip_type": "home_to_work", "depart": "07:40", "options": [
+                {"mode": "walk", "distance_m": 1262, "estimated_total_time_s": 908, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000164_D01_T02", "from": "LOC_0167", "to": "HOME_A000164", "to_name": "home", "trip_type": "work_to_home", "depart": "17:20", "options": [
+                {"mode": "walk", "distance_m": 1262, "estimated_total_time_s": 908, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000164_D01_T03", "from": "HOME_A000164", "to": "LOC_1269", "to_name": "Passer Buy", "trip_type": "home_to_shopping", "depart": "18:00", "options": [
+                {"mode": "walk", "distance_m": 486, "estimated_total_time_s": 350, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000164_D01_T04", "from": "LOC_1269", "to": "HOME_A000164", "to_name": "home", "trip_type": "shopping_to_home", "depart": "20:20", "options": [
+                {"mode": "walk", "distance_m": 486, "estimated_total_time_s": 350, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000197", "has_car": false, "has_bike": false, "trips": [
+            {"trip_id": "A000197_D01_T01", "from": "HOME_A000197", "to": "LOC_0105", "to_name": "Balibago Polyclinic", "trip_type": "home_to_work", "depart": "08:00", "options": [
+                {"mode": "walk", "distance_m": 1347, "estimated_total_time_s": 969, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000197_D01_T02", "from": "LOC_0105", "to": "HOME_A000197", "to_name": "home", "trip_type": "work_to_home", "depart": "13:00", "options": [
+                {"mode": "walk", "distance_m": 1347, "estimated_total_time_s": 969, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000197_D01_T03", "from": "HOME_A000197", "to": "LOC_0036", "to_name": "Puregold", "trip_type": "home_to_shopping", "depart": "16:00", "options": [
+                {"mode": "walk", "distance_m": 1216, "estimated_total_time_s": 875, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000197_D01_T04", "from": "LOC_0036", "to": "HOME_A000197", "to_name": "home", "trip_type": "shopping_to_home", "depart": "19:00", "options": [
+                {"mode": "walk", "distance_m": 1216, "estimated_total_time_s": 875, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000311", "has_car": false, "has_bike": false, "trips": [
+            {"trip_id": "A000311_D01_T01", "from": "HOME_A000311", "to": "LOC_1023", "to_name": "Alfamart", "trip_type": "home_to_work", "depart": "07:30", "options": [
+                {"mode": "walk", "distance_m": 1499, "estimated_total_time_s": 1079, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000311_D01_T02", "from": "LOC_1023", "to": "HOME_A000311", "to_name": "home", "trip_type": "work_to_home", "depart": "13:00", "options": [
+                {"mode": "walk", "distance_m": 1499, "estimated_total_time_s": 1079, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000311_D01_T03", "from": "HOME_A000311", "to": "LOC_1023", "to_name": "Alfamart", "trip_type": "home_to_work", "depart": "14:00", "options": [
+                {"mode": "walk", "distance_m": 1499, "estimated_total_time_s": 1079, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000311_D01_T04", "from": "LOC_1023", "to": "HOME_A000311", "to_name": "home", "trip_type": "work_to_home", "depart": "17:30", "options": [
+                {"mode": "walk", "distance_m": 1499, "estimated_total_time_s": 1079, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000336", "has_car": false, "has_bike": false, "trips": [
+            {"trip_id": "A000336_D01_T01", "from": "HOME_A000336", "to": "LOC_0042", "to_name": "Santa Rosa Wet & Dry Market", "trip_type": "home_to_shopping", "depart": "09:30", "options": [
+                {"mode": "walk", "distance_m": 951, "estimated_total_time_s": 684, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000336_D01_T02", "from": "LOC_0042", "to": "HOME_A000336", "to_name": "home", "trip_type": "shopping_to_home", "depart": "12:00", "options": [
+                {"mode": "walk", "distance_m": 951, "estimated_total_time_s": 684, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000336_D01_T03", "from": "HOME_A000336", "to": "LOC_0988", "to_name": "(unnamed)", "trip_type": "home_to_leisure", "depart": "13:30", "options": [
+                {"mode": "walk", "distance_m": 567, "estimated_total_time_s": 408, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000336_D01_T04", "from": "LOC_0988", "to": "HOME_A000336", "to_name": "home", "trip_type": "leisure_to_home", "depart": "15:00", "options": [
+                {"mode": "walk", "distance_m": 567, "estimated_total_time_s": 408, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000336_D01_T05", "from": "HOME_A000336", "to": "LOC_0532", "to_name": "Foxtrot and Echo", "trip_type": "home_to_leisure", "depart": "17:00", "options": [
+                {"mode": "walk", "distance_m": 868, "estimated_total_time_s": 624, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000336_D01_T06", "from": "LOC_0532", "to": "HOME_A000336", "to_name": "home", "trip_type": "leisure_to_home", "depart": "18:30", "options": [
+                {"mode": "walk", "distance_m": 868, "estimated_total_time_s": 624, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000381", "has_car": false, "has_bike": false, "trips": [
+            {"trip_id": "A000381_D01_T01", "from": "HOME_A000381", "to": "LOC_0042", "to_name": "Santa Rosa Wet & Dry Market", "trip_type": "home_to_shopping", "depart": "10:00", "options": [
+                {"mode": "walk", "distance_m": 499, "estimated_total_time_s": 359, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000381_D01_T02", "from": "LOC_0042", "to": "HOME_A000381", "to_name": "home", "trip_type": "shopping_to_home", "depart": "13:00", "options": [
+                {"mode": "walk", "distance_m": 499, "estimated_total_time_s": 359, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000381_D01_T03", "from": "HOME_A000381", "to": "LOC_0492", "to_name": "Chicken Star", "trip_type": "home_to_leisure", "depart": "17:00", "options": [
+                {"mode": "walk", "distance_m": 105, "estimated_total_time_s": 75, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000381_D01_T04", "from": "LOC_0492", "to": "HOME_A000381", "to_name": "home", "trip_type": "leisure_to_home", "depart": "21:00", "options": [
+                {"mode": "walk", "distance_m": 105, "estimated_total_time_s": 75, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000747", "has_car": false, "has_bike": true, "trips": [
+            {"trip_id": "A000747_D01_T01", "from": "HOME_A000747", "to": "LOC_0120", "to_name": "Digital Terestrial World", "trip_type": "home_to_work", "depart": "08:00", "options": [
+                {"mode": "walk", "distance_m": 295, "estimated_total_time_s": 213, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 377, "access_walk_m": 0, "in_vehicle_m": 377, "egress_walk_m": 0, "estimated_total_time_s": 86, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 86, "egress_time_s": 0, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000747_D01_T02", "from": "LOC_0120", "to": "HOME_A000747", "to_name": "home", "trip_type": "work_to_home", "depart": "18:00", "options": [
+                {"mode": "walk", "distance_m": 295, "estimated_total_time_s": 213, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 307, "access_walk_m": 0, "in_vehicle_m": 307, "egress_walk_m": 0, "estimated_total_time_s": 63, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 63, "egress_time_s": 0, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000882", "has_car": false, "has_bike": false, "trips": [
+            {"trip_id": "A000882_D01_T01", "from": "HOME_A000882", "to": "LOC_0080", "to_name": "Our Lady of Fatima University - Santa Rosa", "trip_type": "home_to_school", "depart": "08:00", "options": [
+                {"mode": "walk", "distance_m": 1488, "estimated_total_time_s": 1070, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000882_D01_T02", "from": "LOC_0080", "to": "HOME_A000882", "to_name": "home", "trip_type": "school_to_home", "depart": "14:00", "options": [
+                {"mode": "walk", "distance_m": 1488, "estimated_total_time_s": 1070, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000882_D01_T03", "from": "HOME_A000882", "to": "LOC_0045", "to_name": "SM Supermarket", "trip_type": "home_to_shopping", "depart": "19:00", "options": [
+                {"mode": "walk", "distance_m": 1288, "estimated_total_time_s": 927, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000882_D01_T04", "from": "LOC_0045", "to": "HOME_A000882", "to_name": "home", "trip_type": "shopping_to_home", "depart": "21:00", "options": [
+                {"mode": "walk", "distance_m": 1288, "estimated_total_time_s": 927, "cost_php": 0.0}
+            ]}
+        ]},
+    {"agent_id": "A000933", "has_car": false, "has_bike": true, "trips": [
+            {"trip_id": "A000933_D01_T01", "from": "HOME_A000933", "to": "LOC_0044", "to_name": "SM Savemore Garden Villas", "trip_type": "home_to_shopping", "depart": "08:00", "options": [
+                {"mode": "walk", "distance_m": 721, "estimated_total_time_s": 519, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 867, "access_walk_m": 0, "in_vehicle_m": 867, "egress_walk_m": 0, "estimated_total_time_s": 196, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 196, "egress_time_s": 0, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000933_D01_T02", "from": "LOC_0044", "to": "HOME_A000933", "to_name": "home", "trip_type": "shopping_to_home", "depart": "10:30", "options": [
+                {"mode": "walk", "distance_m": 721, "estimated_total_time_s": 519, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 924, "access_walk_m": 0, "in_vehicle_m": 924, "egress_walk_m": 0, "estimated_total_time_s": 207, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 207, "egress_time_s": 0, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000933_D01_T03", "from": "HOME_A000933", "to": "LOC_0146", "to_name": "Malusak Barangay Hall", "trip_type": "home_to_work", "depart": "16:00", "options": [
+                {"mode": "walk", "distance_m": 751, "estimated_total_time_s": 540, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 797, "access_walk_m": 0, "in_vehicle_m": 797, "egress_walk_m": 0, "estimated_total_time_s": 175, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 175, "egress_time_s": 0, "cost_php": 0.0}
+            ]},
+            {"trip_id": "A000933_D01_T04", "from": "LOC_0146", "to": "HOME_A000933", "to_name": "home", "trip_type": "work_to_home", "depart": "18:30", "options": [
+                {"mode": "walk", "distance_m": 751, "estimated_total_time_s": 540, "cost_php": 0.0},
+                {"mode": "bike", "distance_m": 874, "access_walk_m": 0, "in_vehicle_m": 874, "egress_walk_m": 0, "estimated_total_time_s": 178, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 178, "egress_time_s": 0, "cost_php": 0.0}
+            ]}
+        ]}
+  ]
+}
