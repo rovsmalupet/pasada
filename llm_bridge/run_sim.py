@@ -102,7 +102,7 @@ def simulate(args, first):
                 logs = C.ABM_DIR / "demand" / "llm_logs"
                 logs.mkdir(exist_ok=True)
                 (logs / f"schedule_day_{day}.keep.json").write_text(json.dumps(
-                    {"prompt_version": C.PROMPT_VERSION, "why": f"no mode for {stuck.group(1)}", "answers": keep},
+                    {"prompt_version": C.PROMPT_VERSION, "why": f"no mode for {', '.join(empty)}", "answers": keep},
                     ensure_ascii=False), encoding="utf-8")
                 print(f"\n>>> day {day}: a new schedule only for {', '.join(bad)} (a trip no mode can make); "
                       f"the other {len(keep)} agents keep theirs (try {redos[day]} of 2, then the stop is skipped)",
