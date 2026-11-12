@@ -82,6 +82,15 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
     done = saved.get("answers", {}) if same else {}
     if saved and not same:
         print(f"  (saved progress in {partial_path.name} was for another input file or prompt version: not used)", flush=True)
+    # run_sim's targeted redo: agents whose schedule could be made keep it; only the others are asked
+    keep_path = logs / f"{out.stem}.keep.json"
+    if keep_path.is_file():
+        kept = json.loads(keep_path.read_text(encoding="utf-8"))
+        if kept.get("prompt_version") == C.PROMPT_VERSION:
+            ids = {agent_id_of(e) for e in entries}
+            done.update({a: r for a, r in kept["answers"].items() if a in ids and a not in done})
+            print(f"  kept {len(kept['answers'])} agents' answers from before ({kept.get('why', '')})", flush=True)
+        keep_path.unlink()
     print(f"\n=== {task}{f' day {day}' if day else ''}: {len(entries)} agents, {len(done)} already answered "
           f"({inp.relative_to(C.ABM_DIR)} -> {out.relative_to(C.ABM_DIR)})", flush=True)
 

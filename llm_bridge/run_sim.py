@@ -13,6 +13,7 @@ that needs a person (printed), e.g. a trip no mode can make.
 """
 
 import argparse
+import json
 import os
 import re
 import shlex
@@ -68,6 +69,7 @@ def simulate(args, first):
     env = sumo_env()
     every = shlex.split(args.pipeline_args)
     started = time.time()
+    redos = {}
     for day in days_of(args.days):
         while True:
             cmd = [sys.executable, "pipeline.py", "--day", str(day), *first, *every]
@@ -80,6 +82,24 @@ def simulate(args, first):
                 print(f"=== day {day} done ({(time.time() - started) / 60:.0f} min so far)", flush=True)
                 break
             wait = re.search(r"Waiting for the LLM: answer (\S+) in (\S+)", run.stdout)
+            stuck = re.search(r"cannot be made by any mode the agent has: (.+?)\. The schedule must change", run.stdout)
+            if not wait and stuck and redos.get(day, 0) < 3:
+                # a trip no mode can make (e.g. between two places, not from home): ask ONLY those agents
+                # for a new day; every other agent keeps its schedule (answer.py reads the .keep file)
+                redos[day] = redos.get(day, 0) + 1
+                bad = sorted(set(re.findall(r"(A\d+)_D\d+_T\d+", stuck.group(1))))
+                done = C.ABM_DIR / "demand" / f"schedule_day_{day}.json"
+                keep = {e["agent_id"]: e for e in json.loads(done.read_text(encoding="utf-8"))["agents"]
+                        if e.get("agent_id") not in bad}
+                logs = C.ABM_DIR / "demand" / "llm_logs"
+                logs.mkdir(exist_ok=True)
+                (logs / f"schedule_day_{day}.keep.json").write_text(json.dumps(
+                    {"prompt_version": C.PROMPT_VERSION, "why": f"no mode for {stuck.group(1)}", "answers": keep},
+                    ensure_ascii=False), encoding="utf-8")
+                print(f"\n>>> day {day}: a new schedule only for {', '.join(bad)} (a trip no mode can make); "
+                      f"the other {len(keep)} agents keep theirs (redo {redos[day]} of 3)", flush=True)
+                first = ["--redo", "schedule"]
+                continue
             if not wait:
                 print("The pipeline stopped for a reason the LLM cannot fix (above).")
                 return 1
