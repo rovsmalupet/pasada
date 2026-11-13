@@ -337,6 +337,24 @@ def day_of(name):
     return d if d in C.WEEKDAYS else None
 
 
+def repair_chains(out_trips, home, aid):
+    """abm12 (2026-11-14): a last-try fallback for habits. A000932 (studies and works) put school
+    07:00-17:00 and work 08:30-18:00 on the same weekdays on all 10 tries. For each day, keep the trips
+    that connect (each leaves from where the one before arrived), in order of departure, and take that
+    day off the others. The day must still end at home, or the answer still fails. Logged in NOTES."""
+    for day in C.WEEKDAYS:
+        todays = sorted((t for t in out_trips if day in t["days"]), key=lambda t: t["usual_departure"])
+        at, last, dropped = home, None, []
+        for t in todays:
+            if t["origin"] == at and t["usual_departure"] != last:
+                at, last = t["destination"], t["usual_departure"]
+            else:
+                t["days"] = [d for d in t["days"] if d != day]
+                dropped.append(t["trip_key"])
+        if dropped and at == home:
+            NOTES.append(f"{aid}: habits on the last try: {day}: dropped {', '.join(dropped)} (did not connect)")
+
+
 def habits_answer(text, entry, head):
     agent, home = entry["agent"], entry["agent"]["home_id"]
     aid = agent["agent_id"]
@@ -444,6 +462,11 @@ def habits_answer(text, entry, head):
         return None, problems
     for t in out_trips:
         t["purpose"] = "home" if t["destination"] == home else activity[t["destination"]]
+    if LAST_TRY:                               # abm12: on the last try, drop the trips that cannot connect
+        repair_chains(out_trips, home, aid)
+        out_trips = [t for t in out_trips if t["days"]]
+        if not out_trips:
+            return None, ["no recurring trips left after removing the ones that cannot connect"]
     for day in C.WEEKDAYS:                     # each day's trips: a round from home back home
         todays = sorted((t for t in out_trips if day in t["days"]), key=lambda t: t["usual_departure"])
         at, last = home, None
