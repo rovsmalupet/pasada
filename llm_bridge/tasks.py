@@ -36,6 +36,7 @@ def home_id(aid):
 HOME = "home"
 _CACHE = {}
 NOTES = []                         # what the simulation side decided for an answer (logged by answer.py)
+LAST_TRY = False                   # set by answer.py on an agent's last try (see modes_answer)
 
 
 def _json(name):
@@ -589,11 +590,53 @@ def best_options(trip):
     return [best[m] for m in ("jeepney", "walk", "bike", "car") if m in best]
 
 
+def usable_options(entry):
+    """Each trip's options without a bicycle or car the agent cannot have where that trip starts,
+    whatever it chose before (e.g. the bicycle on a trip from work when it could not have ridden it
+    there). A vehicle stays offered when some choice of the earlier trips brings it there (then the
+    prompt's vehicle rule says to use it on the way). Decided with the user, 2026-11-13: the LLM is
+    only offered what the agent can actually use."""
+    trips, home = entry["trips"], entry["agent"]["home_id"]
+    opts = [best_options(t) for t in trips]
+    start = tuple(sorted({m_: home for m_ in C.VEHICLE_MODES}.items()))
+    memo = {}
+
+    def step(i, parked, mode):
+        where = dict(parked)
+        if mode in C.VEHICLE_MODES:
+            if where[mode] != trips[i]["from"]:
+                return None
+            where[mode] = trips[i]["to"]
+        return tuple(sorted(where.items()))
+
+    def can_finish(i, parked):
+        if i == len(trips):
+            return parked == start          # every bicycle/car back home at the end of the day
+        if (i, parked) not in memo:
+            memo[(i, parked)] = any((n := step(i, parked, o["mode"])) is not None and can_finish(i + 1, n)
+                                    for o in opts[i])
+        return memo[(i, parked)]
+
+    if not can_finish(0, start):
+        return opts             # no way at all (a trip offers only an unreachable vehicle): see modes_answer
+    keep, frontier = [set() for _ in trips], {start}
+    for i in range(len(trips)):
+        nxt = set()
+        for parked in frontier:
+            for o in opts[i]:
+                n = step(i, parked, o["mode"])
+                if n is not None and can_finish(i + 1, n):
+                    keep[i].add(o["mode"])
+                    nxt.add(n)
+        frontier = nxt
+    return [[o for o in opts[i] if o["mode"] in keep[i]] for i in range(len(trips))]
+
+
 def candidates_of(entry):
     out = []
-    for t in entry["trips"]:
+    for t, usable in zip(entry["trips"], usable_options(entry)):
         modes = []
-        for o in best_options(t):
+        for o in usable:
             row = {"mode": C.TO_PROMPT_MODE[o["mode"]]}
             row.update({k: o[k] for k in OPTION_FIELDS if k in o})
             row["distance_km"] = round(o["distance_m"] / 1000, 2)
@@ -628,8 +671,44 @@ def modes_prompt_of(entry, head):
                         candidates_of(entry)), C.MAX_NEW_TOKENS_LONG)
 
 
+def vehicle_rule_possible(trips, home):
+    """True when at least one choice of modes (from each trip's options) keeps every bicycle and car
+    trip starting where that vehicle was left. When none does (e.g. a trip whose only option is the
+    bicycle, from a place the bicycle cannot have reached), no answer could pass the vehicle rule."""
+    options = [[o["mode"] for o in best_options(t)] for t in trips]
+    seen = set()
+
+    start = tuple(sorted({m_: home for m_ in C.VEHICLE_MODES}.items()))
+
+    def ok(i, parked):
+        if i == len(trips):
+            return parked == start          # every bicycle/car back home at the end of the day
+        if (i, parked) in seen:
+            return False
+        seen.add((i, parked))
+        where = dict(parked)
+        for mode in options[i]:
+            if mode in C.VEHICLE_MODES:
+                if where[mode] != trips[i]["from"]:
+                    continue
+                if ok(i + 1, tuple(sorted({**where, mode: trips[i]["to"]}.items()))):
+                    return True
+            elif ok(i + 1, parked):
+                return True
+        return False
+
+    return ok(0, start)
+
+
 def modes_answer(text, entry, head):
     aid, home = entry["agent"]["agent_id"], entry["agent"]["home_id"]
+    enforce_vehicle = vehicle_rule_possible(entry["trips"], home)
+    if not enforce_vehicle:      # logged; the simulation's own options made the rule impossible for this day
+        NOTES.append(f"{aid}: vehicle rule not applied: no choice of modes keeps the bicycle/car where each trip "
+                     f"starts (a trip offers only a vehicle the agent cannot have there)")
+    elif LAST_TRY:               # last resort so one agent cannot stop the run; logged with the answer
+        enforce_vehicle = False
+        NOTES.append(f"{aid}: vehicle rule not applied on the last try (every earlier try broke it)")
     m = parsed(text)
     if m is None:
         return None, ["not valid JSON"]
@@ -643,13 +722,13 @@ def modes_answer(text, entry, head):
         elif isinstance(d, dict):
             by_trip[d.get("trip_id")] = d
     selections, parked = [], {m_: home for m_ in C.VEHICLE_MODES}
-    trips = entry["trips"]
+    trips, usable = entry["trips"], usable_options(entry)
     for i, t in enumerate(trips):
         d = by_trip.get(t["trip_id"])
         if d is None:
             problems.append(f"{t['trip_id']}: no decision")
             continue
-        options = {o["mode"]: o for o in best_options(t)}
+        options = {o["mode"]: o for o in usable[i]}         # only what the agent can use (usable_options)
         chosen = C.TO_ABM_MODE.get(str(d.get("selected_mode", "")).strip(" <>").lower())
         if chosen not in options:
             problems.append(f"{t['trip_id']}: {d.get('selected_mode')!r} is not one of the options "
@@ -657,14 +736,14 @@ def modes_answer(text, entry, head):
             continue
         before = dict(parked)
         if chosen in C.VEHICLE_MODES:
-            if parked[chosen] != t["from"]:
+            if enforce_vehicle and parked[chosen] != t["from"]:
                 problems.append(f"{t['trip_id']}: the {C.TO_PROMPT_MODE[chosen]} is at {parked[chosen]}, "
                                 f"not at {t['from']}")
             parked[chosen] = t["to"]
         if i + 1 < len(trips):
             due = minutes(trips[i + 1]["depart"]) * 60 - minutes(t["depart"]) * 60
             fits = [o for o in options.values() if o["estimated_total_time_s"] <= due
-                    and (o["mode"] not in C.VEHICLE_MODES or before[o["mode"]] == t["from"])]
+                    and (o["mode"] not in C.VEHICLE_MODES or not enforce_vehicle or before[o["mode"]] == t["from"])]
             if options[chosen]["estimated_total_time_s"] > due and fits:
                 problems.append(f"{t['trip_id']}: {C.TO_PROMPT_MODE[chosen]} arrives after your next trip leaves, "
                                 f"while {C.TO_PROMPT_MODE[min(fits, key=lambda o: o['estimated_total_time_s'])['mode']]} "
@@ -675,6 +754,11 @@ def modes_answer(text, entry, head):
         if isinstance(d.get("reasoning"), str) and d["reasoning"].strip():
             sel["reasoning"] = d["reasoning"].strip()
         selections.append(sel)
+    if enforce_vehicle and not problems:
+        for vehicle, where in parked.items():
+            if where != home:                # 2026-11-13, decided with the user: no vehicle left out overnight
+                problems.append(f"the {C.TO_PROMPT_MODE[vehicle]} is left at {where} at the end of the day; "
+                                f"ride it back home")
     if problems:
         return None, problems
     return {"agent_id": aid, "selections": selections}, []

@@ -212,7 +212,7 @@ def mode_prompt(commuter, habits, travel_experience, schedule, candidates):
             # INTEGRATION: the simulation's vehicle rule and its on-time rule (llm_tasks.py)
             "A bicycle or private car trip needs the vehicle where the trip starts: at home at "
             "first, then wherever you last left it. If you leave it somewhere, use it again to "
-            "come back.\n"
+            "come back: by the end of the day it must be back home.\n"
             "If an option would arrive after your next trip leaves while another option would "
             "arrive in time, do not pick the late one.\n"
             "Return exactly one JSON object and nothing else:\n"

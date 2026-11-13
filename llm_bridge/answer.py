@@ -122,6 +122,7 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
         for q, text in zip(batch, texts):
             q["try"] += 1
             T.NOTES.clear()
+            T.LAST_TRY = q["try"] >= C.MAX_TRIES
             result, problems = convert(text, q["entry"], head)
             notes = list(T.NOTES)
             with attempts_path.open("a", encoding="utf-8") as f:

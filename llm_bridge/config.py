@@ -46,9 +46,11 @@ GPU_WAIT_MINUTES = 60              # wait this long for free GPU memory (the GPU
 # "-abm5" = places named by category only (no ids); the nearest place of the category is used,
 # "-abm6" = no distances or reachability in any prompt: every kind of place is offered (2026-11-11),
 # "-abm7" = (no prompt change) a kind resolves to the place nearest to where the trip starts,
+# "-abm9" = mode: a bike/car is offered only where the agent can have it, and must be back
+#            home by the end of the day (2026-11-13, decided with the user)
 # "-abm8" = habits: outings on one day must not overlap; different departure times (2026-11-11),
 # each marked "INTEGRATION" in prompts.py (2026-11-10).
-PROMPT_VERSION = "v0.3-abm8"
+PROMPT_VERSION = "v0.3-abm9"
 
 KB_TOP_K = 8
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
