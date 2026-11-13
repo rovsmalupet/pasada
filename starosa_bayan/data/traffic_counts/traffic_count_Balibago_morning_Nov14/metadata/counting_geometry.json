@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "source_resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261113_071022_011.mp4",
+  "anchor": "bottom-center",
+  "confidence_threshold": 0.3,
+  "tracking_detection_threshold": 0.1,
+  "vehicle_nms_iou": 0.65,
+  "tracker": {
+    "track_activation_threshold": 0.3,
+    "lost_track_buffer": 45,
+    "minimum_matching_threshold": 0.8,
+    "minimum_consecutive_frames": 2
+  },
+  "counting": {
+    "hysteresis_pixels": 8,
+    "stable_frames": 2,
+    "minimum_direction_pixels": 8,
+    "max_gap_seconds": 1.5,
+    "state_ttl_seconds": 10,
+    "duplicate_window_seconds": 0.6,
+    "duplicate_distance_pixels": 25
+  },
+  "lines": [
+    {
+      "id": "balibago_nov13_7am_road_reference",
+      "start": [
+        525.5005396674726,
+        855.1473265716645
+      ],
+      "end": [
+        1759.3943193065968,
+        897.6228867190439
+      ],
+      "allowed_directions": [
+        "toward_camera",
+        "away_from_camera"
+      ],
+      "direction_axis": [
+        0.034613124564173973,
+        0.9994007862754086
+      ],
+      "roi": []
+    }
+  ],
+  "road_polygons": [
+    [
+      [
+        1865.3369140625,
+        1079.0
+      ],
+      [
+        568.4735717773438,
+        1079.0
+      ],
+      [
+        356.72100830078125,
+        1067.35595703125
+      ],
+      [
+        888.7446899414062,
+        610.8563232421875
+      ],
+      [
+        1261.7322998046875,
+        615.0930786132812
+      ]
+    ]
+  ],
+  "exclude_polygons": [],
+  "validation": {
+    "geometry_approved": true,
+    "accuracy_validated": false,
+    "anchor_validated": false,
+    "created_at": "2026-11-13T10:05:07.085035+00:00",
+    "representative_frames_reviewed": [
+      2,
+      449.76,
+      780,
+      1349.28,
+      1797.04
+    ],
+    "notes": "Same counting method as the prior Balibago run. Road line/polygon approximately aligned from its reference image to this recording at 13:00 using static-building features, then clipped to the new source frame. No physical distance calibration or human accuracy validation.",
+    "authorization": "User requested the entire VID_20261113_071022_011 recording, counts only, in rfdetr_jeepney_Balibago_Nov13_7AM.",
+    "reference_frame_seconds": 780
+  },
+  "reference_timestamp_seconds": 780,
+  "alignment_source": {
+    "geometry": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago/config/balibago_full_geometry.json",
+    "reference": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago/preview/reference.jpg",
+    "new_reference_frame": 19500,
+    "old_to_new_reference": [
+      [
+        0.8122340732917752,
+        0.0035091665887672465,
+        168.6657131164095
+      ],
+      [
+        -0.03840380705939153,
+        0.8731829816769734,
+        67.57775728282228
+      ],
+      [
+        -7.928267004900645e-05,
+        -2.478197612134547e-05,
+        0.9814222030652344
+      ]
+    ],
+    "quality": {
+      "valid": true,
+      "reason": "ok",
+      "inliers": 34,
+      "matches": 45,
+      "median_reprojection_error_px": 1.7330477227716745,
+      "line_visible": true,
+      "line_in_source": [
+        [
+          525.5005396674726,
+          855.1473265716645
+        ],
+        [
+          1759.3943193065968,
+          897.6228867190439
+        ]
+      ]
+    }
+  }
+}

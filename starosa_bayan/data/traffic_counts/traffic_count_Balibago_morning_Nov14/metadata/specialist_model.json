@@ -1,0 +1,35 @@
+{
+  "name": "Matlih Aerial-View-Vehicle-Detection",
+  "source_url": "https://github.com/Matlih/Aerial-View-Vehicle-Detection",
+  "version": "4dd47714091503013e7405552e73230a63b21029",
+  "weights_url": "https://raw.githubusercontent.com/Matlih/Aerial-View-Vehicle-Detection/4dd47714091503013e7405552e73230a63b21029/weights/best.pt",
+  "sha256": "5a3b7f282d6dd283f09f252859570ab0e4ca7b306877329f49a32783db0bda22",
+  "size_bytes": 19183571,
+  "repository_license": "MIT",
+  "framework": "Ultralytics YOLO",
+  "framework_version": "8.4.19",
+  "class_names": {
+    "0": "bus",
+    "1": "emergency vehicle",
+    "2": "motorcycle",
+    "3": "pickup truck",
+    "4": "puj",
+    "5": "sedan",
+    "6": "suv",
+    "7": "truck",
+    "8": "van"
+  },
+  "jeepney_class_ids": [
+    4
+  ],
+  "scope": "Experimental; no DJI accuracy ground truth yet",
+  "access": "public local weight download; no API key or video upload",
+  "architecture_yaml": "yolo11s.yaml",
+  "architecture_scale": "s",
+  "parameter_count": 9431275,
+  "checkpoint_ultralytics_version": "8.3.141",
+  "license_note": "Repository MIT notice retained. Ultralytics package is AGPL-3.0; repository MIT notice does not remove framework or upstream model obligations. No paid service used.",
+  "weights_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney/models/aerial_best.pt",
+  "weights_sha256": "5a3b7f282d6dd283f09f252859570ab0e4ca7b306877329f49a32783db0bda22",
+  "device": "mps"
+}

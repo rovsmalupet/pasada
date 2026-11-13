@@ -1,0 +1,257 @@
+{
+  "video": {
+    "path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261112_141031_007.mp4",
+    "filename": "VID_20261112_141031_007.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps_exact": "25",
+    "fps": 25.0,
+    "duration_seconds": 1799.04,
+    "container_duration_seconds": 1799.04,
+    "frame_count": 44976,
+    "estimated_frame_count": 44976,
+    "codec": "hevc",
+    "pixel_format": "yuvj420p",
+    "rotation_degrees": 0.0,
+    "creation_time_metadata": "2026-11-12T06:10:31.000000Z",
+    "creation_time_verified": false,
+    "stream_index": 0,
+    "time_base": "1/25000",
+    "timing_method": "decoded presentation timestamps (PyAV); rational CFR frame indexing",
+    "possible_vfr": false,
+    "raw_probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "hevc",
+          "codec_long_name": "H.265 / HEVC (High Efficiency Video Coding)",
+          "profile": "Main",
+          "codec_type": "video",
+          "codec_tag_string": "hvc1",
+          "codec_tag": "0x31637668",
+          "width": 1920,
+          "height": 1080,
+          "coded_width": 1920,
+          "coded_height": 1080,
+          "has_b_frames": 0,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "16:9",
+          "pix_fmt": "yuvj420p",
+          "level": 123,
+          "color_range": "pc",
+          "color_space": "bt709",
+          "color_transfer": "bt709",
+          "color_primaries": "bt709",
+          "chroma_location": "left",
+          "view_ids_available": "",
+          "view_pos_available": "",
+          "id": "0x1",
+          "r_frame_rate": "25/1",
+          "avg_frame_rate": "25/1",
+          "time_base": "1/25000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 44976000,
+          "duration": "1799.040000",
+          "bit_rate": "52427755",
+          "nb_frames": "44976",
+          "extradata_size": 140,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "creation_time": "2026-11-12T06:10:31.000000Z",
+            "language": "eng",
+            "handler_name": "\u0010INS.HVC",
+            "encoder": "HVC encoder"
+          }
+        },
+        {
+          "index": 1,
+          "codec_name": "aac",
+          "codec_long_name": "AAC (Advanced Audio Coding)",
+          "profile": "LC",
+          "codec_type": "audio",
+          "codec_tag_string": "mp4a",
+          "codec_tag": "0x6134706d",
+          "mime_codec_string": "mp4a.40.2",
+          "sample_fmt": "fltp",
+          "sample_rate": "48000",
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bits_per_sample": 0,
+          "initial_padding": 0,
+          "id": "0x2",
+          "r_frame_rate": "0/0",
+          "avg_frame_rate": "0/0",
+          "time_base": "1/48000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 86350848,
+          "duration": "1798.976000",
+          "bit_rate": "189385",
+          "nb_frames": "84327",
+          "extradata_size": 5,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "creation_time": "2026-11-12T06:10:31.000000Z",
+            "language": "eng",
+            "handler_name": "\u0010INS.AAC"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261112_141031_007.mp4",
+        "nb_streams": 2,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "1799.040000",
+        "size": "11894294062",
+        "bit_rate": "52891738",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "avc1",
+          "minor_version": "538182144",
+          "compatible_brands": "avc1isom",
+          "creation_time": "2026-11-12T06:10:31.000000Z"
+        }
+      }
+    }
+  },
+  "geometry": {
+    "schema_version": 1,
+    "source_resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261112_141031_007.mp4",
+    "anchor": "bottom-center",
+    "confidence_threshold": 0.3,
+    "tracking_detection_threshold": 0.1,
+    "vehicle_nms_iou": 0.65,
+    "tracker": {
+      "track_activation_threshold": 0.3,
+      "lost_track_buffer": 45,
+      "minimum_matching_threshold": 0.8,
+      "minimum_consecutive_frames": 2
+    },
+    "counting": {
+      "hysteresis_pixels": 8,
+      "stable_frames": 2,
+      "minimum_direction_pixels": 8,
+      "max_gap_seconds": 1.5,
+      "state_ttl_seconds": 10,
+      "duplicate_window_seconds": 0.6,
+      "duplicate_distance_pixels": 25
+    },
+    "lines": [
+      {
+        "id": "balibago_road_reference",
+        "start": [
+          390,
+          850
+        ],
+        "end": [
+          1595,
+          850
+        ],
+        "allowed_directions": [
+          "toward_camera",
+          "away_from_camera"
+        ],
+        "direction_axis": [
+          0,
+          1
+        ],
+        "roi": []
+      }
+    ],
+    "road_polygons": [
+      [
+        [
+          780,
+          590
+        ],
+        [
+          1150,
+          590
+        ],
+        [
+          1760,
+          1079
+        ],
+        [
+          200,
+          1079
+        ]
+      ]
+    ],
+    "exclude_polygons": [],
+    "validation": {
+      "geometry_approved": true,
+      "accuracy_validated": false,
+      "anchor_validated": false,
+      "created_at": "2026-11-12T13:04:14.152035+00:00",
+      "representative_frames_reviewed": [],
+      "notes": "Tested geometry tied to the source frame at 13:00 by image registration. Geometry accepted for this automatic run; no manual ground truth, surveyed distances or speed calibration.",
+      "authorization": "User requested the entire video with the tested setup; counts first, speeds deferred."
+    },
+    "reference_timestamp_seconds": 780
+  },
+  "reference_frame_number": 19500,
+  "reference_pixels_sha256": "085904970b93f43a16ca24198cbd197ccdc3ef43172722c89391746152b35fe2",
+  "run_name": "run_20261113T021657_9dfbbd82",
+  "confidence_policy": "Current observation, supported by >=0.30 confidence on the same track within 0.20 seconds.",
+  "camera_policy": "ORB/RANSAC homography to source frame at 13:00; update at 5 Hz; primary counting skips invalid registration.",
+  "classification_policy": "Original COCO crossing categories; conservative specialist jeepney predictions overlap them. No human labels fabricated.",
+  "storage_policy": "No source copy, full annotated video, or frame dump; retain SQLite trajectories/transforms and at most one JPEG per counted or jeepney-candidate track.",
+  "code_sha256": {
+    "counting_policy.py": "e5980024f3ccff72546ceddc3e0c3c8bbccdee16f041a1e8f08d22703b4b7a69",
+    "check_pipeline.py": "23811156cfc42c2aaaa338b66237ff8a5df3304d1247c69d14f8d39ee9aa67a1",
+    "export_results.py": "34dccd5683f0971cc0978c3b9ef9ce292ed72929b7ecf5ca8b77a0b218850dd6",
+    "full_job.py": "86ae2e2d5a64d6ddc5549805b06232858fbcb74e6a8f911be562da2ff7d4894d",
+    "full_counts.py": "1415179056f8b5fd20e7be21f22d88a302296707fc5392bf1dd6af87986e5bfd",
+    "camera_motion.py": "143b898fc78da028a62180817119b69cc8c8bdf47f18d6aab8bfc02b19b8e26f"
+  }
+}

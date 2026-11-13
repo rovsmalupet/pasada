@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "source_resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261112_141031_007.mp4",
+  "anchor": "bottom-center",
+  "confidence_threshold": 0.3,
+  "tracking_detection_threshold": 0.1,
+  "vehicle_nms_iou": 0.65,
+  "tracker": {
+    "track_activation_threshold": 0.3,
+    "lost_track_buffer": 45,
+    "minimum_matching_threshold": 0.8,
+    "minimum_consecutive_frames": 2
+  },
+  "counting": {
+    "hysteresis_pixels": 8,
+    "stable_frames": 2,
+    "minimum_direction_pixels": 8,
+    "max_gap_seconds": 1.5,
+    "state_ttl_seconds": 10,
+    "duplicate_window_seconds": 0.6,
+    "duplicate_distance_pixels": 25
+  },
+  "lines": [
+    {
+      "id": "balibago_road_reference",
+      "start": [
+        390,
+        850
+      ],
+      "end": [
+        1595,
+        850
+      ],
+      "allowed_directions": [
+        "toward_camera",
+        "away_from_camera"
+      ],
+      "direction_axis": [
+        0,
+        1
+      ],
+      "roi": []
+    }
+  ],
+  "road_polygons": [
+    [
+      [
+        780,
+        590
+      ],
+      [
+        1150,
+        590
+      ],
+      [
+        1760,
+        1079
+      ],
+      [
+        200,
+        1079
+      ]
+    ]
+  ],
+  "exclude_polygons": [],
+  "validation": {
+    "geometry_approved": true,
+    "accuracy_validated": false,
+    "anchor_validated": false,
+    "created_at": "2026-11-12T13:04:14.152035+00:00",
+    "representative_frames_reviewed": [],
+    "notes": "Tested geometry tied to the source frame at 13:00 by image registration. Geometry accepted for this automatic run; no manual ground truth, surveyed distances or speed calibration.",
+    "authorization": "User requested the entire video with the tested setup; counts first, speeds deferred."
+  },
+  "reference_timestamp_seconds": 780
+}

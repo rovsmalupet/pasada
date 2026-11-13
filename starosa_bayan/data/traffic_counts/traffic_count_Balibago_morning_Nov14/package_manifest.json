@@ -1,0 +1,86 @@
+{
+  "status": "completed_counts_speeds_pending",
+  "source_run": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f",
+  "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261113_071022_011.mp4",
+  "created_at_utc": "2026-11-13T13:36:07.763977+00:00",
+  "intended_destination": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/traffic_count_Balibago_morning_Nov14",
+  "storage_location": "traffic-counts workspace, outside PASADA-abm",
+  "requested_folder_date_label": "Nov14",
+  "source_recording_date_from_filename": "2026-11-13",
+  "recording_clock_independently_verified": false,
+  "simulation_input_active": false,
+  "speed_calibration_pending": true,
+  "source_files_copied_without_changes": true,
+  "files": {
+    "vehicle_events.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/vehicle_events.csv",
+      "sha256": "bf4197c9f58d2aab770c11bcf3c688856c472e489736b72b2a54068f9b46ff59",
+      "size_bytes": 900092
+    },
+    "vehicles_per_min.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/vehicles_per_min.csv",
+      "sha256": "1ffb14167b95319ee3a10d795dbb81ddbf12b1e5bf7efd9caa504e0b6b31a9bf",
+      "size_bytes": 598
+    },
+    "vehicle_tracking_times.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/vehicle_tracking_times.csv",
+      "sha256": "2af634ebcd93faf5f46b85fd5e91dcbf165d71678faee8c3b426933cef3d3a6c",
+      "size_bytes": 2662047
+    },
+    "vehicles_per_min_by_direction.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/vehicles_per_min_by_direction.csv",
+      "sha256": "2e4c40c36db4c2f0a14bf4828054ba068a17397e91ec76a858a6ab29f92d3b6b",
+      "size_bytes": 1989
+    },
+    "overall_counts.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/overall_counts.csv",
+      "sha256": "95319ea41994f336ea6c4a2865bd3208ffe23a93a244c4fe048de464add8b73d",
+      "size_bytes": 90
+    },
+    "counting_coverage.csv": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/counting_coverage.csv",
+      "sha256": "d3a7a8cac4e611809ede7f96dacb6c2bd248e9494e1d2c9eb223fef3243d7800",
+      "size_bytes": 1182
+    },
+    "metadata/tracking_summary.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/summary.json",
+      "sha256": "51e25ed8aac0895423d2c1acfebbb039b808223e77950a7d898a35493fd700a1",
+      "size_bytes": 1862
+    },
+    "metadata/tracking_verification.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/verification.json",
+      "sha256": "48653e3909736f20ad589656cbdd5d3def09657df26c8b8b53a9888cc710740b",
+      "size_bytes": 1194
+    },
+    "metadata/counting_geometry.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/geometry.json",
+      "sha256": "e55c2e53590072574b616ea7db3b74cfcc81372b08d0ab0d907d5f472e660372",
+      "size_bytes": 3375
+    },
+    "metadata/run_metadata.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/run_metadata.json",
+      "sha256": "be5c1e1bdcc44f7bf4cf9bcaf8df61e233e851ac68c8e7fc1bb3eb0ac2b1b847",
+      "size_bytes": 9919
+    },
+    "metadata/specialist_model.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/specialist_model.json",
+      "sha256": "aa86a47ee11eb9e8b441b9fef1de443e1c864c962de2ea4f58b6dd82a96361dc",
+      "size_bytes": 1459
+    },
+    "metadata/counts_source.json": {
+      "original_path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/output/full_counts_provenance.json",
+      "sha256": "382afb249dfc6c5c5485b777af8bf0a11c8976d9202b5e1d80c17564992ffb75",
+      "size_bytes": 1618
+    },
+    "metadata/speed_status.json": {
+      "original_path": null,
+      "sha256": "ee3c025720c5bd4266580520d56033dddd244699d1068aa882ca35e635e0bde8",
+      "size_bytes": 630
+    },
+    "README.md": {
+      "original_path": null,
+      "sha256": "24b1eb42cdf35c4c2bab9bce33f217689dc2985619915541c6ccd13872741341",
+      "size_bytes": 5713
+    }
+  }
+}

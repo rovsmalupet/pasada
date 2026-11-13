@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "complete_source_frames": 44976,
+  "unique_crossing_events": 1790,
+  "appearance_tracks_verified": 5771,
+  "minute_category_direction_reconciliation_passed": true,
+  "specialist_subtotals_included_in_total": true,
+  "sample_and_original_inputs_preserved": true,
+  "export_sha256": {
+    "vehicle_events.csv": "0c80351cfc4727f1ea4cfe6b76b557cc18e95174c4d8e0100e12562e873cc775",
+    "vehicle_tracking_times.csv": "d8c6f0884649f6a34e79a87e8d6e54ca33e464ec4e22630ab0a2175533ffe888",
+    "vehicles_per_min.csv": "86aaccf043e2f9b37e97aeb0f1f94fd82b2bc1d43267c0edb705c99f086ed7c0",
+    "vehicles_per_min_by_direction.csv": "3374afbf286e8de924f22b725ba81aa595da87b7168310d16f68628f4c9b2424",
+    "overall_counts.csv": "5d3dc740c393d0c21430de3ebe3022467563ca9bb8a29af044610c473c32d53a",
+    "counting_coverage.csv": "7621b23cf9de4148b1152ada7010a7aebc067d7a0891ff38b38f692c6eb5e746",
+    "classification_review.csv": "9b8cea9471611f270392d720261918a5ffd401dcaf636dfc37708514e2d5e547",
+    "specialist_predictions.json": "bd6a9f7fc3fa09baff294d3c666e9c1732c7ed097dac10576d8c9708ee42d927",
+    "summary.json": "d07f6ce91789fab2f3a00d85e027c7d9c6299e020abf9f7c0664efe2689e1b07"
+  }
+}
