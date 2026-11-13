@@ -4,7 +4,7 @@ numbers (thesis plan B.3, daily loop step 3 "candidate mode preparation"; Plan P
 Reads the schedule (step 1, settings.SCHEDULE_FILE: who goes where and when, no modes) and writes
 the choices file (step 2, settings.CHOICES_FILE). For each trip (the fixed rule: two consecutive
 schedule entries at different places), one option per way it can be made:
-  * jeepney: one per line serving it (at most MAX_WALK on foot at each end, at least MIN_RIDE of
+  * jeepney: one per line serving it (at most LINE_WALK on foot at each end, at least MIN_RIDE of
     ride in the line's direction),
   * walk: if the walking route is at most WALK_TRIP_LIMIT,
   * bike, car: if the agent has one (agents.json); a bike ride at most BIKE_TRIP_LIMIT.
