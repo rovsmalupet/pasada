@@ -9,15 +9,15 @@ works out every route, position and time.
 
   * TRIPS by sumo_track's fixed rule (Plan Phase 5, step 1): a trip whenever two consecutive
     schedule entries are at different places, leaving when the earlier entry ends.
-  * PLACES: activity locations (ACTIVITY_LOCATIONS, sumo_track's OSM placeholder) snapped to the
-    nearest walkable edge within LOCATION_SNAP_M; homes (demand/agents.json, from
+  * PLACES: activity locations (ACTIVITY_LOCATIONS, sumo_track's OSM placeholder cut to the area)
+    snapped to the nearest walkable edge within LOCATION_SNAP_M; homes (demand/agents.json, from
     make_agents.py) to the nearest home street within HOME_SNAP_M, at its middle.
   * LEGS, by mode:
       - jeepney: of the lines serving the trip, the one with the shortest total walk. Boarding
         at the roadside spot with the SHORTEST WALK from the start (SUMO's pedestrian router),
         so people wait where their street meets the main road; alighting at the one with the
         shortest walk to the end, at least MIN_RIDE further along the line (a line runs one
-        way). Both walks at most MAX_WALK,
+        way). Both walks at most LINE_WALK,
       - walk: SUMO's pedestrian route, at most WALK_TRIP_LIMIT,
       - bike or car: the agent's own (the persona's access, see load_agents), which must be where
         the trip starts: it stays where it was last parked, at first at home. It stands on the
@@ -107,7 +107,7 @@ def kerb_spots(kerb):
 
 
 class SpotGrid:
-    """Spots bucketed in MAX_WALK-sized cells: every spot within MAX_WALK of a point lies in
+    """Spots bucketed in LINE_WALK-sized cells: every spot within LINE_WALK of a point lies in
     the 3x3 cells around it."""
 
     def __init__(self, spots):
@@ -117,12 +117,12 @@ class SpotGrid:
 
     @staticmethod
     def cell(xy):
-        return int(xy[0] // S.MAX_WALK), int(xy[1] // S.MAX_WALK)
+        return int(xy[0] // S.LINE_WALK), int(xy[1] // S.LINE_WALK)
 
     def near(self, xy):
         cx, cy = self.cell(xy)
         found = [s for dx in (-1, 0, 1) for dy in (-1, 0, 1) for s in self.cells.get((cx + dx, cy + dy), ())]
-        return sorted((math.dist(xy, s[3]), s) for s in found if math.dist(xy, s[3]) <= S.MAX_WALK)
+        return sorted((math.dist(xy, s[3]), s) for s in found if math.dist(xy, s[3]) <= S.LINE_WALK)
 
 
 def walk(from_edge, from_pos, to_edge, to_pos):
@@ -146,16 +146,16 @@ def walk(from_edge, from_pos, to_edge, to_pos):
 def nearest_on_foot(place, grid, toward):
     """The spot with the shortest walk between place (edge, pos, xy) and the line: walking from
     place to the spot if toward, else from the spot to place. (edge_id, pos, route_offset,
-    walk_m, walk_s), or None if none is within MAX_WALK on foot."""
+    walk_m, walk_s), or None if none is within LINE_WALK on foot."""
     edge_id, pos, xy = place
     best = None
     for dist, (s_edge, s_pos, s_offset, _) in grid.near(xy):
         # nearest first; a walk is never shorter than the straight line (give or take a few
         # metres: people walk beside the centre lines measured here), so stop when none can win
-        if dist - 10.0 > (best[3] if best else S.MAX_WALK):
+        if dist - 10.0 > (best[3] if best else S.LINE_WALK):
             break
         w = walk(edge_id, pos, s_edge, s_pos) if toward else walk(s_edge, s_pos, edge_id, pos)
-        if w is not None and w[0] <= S.MAX_WALK and (best is None or w[0] < best[3]):
+        if w is not None and w[0] <= S.LINE_WALK and (best is None or w[0] < best[3]):
             best = (s_edge, s_pos, s_offset, *w)
     return best
 
@@ -328,7 +328,7 @@ class Planner:
         return leg, why
 
     def jeepney_options(self, a, b):
-        """A leg for every line serving a -> b (both walks at most MAX_WALK, at least MIN_RIDE of
+        """A leg for every line serving a -> b (both walks at most LINE_WALK, at least MIN_RIDE of
         ride in the line's direction), shortest total walk first."""
         options = []
         for line in sorted(self.lines):
@@ -348,10 +348,10 @@ class Planner:
         if line is not None:
             options = [o for o in options if o["line"] == line]
             if not options:
-                return None, f"line {line} does not serve this trip (within {S.MAX_WALK:.0f} m on foot at both ends)"
+                return None, f"line {line} does not serve this trip (within {S.LINE_WALK:.0f} m on foot at both ends)"
         if not options:
-            return None, (f"no line runs from within {S.MAX_WALK:.0f} m on foot of the start to within "
-                          f"{S.MAX_WALK:.0f} m of the end, with at least {S.MIN_RIDE:.0f} m of ride")
+            return None, (f"no line runs from within {S.LINE_WALK:.0f} m on foot of the start to within "
+                          f"{S.LINE_WALK:.0f} m of the end, with at least {S.MIN_RIDE:.0f} m of ride")
         return options[0], None
 
     def walk_trip(self, a, b):

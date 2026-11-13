@@ -1,0 +1,125 @@
+{
+  "made_utc": "2026-11-10T08:53:29Z",
+  "what": "The activity locations of sumo_track's city-wide OSM extraction whose lat/lon lie inside one of the 9 study-area barangays chosen on 2026-11-10 (official COD-AB boundaries). Rows are copied unchanged, with their location_id; the column 'barangay' is added.",
+  "source": "sumo_track/data/placeholder/locations.csv",
+  "source_sha256": "925f19ad20a80197950bfc4a6e215187f00fe1e73991827138491a2b5fe31391",
+  "source_built_utc": "2026-11-05T17:09:07Z",
+  "osm_data_timestamp": "2026-10-16T16:35:28Z",
+  "rules_file": "sumo_track/config/activity_categories.yaml",
+  "boundaries": "starosa_bayan/data/santa_rosa_barangays.geojson",
+  "boundaries_sha256": "952ef69fda1b1e80c3750187bcdb1d6c461721747a2af614df869b8c52da3d42",
+  "barangays": {
+    "PH0403428002": "Balibago",
+    "PH0403428007": "Ibaba",
+    "PH0403428008": "Labas",
+    "PH0403428009": "Macabling",
+    "PH0403428011": "Malusak (Pob.)",
+    "PH0403428012": "Market Area (Pob.)",
+    "PH0403428015": "Kanluran (Pob.)",
+    "PH0403428016": "Pook",
+    "PH0403428023": "Tagapo"
+  },
+  "rows_in_source": 1521,
+  "rows_kept": 756,
+  "counts": {
+    "terminal": 7,
+    "mall": 9,
+    "market": 12,
+    "school": 24,
+    "workplace": 73,
+    "healthcare": 30,
+    "services": 34,
+    "worship": 21,
+    "food": 156,
+    "recreation": 88,
+    "shop": 302
+  },
+  "counts_by_barangay": {
+    "Balibago": {
+      "terminal": 5,
+      "mall": 7,
+      "market": 5,
+      "school": 8,
+      "workplace": 12,
+      "healthcare": 9,
+      "services": 13,
+      "worship": 5,
+      "food": 40,
+      "recreation": 18,
+      "shop": 63
+    },
+    "Ibaba": {
+      "workplace": 1,
+      "worship": 2,
+      "food": 2,
+      "recreation": 1,
+      "shop": 7
+    },
+    "Labas": {
+      "school": 4,
+      "workplace": 9,
+      "healthcare": 2,
+      "worship": 3,
+      "food": 12,
+      "recreation": 7,
+      "shop": 26
+    },
+    "Macabling": {
+      "school": 1,
+      "workplace": 21,
+      "services": 2,
+      "food": 1,
+      "recreation": 4,
+      "shop": 8
+    },
+    "Malusak (Pob.)": {
+      "market": 1,
+      "school": 1,
+      "workplace": 6,
+      "healthcare": 8,
+      "services": 7,
+      "worship": 1,
+      "food": 35,
+      "shop": 54
+    },
+    "Market Area (Pob.)": {
+      "market": 1,
+      "school": 2,
+      "workplace": 11,
+      "worship": 2,
+      "food": 4,
+      "recreation": 17,
+      "shop": 8
+    },
+    "Kanluran (Pob.)": {
+      "school": 2,
+      "workplace": 3,
+      "healthcare": 5,
+      "services": 2,
+      "worship": 3,
+      "food": 11,
+      "recreation": 3,
+      "shop": 14
+    },
+    "Pook": {
+      "school": 1,
+      "worship": 3,
+      "food": 1,
+      "recreation": 12,
+      "shop": 8
+    },
+    "Tagapo": {
+      "terminal": 2,
+      "mall": 2,
+      "market": 5,
+      "school": 5,
+      "workplace": 10,
+      "healthcare": 6,
+      "services": 10,
+      "worship": 2,
+      "food": 50,
+      "recreation": 26,
+      "shop": 114
+    }
+  }
+}
