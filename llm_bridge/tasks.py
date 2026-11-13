@@ -19,8 +19,9 @@ from .prompts import (mode_prompt, parse_json, persona_prompt, reflection_prompt
                       habits_prompt)
 
 HHMM = re.compile(r"^([01]\d|2[0-3]):[0-5]\d$")
-PERSONA_FIELDS = ["behavioral_description", "vehicle_ownership", "bicycle_access", "walking_sensitivity",
-                  "cycling_sensitivity", "sensitivities", "general_transport_preference"]
+PERSONA_FIELDS = ["behavioral_description", "vehicle_ownership", "bicycle_access", "walking_tolerance",
+                  "cycling_tolerance", "sensitivities", "general_transport_preference"]     # abm10 (v0.5)
+INVERT = {"High": "Low", "Low": "High", "Moderate": "Moderate"}   # walking/cycling tolerance <-> the simulation's sensitivity
 
 
 # ------------------------------------------------------------------------ helpers
@@ -145,7 +146,7 @@ def shown_agent(agent):
     if agent.get("school_status") == "attending_school":
         level = agent.get("current_education_level") or agent.get("education_level_eligibility")
         if level:
-            shown["education_level"] = level
+            shown["current_school_level"] = level            # abm10 (v0.5): the level enrolled in now
     return shown
 
 
@@ -156,9 +157,10 @@ def prompt_persona(p):
             return p[f"{kind}_sensitivity"]
         # a stand-in persona (llm_stub.py) has predispositions: the opposite scale
         return {"High": "Low", "Low": "High"}.get(p.get(f"{kind}_predisposition"), "Moderate")
+    # abm10 (v0.5): walking/cycling shown as tolerances; personas.json keeps the simulation's sensitivities
     return {"behavioral_description": p["description"], "vehicle_ownership": p["private_car_access"],
-            "bicycle_access": p["bicycle_access"], "walking_sensitivity": walking("walking"),
-            "cycling_sensitivity": walking("cycling"), "sensitivities": p["sensitivities"],
+            "bicycle_access": p["bicycle_access"], "walking_tolerance": INVERT.get(walking("walking")),
+            "cycling_tolerance": INVERT.get(walking("cycling")), "sensitivities": p["sensitivities"],
             "general_transport_preference": p["general_transport_preference"]}
 
 
@@ -233,10 +235,9 @@ def persona_answer(text, entry, head):
     sens = p.get("sensitivities") if isinstance(p.get("sensitivities"), dict) else {}
     if [k for k in C.SENSITIVITIES if k not in sens]:
         problems.append("missing sensitivities " + ", ".join(k for k in C.SENSITIVITIES if k not in sens))
-    levels = {**sens, "walking_sensitivity": p.get("walking_sensitivity"),
-              "cycling_sensitivity": p.get("cycling_sensitivity")}
-    wrong = [f"{k}={v!r}" for k, v in levels.items() if k in (*C.SENSITIVITIES, "walking_sensitivity",
-                                                               "cycling_sensitivity") and v not in C.LEVELS]
+    levels = {**sens, "walking_tolerance": p.get("walking_tolerance"), "cycling_tolerance": p.get("cycling_tolerance")}
+    wrong = [f"{k}={v!r}" for k, v in levels.items() if k in (*C.SENSITIVITIES, "walking_tolerance",
+                                                               "cycling_tolerance") and v not in C.LEVELS]
     if wrong:
         problems.append("not Low/Moderate/High: " + ", ".join(wrong))
     for field in ("vehicle_ownership", "bicycle_access"):
@@ -256,8 +257,8 @@ def persona_answer(text, entry, head):
     if problems:
         return None, problems
     persona = {"description": p["behavioral_description"].strip(), "private_car_access": p["vehicle_ownership"],
-               "bicycle_access": p["bicycle_access"], C.WALKING_FIELD: p["walking_sensitivity"],
-               C.CYCLING_FIELD: p["cycling_sensitivity"],
+               "bicycle_access": p["bicycle_access"], C.WALKING_FIELD: INVERT[p["walking_tolerance"]],
+               C.CYCLING_FIELD: INVERT[p["cycling_tolerance"]],
                "sensitivities": {k: sens[k] for k in C.SENSITIVITIES},
                "general_transport_preference": p["general_transport_preference"]}
     return {"agent_id": entry["agent_id"], "persona": persona}, []
@@ -828,6 +829,21 @@ def reflection_prompt_of(entry, head):
                               sim_outputs_of(entry)), C.MAX_NEW_TOKENS_LONG)
 
 
+def limit_change(old, new, limit):
+    """new weights moved toward the answer but no weight by more than limit, still adding up to 1."""
+    d = {m: max(-limit, -old[m], min(limit, new[m] - old[m])) for m in old}
+    up = sum(v for v in d.values() if v > 0)
+    down = -sum(v for v in d.values() if v < 0)
+    if up > down:
+        d = {m: (v * down / up if v > 0 else v) for m, v in d.items()}
+    elif down > up:
+        d = {m: (v * up / down if v < 0 else v) for m, v in d.items()}
+    out = {m: round(old[m] + d[m], 3) for m in old}
+    top = max(out, key=out.get)
+    out[top] = round(out[top] + 1 - sum(out.values()), 3)
+    return out
+
+
 def reflection_answer(text, entry, head):
     aid = entry["agent"]["agent_id"]
     r = parsed(text)
@@ -855,7 +871,13 @@ def reflection_answer(text, entry, head):
         changed = [m for m in usable if abs(w[m] - current[key][m]) > 1e-9]
         too_much = [f"{C.TO_PROMPT_MODE[m]} by {abs(w[m] - current[key][m]):.2f}" for m in usable
                     if abs(w[m] - current[key][m]) > C.MAX_WEIGHT_CHANGE + 1e-9]
-        if too_much:
+        if too_much and LAST_TRY:
+            # last resort so one agent cannot stop the run: the same direction of change, kept to the
+            # daily limit (logged). E.g. jeepney 1.0 -> 0.0 and car 0.0 -> 1.0 becomes 0.8 and 0.2.
+            w = limit_change(current[key], w, C.MAX_WEIGHT_CHANGE)
+            NOTES.append(f"{key}: changes cut to {C.MAX_WEIGHT_CHANGE} on the last try ({', '.join(too_much)})")
+            updates[key] = w
+        elif too_much:
             problems.append(f"{key}: changes more than {C.MAX_WEIGHT_CHANGE} in a day ({', '.join(too_much)})")
         elif changed:
             updates[key] = w
