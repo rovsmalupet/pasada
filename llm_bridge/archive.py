@@ -2,6 +2,7 @@
 
     starosa_bayan/llm_runs/run_001_20261112_2045_10agents/
         demand/        the run's agents, LLM answers, SUMO outcomes and every try's log (llm_logs/)
+        snapshots/     every earlier save of demand/, by the time it was saved (nothing is ever overwritten)
         report.xlsx    the readable report of that run
         run_info.json  when, prompt version, model settings, simulation settings, git commit
 
@@ -79,7 +80,17 @@ def save(note="", new_run=False):
             name = new_name()
         dest = ROOT / name
         dest.mkdir(parents=True, exist_ok=True)
-        shutil.rmtree(dest / "demand", ignore_errors=True)
+        if (dest / "demand").is_dir():
+            # never lose a save: the previous copy is kept under snapshots/<time it was saved>/
+            info_file = dest / "run_info.json"
+            saved = json.loads(info_file.read_text(encoding="utf-8")).get("last_saved", "") if info_file.is_file() else ""
+            stamp = re.sub(r"[^0-9T]", "", saved).replace("T", "_") or datetime.now().strftime("%Y%m%d_%H%M%S")
+            keep = dest / "snapshots" / stamp
+            keep.parent.mkdir(exist_ok=True)
+            if keep.exists():
+                shutil.rmtree(dest / "demand")
+            else:
+                shutil.move(str(dest / "demand"), str(keep))
         shutil.copytree(demand(), dest / "demand", ignore=SKIP)
         try:
             from . import report
