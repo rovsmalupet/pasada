@@ -26,7 +26,8 @@ demand/old/<date_time>/, never deleting them.
     python pipeline.py --day 1                   # stops at the first LLM answer missing
     python pipeline.py --day 1 --redo modes      # modes, and every later step of day 1, again
     --agents N (first run: how many base agents, default settings.SAMPLE_AGENTS), --background
-    (background traffic; default: none, much faster), --end SECONDS (stop the simulation early)
+    (background traffic; default: none, much faster), --end SECONDS (stop the simulation early),
+    --scenario NAME (simulate the day under a scenario of settings.SCENARIOS, e.g. reduced_jeepney)
 """
 
 import argparse
@@ -112,6 +113,7 @@ def simulate(day, args):
     cmd = ["run.py", "--nogui", "--demand", str(S.day_file("schedule", day)), "--modes", str(S.day_file("modes", day))]
     cmd += [] if args.background else ["--no-background"]
     cmd += ["--end", str(args.end)] if args.end else []
+    cmd += ["--scenario", args.scenario] if args.scenario else []
     log = S.RUNS / "pipeline_last_run.log"
     S.RUNS.mkdir(exist_ok=True)
     out = run(*cmd, log=log)
@@ -155,6 +157,8 @@ def main():
     parser.add_argument("--agents", type=int, default=S.SAMPLE_AGENTS, help="first run: base agents to take (0: all)")
     parser.add_argument("--background", action="store_true", help="simulate with background traffic")
     parser.add_argument("--end", type=int, help="stop the simulation at this many seconds into the day")
+    parser.add_argument("--scenario", choices=sorted(S.SCENARIOS),
+                        help="simulate this day under a scenario of settings.SCENARIOS (no prompt is told)")
     args = parser.parse_args()
     if args.redo:
         redo(args.redo, args.day)

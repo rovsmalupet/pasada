@@ -115,6 +115,7 @@ python pipeline.py --day 2 --llm stub        # the next day: yesterday's reflect
 python pipeline.py --day 1                   # with the LLM: stops at each answer missing (demand/README.md)
 python pipeline.py --day 1 --redo modes      # a step and every later one again (old files go to demand/old/)
 python pipeline.py --day 1 --background      # with background cars and motorcycles (much slower)
+python pipeline.py --day 3 --llm stub --scenario reduced_jeepney   # a day under a scenario (below)
 ```
 
 The simulation alone, on the day's files:
@@ -126,7 +127,14 @@ python run.py --no-background      # without background cars and motorcycles (mu
 python run.py --end 36000          # stop at 10:00 (simulated seconds; default a whole day)
 python run.py --demand FILE --modes FILE   # another day's schedule and modes
 python run.py --additional FILE    # also load a SUMO additional file, e.g. speed changes
+python run.py --scenario reduced_jeepney   # fewer jeepneys on Rizal Boulevard (settings.SCENARIOS)
 ```
+
+**Scenarios** (`settings.SCENARIOS`, manuscript Sec. 4.5.3): `reduced_jeepney` runs Rizal
+Boulevard's two lines (`RIZ-FRS`, `RIZ-N1`) every 30 minutes instead of every 5. A scenario changes
+only the SUMO run of the days it is given on. The trip options keep the usual estimates and no
+prompt mentions it, so the commuters find out by travelling. The run's summary shows, per line, the
+mean and longest wait and the most commuters waiting at the roadside at once.
 
 Each run's folder holds the trip outcomes (`outcomes_day_<n>.json`) and the event log
 (`events.jsonl`): every jeepney stop, boarding, alighting and full pass-by, each commuter's

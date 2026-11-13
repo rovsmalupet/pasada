@@ -167,6 +167,18 @@ DWELL_S = 15.0                     # minimum stop length
 LOOKAHEAD_M = 200.0                # a waiting commuter flags jeepneys within this distance
 OCCUPANCY_SAMPLE_S = 60            # run.py's event log: each jeepney's passengers, every this many seconds
 
+# --- scenarios (manuscript Sec. 4.5.3): run.py / pipeline.py --scenario NAME ---------------------
+# A scenario changes only the SUMO run of the days it is given on. The options keep the usual
+# estimates and no prompt names it: the commuters find out by travelling.
+#   jeepney_headway_s: {line: headway} for lines (both ways) running less often than
+#   JEEPNEY_HEADWAY_S. A multiple of it: the jeepneys leaving at its multiples still run, with
+#   their riders; the others are taken off.
+SCENARIOS = {
+    # Rizal Boulevard's two lines every 30 min instead of 5 (a stand-in level: long enough for a
+    # typical 6-10 min jeepney trip to pass the disruption rule below)
+    "reduced_jeepney": {"jeepney_headway_s": {"RIZ-FRS": 1800, "RIZ-N1": 1800}},
+}
+
 # --- trip outcomes (run.py -> runs/<date_time>/outcomes_day_<n>.json, Plan Part D.4) -------------
 # A trip is disrupted when it took at least DISRUPTION_RATIO times its estimate AND at least
 # DISRUPTION_MIN_S longer, or had not arrived when the run ended. A stand-in for the plan's

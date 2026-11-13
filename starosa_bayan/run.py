@@ -56,6 +56,7 @@ agents whose day was left out, with why.
     python run.py --demand FILE      # another schedule (default settings.SCHEDULE_FILE), or one file with modes
     python run.py --modes FILE       # another modes file (default settings.MODES_FILE)
     python run.py --additional FILE  # also load this SUMO additional file (repeatable), e.g. speed changes
+    python run.py --scenario reduced_jeepney   # a scenario of settings.SCENARIOS: fewer jeepneys on some lines
 """
 
 import argparse
@@ -126,7 +127,30 @@ def load_riders(path, net):
     return riders
 
 
-def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=()):
+def scenario_jeepneys(src, run_dir, headways):
+    """A copy of the jeepney file src in run_dir for a scenario's jeepney_headway_s: on each of its
+    lines (both ways) only the jeepneys leaving at multiples of its headway run, with the riders
+    they come in with. Returns the copy and {line: [running, taken off]}."""
+    tree = ET.parse(src)
+    root = tree.getroot()
+    gone, count = set(), defaultdict(lambda: [0, 0])
+    for el in list(root):
+        if el.tag == "vehicle" and el.get("line").rsplit("_", 1)[0] in headways:
+            off = float(el.get("depart")) % headways[el.get("line").rsplit("_", 1)[0]] != 0
+            count[el.get("line")][off] += 1
+            if off:
+                gone.add(el.get("id"))
+                root.remove(el)
+        elif el.tag == "person" and el.find("ride").get("lines") in gone:
+            root.remove(el)                          # a rider of a jeepney taken off
+    path = run_dir / src.name
+    tree.write(path, encoding="UTF-8", xml_declaration=True)
+    return path, dict(sorted(count.items()))
+
+
+def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=(), headways=None):
+    """The run's SUMO config and gui settings, and the jeepney file it loads (a scenario's copy
+    with fewer jeepneys if headways), with the scenario's changes per line."""
     # with the background, the jeepneys come in with passengers (make_background.py)
     routes = [LOADED_JEEPNEYS if background else S.GENERATED / "jeepney.rou.xml", commuters_file]
     if background:
@@ -134,6 +158,9 @@ def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=
     missing = [p.name for p in routes + [S.GENERATED / "vtypes.add.xml"] if not p.is_file()]
     if missing:
         raise SystemExit(f"Missing generated/{', generated/'.join(missing)}: run python build.py first")
+    changed = {}
+    if headways:
+        routes[0], changed = scenario_jeepneys(routes[0], run_dir, headways)
     additional = [S.GENERATED / "vtypes.add.xml", *extra]
     cfg = run_dir / "run.sumocfg"
     cfg.write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
@@ -179,7 +206,7 @@ def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=
     <viewport zoom="{zoom:.0f}" x="{(x0 + x1) / 2:.1f}" y="{(y0 + y1) / 2:.1f}"/>
 </viewsettings>
 """, encoding="utf-8")
-    return cfg, gui
+    return cfg, gui, routes[0], changed
 
 
 # ---------------------------------------------------------------------- stop bookkeeping
@@ -232,11 +259,17 @@ def main():
     parser.add_argument("--modes", default=str(S.MODES_FILE), help="the modes file (step 3)")
     parser.add_argument("--additional", action="append", default=[],
                         help="also load this SUMO additional file (repeatable), e.g. speed changes")
+    parser.add_argument("--scenario", choices=sorted(S.SCENARIOS), help="a scenario of settings.SCENARIOS")
     args = parser.parse_args()
     extra = [Path(a).resolve() for a in args.additional]
     missing = [str(a) for a in extra if not a.is_file()]
     if missing:
         raise SystemExit(f"No additional file at {', '.join(missing)}")
+    headways = S.SCENARIOS[args.scenario].get("jeepney_headway_s", {}) if args.scenario else {}
+    bad = [f"{line} {h}" for line, h in headways.items() if line not in S.JEEPNEY_LINES or h % S.JEEPNEY_HEADWAY_S]
+    if bad:
+        raise SystemExit(f"Scenario {args.scenario}: not a line of JEEPNEY_LINES with a headway that is a multiple "
+                         f"of JEEPNEY_HEADWAY_S ({S.JEEPNEY_HEADWAY_S} s): {', '.join(bad)}")
 
     run_dir = S.RUNS / datetime.now().strftime("%Y-%m-%d_%H%M%S")
     run_dir.mkdir(parents=True)
@@ -258,8 +291,9 @@ def main():
     # where a commuter walking along their line's route may flag a jeepney (edge -> length)
     kerb = {line: {e.getID(): e.getLength() for e, _ in kerb_edges(net, r["edges"])} for line, r in lines.items()}
 
-    cfg, gui_settings = write_run_files(run_dir, args.end, not args.no_background, lines, net, commuters_file, extra)
-    riders = {} if args.no_background else load_riders(LOADED_JEEPNEYS, net)
+    cfg, gui_settings, jeepney_file, changed = write_run_files(run_dir, args.end, not args.no_background, lines, net,
+                                                               commuters_file, extra, headways)
+    riders = {} if args.no_background else load_riders(jeepney_file, net)
     riders_of = defaultdict(list)                    # jeepney -> the riders it comes in with
     for pid, r in riders.items():
         riders_of[r["veh"]].append(pid)
@@ -270,6 +304,9 @@ def main():
     print(f"Run folder: {run_dir.relative_to(S.HERE).as_posix()} | {len(agents)} commuters, {len(trip_info)} "
           "trips (" + ", ".join(f"{m} {per_mode[m]}" for m in MODES) + f"), {len(lines)} jeepney lines | "
           "background " + ("off" if args.no_background else f"x{S.BACKGROUND_SCALE:g}") + f" | until {args.end} s")
+    if args.scenario:
+        print(f"Scenario {args.scenario}: " + ", ".join(f"{line} {on} jeepneys ({off} taken off)"
+                                                       for line, (on, off) in changed.items()))
     if args.nogui:
         traci.start([sumolib.checkBinary("sumo"), "-c", str(cfg)])
     else:
@@ -514,6 +551,9 @@ def main():
         f.writelines(json.dumps(e, ensure_ascii=False) + "\n" for e in events)
 
     summary = summarise(commuters, times, lines, teleports, len(collisions))
+    if args.scenario:
+        summary["scenario"] = {"name": args.scenario, **S.SCENARIOS[args.scenario],
+                               "jeepneys": {line: {"running": on, "taken_off": off} for line, (on, off) in changed.items()}}
     summary["events"] = dict(Counter(e["event"] for e in events))
     if riders:
         rider_count["still aboard"] = len(aboard)
@@ -533,24 +573,41 @@ def main():
         traci.close()
 
 
+def most_at_once(spans):
+    """The most (start, end) spans open at the same moment; end None: still open."""
+    marks = sorted([(s, 1) for s, _ in spans] + [(e, -1) for _, e in spans if e is not None])
+    most = now = 0
+    for _, step in marks:                            # at the same second, ends (-1) come first
+        now += step
+        most = max(most, now)
+    return most
+
+
 def summarise(commuters, times, lines, teleports, collisions):
     print("\n================ jeepney trips ================")
-    print(f"  {'line':8s} {'trips':>9s} {'boarded':>8s} {'arrived':>8s} {'mean wait':>10s} {'mean ride':>10s}")
+    print(f"  {'line':10s} {'trips':>7s} {'boarded':>8s} {'arrived':>8s} {'mean wait':>10s} {'longest':>9s} "
+          f"{'most waiting':>13s} {'mean ride':>10s}")
     out = {"lines": {}, "teleports": teleports, "collisions": collisions}
     for line in lines:
         mine = [p for p in commuters if commuters[p]["line"] == line]
         waits = [times[p]["board"] - times[p]["kerb"] for p in mine if "board" in times[p]]
         rides = [times[p]["alight"] - times[p]["board"] for p in mine if "alight" in times[p]]
         arrived = sum("arrive" in times[p] for p in mine)
+        # commuters at the line's roadside at the same moment, anywhere along it
+        most = most_at_once([(times[p]["kerb"], times[p].get("board")) for p in mine if "kerb" in times[p]])
         out["lines"][line] = {"trips": len(mine), "boarded": len(waits), "arrived": arrived,
                               "mean_wait_s": round(sum(waits) / len(waits)) if waits else None,
+                              "longest_wait_s": round(max(waits)) if waits else None,
+                              "most_waiting_at_once": most,
                               "mean_ride_s": round(sum(rides) / len(rides)) if rides else None}
         fmt = lambda xs: f"{sum(xs) / len(xs) / 60:.1f} min" if xs else "-"
-        print(f"  {line:8s} {len(mine):9d} {len(waits):8d} {arrived:8d} {fmt(waits):>10s} {fmt(rides):>10s}")
+        longest = f"{max(waits) / 60:.1f} min" if waits else "-"
+        print(f"  {line:10s} {len(mine):7d} {len(waits):8d} {arrived:8d} {fmt(waits):>10s} {longest:>9s} {most:13d} "
+              f"{fmt(rides):>10s}")
     total = len(commuters)
     boarded = sum(v["boarded"] for v in out["lines"].values())
     arrived = sum(v["arrived"] for v in out["lines"].values())
-    print(f"  all      {total:9d} {boarded:8d} {arrived:8d}")
+    print(f"  all        {total:7d} {boarded:8d} {arrived:8d}")
     print(f"  teleports: {teleports}   collisions: {collisions}  (SUMO warns and lets both go on)")
     return out
 
