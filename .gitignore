@@ -44,6 +44,8 @@ starosa_prototype/runs/
 starosa_bayan/generated/
 starosa_bayan/runs/
 starosa_bayan/demand/old/
+# written by measures.py from the runs, which are not committed either
+starosa_bayan/demand/measures.json
 # 37 MB: rebuild from the committed bayan.osm with netconvert -c netconvert.netccfg (or make_map.py)
 starosa_bayan/bayan.net.xml
 

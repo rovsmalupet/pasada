@@ -1,7 +1,10 @@
-"""Background traffic: cars and motorcycles that are not commuters (no LLM), and the passengers
-jeepneys bring in from outside the study area. Every rate is a stand-in in settings.py until the
-group's video counts replace it.
+"""Background traffic: cars, motorcycles, buses and trucks that are not commuters (no LLM), and the
+passengers jeepneys bring in from outside the study area. The counted traffic follows the group's
+videos; every other rate is a stand-in in settings.py.
 
+  * counted traffic: through trips on each COUNT_SITES road, end to end, at the rates its videos
+    counted per type (settings, part 4), so the simulation's camera there counts what the video did
+    (counts.py checks it);
   * inside trips: random trips between edges inside the study area, BACKGROUND_PER_HOUR x
     BACKGROUND_SCALE per type at the peak;
   * gateway trips: at each GATEWAYS road end, its IN vehicles come in from outside:
@@ -23,7 +26,7 @@ group's video counts replace it.
 
 run.py loads these unless --no-background (then generated/jeepney.rou.xml, without riders).
 
-Writes generated/background_car.trips.xml, generated/background_motorcycle.trips.xml and
+Writes generated/background_<type>.trips.xml for each of BACKGROUND_TYPES and
 generated/jeepney_loaded.rou.xml.
 
     python make_background.py
@@ -33,16 +36,17 @@ import json
 import math
 import random
 import xml.etree.ElementTree as ET
-from collections import Counter
+from collections import Counter, defaultdict
 
 import sumolib
 from shapely.geometry import Point
 
+import counts
 import settings as S
 from convert_demand import kerb_edges, kerb_spots
 from make_routes import OPPOSITE, midpoint, road_paths, study_area
 
-EDGE_CLASS = {"car": "passenger", "motorcycle": "motorcycle"}   # vType id -> SUMO vClass
+EDGE_CLASS = {"car": "passenger", "motorcycle": "motorcycle", "bus": "bus", "truck": "truck"}   # vType id -> vClass
 LOADED_JEEPNEYS = S.GENERATED / "jeepney_loaded.rou.xml"        # the jeepneys with their riders
 
 
@@ -106,15 +110,51 @@ def gateways(net, area):
     return out
 
 
-def write_trips(net, area, gates, vtype_id, rng):
+def counted(net, gates, rng):
+    """{vtype: [(depart, entry edge, exit edge)]}: each COUNT_SITES road's through trips, both ways,
+    at its videos' rates per type: in the hour of a video its rates, in the others the nearest
+    video's x BACKGROUND_PROFILE[hour] / BACKGROUND_PROFILE[its hour]. The simulation's own jeepneys
+    passing the camera are taken off its buses and trucks (the camera counts them as those)."""
+    lines = json.loads((S.GENERATED / "jeepney_routes.json").read_text(encoding="utf-8"))
+    videos, out = counts.videos(), defaultdict(list)
+    for site, ways in counts.site_edges(net).items():
+        road = S.COUNT_SITES[site]["road"]
+        coming_in = {d: name for name, (r, d, *_) in S.GATEWAYS.items() if r == road}   # direction -> gateway
+        mine = [v for v in videos if v["site"] == site]
+        for way, edge in ways.items():
+            if way not in coming_in or OPPOSITE[way] not in coming_in:
+                raise SystemExit(f"COUNT_SITES['{site}']: GATEWAYS has no {road} end coming in {way} and one "
+                                 f"coming in {OPPOSITE[way]}, for its traffic going {way}")
+            entry, exit_ = gates[coming_in[way]][0], gates[coming_in[OPPOSITE[way]]][1]
+            jeepneys = 3600 / S.JEEPNEY_HEADWAY_S * sum(edge.getID() in r["edges"] for r in lines.values())
+            rates = defaultdict(list)                # vtype -> per hour
+            for h in range(math.ceil(S.END_S / 3600)):
+                v = min(mine, key=lambda v: abs(h % 24 - v["start_s"] // 3600))
+                r = v["types"][way]
+                scale = S.BACKGROUND_PROFILE[h % 24] / S.BACKGROUND_PROFILE[v["start_s"] // 3600]
+                large = (r["bus"] + r["truck"]) * scale
+                for vtype in r:
+                    rate = r[vtype] * scale
+                    if vtype in ("bus", "truck") and large:
+                        rate *= max(0.0, large - jeepneys) / large
+                    rates[vtype].append(rate)
+            for vtype, per_hour in rates.items():
+                out[vtype] += [(t, entry, exit_) for t in spread(per_hour, rng)]
+    return out
+
+
+def write_trips(net, area, gates, vtype_id, rng, counted_trips):
+    """generated/background_<vtype_id>.trips.xml: its counted, inside and gateway trips."""
     ends = Ends(net, area, EDGE_CLASS[vtype_id])
-    trips, kinds = [], Counter()                     # (depart, from, to, coming in from outside)
-    for t in spread(hourly(S.BACKGROUND_PER_HOUR[vtype_id] * S.BACKGROUND_SCALE), rng):
+    trips = [(t, a, b, True) for t, a, b in counted_trips]   # (depart, from, to, coming in from outside)
+    kinds = Counter(counted=len(trips))
+    for t in spread(hourly(S.BACKGROUND_PER_HOUR.get(vtype_id, 0) * S.BACKGROUND_SCALE), rng):
         trips.append((t, *ends.pair(rng), False))
         kinds["inside"] += 1
-    peak_in = {name: S.GATEWAYS[name][2][vtype_id] for name in gates}
-    peak_out = {name: S.GATEWAYS[name][3][vtype_id] for name in gates}
+    peak_in = {name: S.GATEWAYS[name][2].get(vtype_id, 0) for name in gates}
+    peak_out = {name: S.GATEWAYS[name][3].get(vtype_id, 0) for name in gates}
     others = {name: [g for g in gates if g != name] for name in gates}
+    out_of = {name: sum(peak_out[g] for g in others[name]) for name in gates}   # OUT at the other gateways
     for name, (entry, exit_) in gates.items():
         for t in spread(hourly(peak_in[name]), rng):
             if others[name] and rng.random() < S.GATEWAY_THROUGH_SHARE:
@@ -125,15 +165,15 @@ def write_trips(net, area, gates, vtype_id, rng):
                 kinds["in"] += 1
             trips.append((t, entry, to, True))
         # going out here: the through traffic expected from the other gateways, the rest from inside
-        through = sum(peak_in[g] * S.GATEWAY_THROUGH_SHARE * peak_out[name] / sum(peak_out[k] for k in others[g])
-                      for g in others[name])
+        through = sum(peak_in[g] * S.GATEWAY_THROUGH_SHARE * peak_out[name] / out_of[g] for g in others[name] if out_of[g])
         for t in spread(hourly(max(0.0, peak_out[name] - through)), rng):
             trips.append((t, ends.pair(rng, destination=exit_)[0], exit_, False))
             kinds["out"] += 1
     trips.sort(key=lambda x: x[0])
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
-           f"<!-- Generated by make_background.py. Do not edit: rerun it. {vtype_id}: {kinds['inside']} inside trips, "
-           f"{kinds['in']} coming in at a gateway and ending inside, {kinds['through']} through, {kinds['out']} leaving. -->",
+           f"<!-- Generated by make_background.py. Do not edit: rerun it. {vtype_id}: {kinds['counted']} counted "
+           f"(COUNT_SITES), {kinds['inside']} inside trips, {kinds['in']} coming in at a gateway and ending inside, "
+           f"{kinds['through']} through, {kinds['out']} leaving. -->",
            "<routes>"]
     for i, (t, a, b, entering) in enumerate(trips):
         speed = ' departSpeed="max"' if entering else ""    # coming in from outside: already moving
@@ -188,8 +228,9 @@ def main():
     area = study_area(net)
     rng = random.Random(S.SEED)
     gates = gateways(net, area)
-    for vtype_id in S.BACKGROUND_PER_HOUR:
-        write_trips(net, area, gates, vtype_id, rng)
+    through = counted(net, gates, rng)
+    for vtype_id in S.BACKGROUND_TYPES:
+        write_trips(net, area, gates, vtype_id, rng, through[vtype_id])
     write_riders(net, area, rng)
 
 

@@ -26,8 +26,10 @@ lines:
 
 The run covers a day (END_S) and stops early once every commuter is home. Each run writes
 runs/<date_time>/: the demand (above), the SUMO config, gui settings, tripinfo.xml,
-collisions.xml, stops.xml (SUMO's record of every vehicle stop), summary.json, events.jsonl and
-outcomes_day_<n>.json, so runs never overwrite each other.
+collisions.xml, stops.xml (SUMO's record of every vehicle stop), counts.xml (every vehicle passing
+where the group's cameras stood, counts.py), summary.json (with the run time, the seed and, with
+background traffic, the counts against the videos), events.jsonl and outcomes_day_<n>.json, so
+runs never overwrite each other.
 
 events.jsonl is the event log of the manuscript (Sec. 4.4.2.1-2): one JSON object per line, in
 time order, each with "t" (simulated seconds) and "event":
@@ -62,6 +64,7 @@ agents whose day was left out, with why.
 import argparse
 import json
 import sys
+import time
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from datetime import datetime
@@ -71,6 +74,7 @@ import sumolib
 import traci
 import traci.constants as tc
 
+import counts
 import settings as S
 import traffic_meter
 from make_background import LOADED_JEEPNEYS, trips_file
@@ -154,14 +158,16 @@ def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=
     # with the background, the jeepneys come in with passengers (make_background.py)
     routes = [LOADED_JEEPNEYS if background else S.GENERATED / "jeepney.rou.xml", commuters_file]
     if background:
-        routes += [trips_file(v) for v in S.BACKGROUND_PER_HOUR]
+        routes += [trips_file(v) for v in S.BACKGROUND_TYPES]
     missing = [p.name for p in routes + [S.GENERATED / "vtypes.add.xml"] if not p.is_file()]
     if missing:
         raise SystemExit(f"Missing generated/{', generated/'.join(missing)}: run python build.py first")
     changed = {}
     if headways:
         routes[0], changed = scenario_jeepneys(routes[0], run_dir, headways)
-    additional = [S.GENERATED / "vtypes.add.xml", *extra]
+    # the simulation's own traffic counts, where the group's cameras stood (counts.py)
+    counts.write_loops(net, run_dir / "counts.add.xml", run_dir / "counts.xml")
+    additional = [S.GENERATED / "vtypes.add.xml", run_dir / "counts.add.xml", *extra]
     cfg = run_dir / "run.sumocfg"
     cfg.write_text(f"""<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
@@ -173,6 +179,7 @@ def write_run_files(run_dir, end, background, lines, net, commuters_file, extra=
     <time><begin value="0"/><end value="{end}"/><step-length value="1"/></time>
     <processing>
         <lateral-resolution value="{S.LATERAL_RESOLUTION}"/>
+        <time-to-teleport value="{S.TIME_TO_TELEPORT}"/>
         <ignore-route-errors value="true"/>
         <collision.action value="warn"/>
         <collision.check-junctions value="true"/>
@@ -261,6 +268,7 @@ def main():
                         help="also load this SUMO additional file (repeatable), e.g. speed changes")
     parser.add_argument("--scenario", choices=sorted(S.SCENARIOS), help="a scenario of settings.SCENARIOS")
     args = parser.parse_args()
+    started = time.time()
     extra = [Path(a).resolve() for a in args.additional]
     missing = [str(a) for a in extra if not a.is_file()]
     if missing:
@@ -564,13 +572,17 @@ def main():
     passes = Counter(pid for _, pid in full_logged)          # full jeepneys that passed each commuter
     summary["outcomes"] = write_outcomes(run_dir, day, records, trips, times, passes, left_out, t,
                                          whole_day=done == len(trips) or t >= S.END_S)
-    (run_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     if meter:
         print(meter.summary())
     if not closed:
         if not args.nogui:
             print("\nSimulation over - close the sumo-gui window to finish.")
-        traci.close()
+        traci.close()                                # SUMO writes the rest of counts.xml on closing
+        if not args.no_background:                   # without it, the counts are only commuters and jeepneys
+            summary["counts"] = counts.compare(run_dir / "counts.xml", t)
+    summary.update(background=not args.no_background, seed=S.SEED, ended_s=int(t),
+                   run_time_s=round(time.time() - started))  # wall clock, for the manuscript's Sec. 4.5.6
+    (run_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
 
 
 def most_at_once(spans):

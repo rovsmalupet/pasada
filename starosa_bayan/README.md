@@ -59,7 +59,12 @@ the 14 barangays north-east of SLEX, which also had Dila, Sinalhan, Caingin, Apl
   already moving and leave it again. Where a line's roads stop at the edge, it is led in and out
   along the main road outside: Rizal Boulevard's lines along National Highway 1 to the north, and
   Felix Reyes Street's along the Santa Rosa–Tagaytay Road.
-- **Background traffic** (`make_background.py`; every number a stand-in until the video counts):
+- **Background traffic** (`make_background.py`; every number a stand-in except the counted traffic):
+  - counted traffic: cars, motorcycles, buses and trucks driving the whole of National Highway 1,
+    each way, at the rates Matthew's Balibago videos counted (07:10 and 14:10; other hours follow
+    `BACKGROUND_PROFILE` from the nearest video), so the simulation's camera there sees what the
+    video saw (`COUNT_SITES`, `counts.py`). **Still being calibrated:** it comes on top of the
+    stand-ins below, and with background traffic on, the area still jams in the morning;
   - random car and motorcycle trips inside the area (`BACKGROUND_PER_HOUR` × `BACKGROUND_SCALE`);
   - traffic coming in and going out at the main road ends (`GATEWAYS`): National Highway 1 north
     and south, the Santa Rosa–Tagaytay Road and the Biñan–Santa Rosa Access Road. Each has its
@@ -140,6 +145,28 @@ Each run's folder holds the trip outcomes (`outcomes_day_<n>.json`) and the even
 (`events.jsonl`): every jeepney stop, boarding, alighting and full pass-by, each commuter's
 state changes, and each jeepney's passengers every minute, as the manuscript's Sec. 4.4.2 asks.
 
+**The measures** of the manuscript's evaluation (Sec. 4.5) that come from the simulation, over every
+day run so far, baseline days and scenario days apart: mode share (overall, by income and by vehicle
+access), trip time and length per mode, violations, the daily habit change, C(T), switch_rate(k),
+the departure-time adaptation effect, the jeepney wait against half the headway, dwell time,
+occupancy at peak and off-peak hours, the traffic counts against the videos (GEH) and the run time.
+The LLM's retry rates (the LLM team's logs) and the reflection grounding rate (coded by hand) are
+not here.
+
+```powershell
+python measures.py                       # demand/: prints the tables, writes demand/measures.json
+python measures.py --demand A B C        # several demand folders (e.g. one per seed): mean and SD across them
+```
+
+**Traffic counts:** `counts.py` reads the group's videos (`settings.COUNT_SITES`: where each camera
+stood, on which road, which way is "away"). Every run counts the vehicles passing the same spot
+(`counts.xml`) and, with background traffic, prints them against the videos with GEH.
+
+```powershell
+python counts.py            # each video's vehicles per hour, per direction and class
+python counts.py --check    # background only: SUMO around each video's 30 minutes, then the comparison
+```
+
 To check the simulation itself with scripted test agents (manuscript Sec. 4.4.3.3; see
 `validation/README.md`):
 
@@ -167,6 +194,8 @@ python validation/validate.py      # the five checks, PASS or FAIL (about 1.5 mi
 | `make_vtypes.py` | Jeepney, car, motorcycle and bike types → `generated/` |
 | `make_background.py` | Random background car and motorcycle trips over the day → `generated/` |
 | `traffic_meter.py` | Optional meter of how motorcycles, cars and jeepneys share the road (`run.py --meter`) |
+| `counts.py` | The group's video traffic counts (`data/traffic_counts/`), and the simulation's at the same spot, with GEH |
+| `measures.py` | The manuscript's evaluation measures (Sec. 4.5) from the days run so far → `demand/measures.json` |
 | `demand/` | The hand-over: `README.md`, the JSON schemas, the agents, the LLM's inputs and answers, options and outcomes per day |
 | `validation/` | The scripted test agents (`cases/`, from `make_cases.py`), the five checks (`validate.py`) and the latest result (`report.md`) |
 | `data/` | The barangay boundaries, the study area, the activity locations (`locations_9_barangays.csv`) and the base agents (`base_agents.json`, copied from PASADA-llm), each with provenance |

@@ -1,5 +1,5 @@
 """Vehicle types: jeepney, car, motorcycle and bike, from settings.py (sublane setup of sandbox
-10/11; the bike keeps SUMO's defaults).
+10/11; the bike keeps SUMO's defaults), and the bus and truck of the counted background traffic.
 
 Writes generated/vtypes.add.xml. Anything not set here keeps SUMO's default for the vehicle
 class. Colours and shapes are for sumo-gui only.
@@ -16,6 +16,8 @@ VTYPES = {
     "car": dict(vClass="passenger", **S.CAR, color="0.75,0.75,0.75"),
     "motorcycle": dict(vClass="motorcycle", **S.MOTORCYCLE, color="0.1,0.9,0.9", guiShape="motorcycle"),
     "bike": dict(vClass="bicycle", **S.BICYCLE, color="0,1,0", guiShape="bicycle"),
+    "bus": dict(vClass="bus", **S.BUS, color="0.2,0.4,1", guiShape="bus"),
+    "truck": dict(vClass="truck", **S.TRUCK, color="0.6,0.3,0.1", guiShape="truck"),
 }
 
 
