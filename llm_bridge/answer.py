@@ -4,7 +4,6 @@ that fails a check (up to MAX_TRIES), and write the answer file pipeline.py is w
 
     python -m llm_bridge.answer                    # every input file without an answer
     python -m llm_bridge.answer --task persona     # only this task (day tasks: every day missing)
-    python -m llm_bridge.answer --model qwen       # another candidate model (default: llama)
     python -m llm_bridge.answer --show-prompt      # print the first prompt and stop (no model)
 
 Progress is saved after every agent (demand/llm_logs/), so a stopped run goes on where it was.
@@ -78,7 +77,9 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
     input_sha = hashlib.sha256(inp.read_bytes()).hexdigest()
     saved = json.loads(partial_path.read_text(encoding="utf-8")) if partial_path.is_file() else {}
     # ...and only for answers made with the same prompt version (a prompt change answers everyone again)
-    same = saved.get("input_sha256") == input_sha and saved.get("prompt_version") == C.PROMPT_VERSION
+    # ...and the same model (2026-11-14: switching models never reuses another model's answers)
+    same = (saved.get("input_sha256") == input_sha and saved.get("prompt_version") == C.PROMPT_VERSION
+            and saved.get("model", "llama") == model_name)   # files from before 2026-11-14 were all Llama
     done = saved.get("answers", {}) if same else {}
     if saved and not same:
         print(f"  (saved progress in {partial_path.name} was for another input file or prompt version: not used)", flush=True)
@@ -86,7 +87,7 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
     keep_path = logs / f"{out.stem}.keep.json"
     if keep_path.is_file():
         kept = json.loads(keep_path.read_text(encoding="utf-8"))
-        if kept.get("prompt_version") == C.PROMPT_VERSION:
+        if kept.get("prompt_version") == C.PROMPT_VERSION and kept.get("model", model_name) == model_name:
             ids = {agent_id_of(e) for e in entries}
             done.update({a: r for a, r in kept["answers"].items() if a in ids and a not in done})
             print(f"  kept {len(kept['answers'])} agents' answers from before ({kept.get('why', '')})", flush=True)
@@ -108,7 +109,7 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
             done[aid] = convert("", entry, head)[0]
             continue
         queue.append({"aid": aid, "entry": entry, "prompt": prompt, "max_tokens": max_tokens, "try": 0})
-    partial_path.write_text(json.dumps({"input_sha256": input_sha, "prompt_version": C.PROMPT_VERSION, "answers": done}, ensure_ascii=False), encoding="utf-8")
+    partial_path.write_text(json.dumps({"input_sha256": input_sha, "prompt_version": C.PROMPT_VERSION, "model": model_name, "answers": done}, ensure_ascii=False), encoding="utf-8")
 
     failed, first_try, asked, total = [], 0, len(queue), len(queue)
     queue.sort(key=lambda q: len(q["prompt"]))     # similar lengths together: less padding
@@ -140,7 +141,7 @@ def run_task(task, day, inp, out, model_name, show_prompt=False):
                 queue.append(q)                   # regenerated in a later batch
             else:
                 failed.append(q["aid"])
-        partial_path.write_text(json.dumps({"input_sha256": input_sha, "prompt_version": C.PROMPT_VERSION, "answers": done}, ensure_ascii=False), encoding="utf-8")
+        partial_path.write_text(json.dumps({"input_sha256": input_sha, "prompt_version": C.PROMPT_VERSION, "model": model_name, "answers": done}, ensure_ascii=False), encoding="utf-8")
         print(f"  batch of {len(batch)} in {seconds}s | {total - len(queue) - len(failed)} of {total} answered",
               flush=True)
 

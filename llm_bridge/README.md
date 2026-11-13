@@ -46,7 +46,7 @@ tail -f ~/sim_log.txt
 ```
 - `--days 1-3`: several days (a day already done is kept).
 - `--first-args "--redo agents --agents 10"`: start fresh with 10 agents (moves old files to `demand/old/`).
-- `--model qwen`: another candidate model. `BATCH_SIZE=16` (before the command): more agents per GPU call.
+- The model is Qwen3 14B, the selected model (the only one in `config.py`). `BATCH_SIZE=12` (before the command): more agents per GPU call.
 - SUMO runs headless. To watch a day, copy its `starosa_bayan/runs/<date_time>/` folder to a laptop with
   SUMO and open it in sumo-gui.
 

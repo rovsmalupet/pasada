@@ -1,6 +1,6 @@
 """Settings of the LLM bridge: where things are, the models, and the generation settings.
 
-The generation settings and the model list are the evaluation notebook's
+The generation settings are the evaluation notebook's
 (PASADA-llm/notebooks/commuter_prompts_v4_server.ipynb, cell 1.2), so the simulation runs the
 models exactly as they were evaluated. Paths can be changed with environment variables.
 """
@@ -16,19 +16,14 @@ KB_FILE = Path(os.environ.get("KB_FILE", THESIS_LLM / "inputs" / "knowledge_base
 # the simulation folder whose demand/ the bridge reads and writes (Rovick's starosa_bayan)
 ABM_DIR = Path(os.environ.get("ABM_DIR", Path(__file__).resolve().parent.parent / "starosa_bayan"))
 
+# 2026-11-14: only the selected model is kept (manuscript 4.3.9: round 2, prompt v0.5, 30 of 33 valid).
+# The other candidates (Llama 3.1 8B, Qwen3 8B, Gemma 3 12B, Llama-SEA-LION 8B) are in the evaluation
+# notebooks and in this file's git history.
 MODELS = {
-    "llama":   {"repo": "meta-llama/Llama-3.1-8B-Instruct", "saved_copy": MODELS_DIR / "llama31-8b-4bit",
-                "compute_dtype": "float16", "thinking_off": False, "min_gpu_gb": 8},
-    "qwen":    {"repo": "Qwen/Qwen3-8B", "saved_copy": MODELS_DIR / "qwen3-8b-4bit",
-                "compute_dtype": "float16", "thinking_off": True, "min_gpu_gb": 8},
-    "gemma":   {"repo": "google/gemma-3-12b-it", "saved_copy": MODELS_DIR / "gemma3-12b-4bit",
-                "compute_dtype": "bfloat16", "thinking_off": False, "min_gpu_gb": 12},
-    "qwen32":  {"repo": "Qwen/Qwen3-32B", "saved_copy": MODELS_DIR / "qwen3-32b-4bit",
-                "compute_dtype": "float16", "thinking_off": True, "min_gpu_gb": 21},
-    "sealion": {"repo": "aisingapore/Qwen-SEA-LION-v4-32B-IT", "saved_copy": MODELS_DIR / "sealion-v4-32b-4bit",
-                "compute_dtype": "float16", "thinking_off": True, "min_gpu_gb": 21},
+    "qwen14":  {"repo": "Qwen/Qwen3-14B", "saved_copy": MODELS_DIR / "qwen3-14b-4bit",
+                "compute_dtype": "float16", "thinking_off": True, "min_gpu_gb": 13},
 }
-DEFAULT_MODEL = "llama"            # the baseline (manuscript 4.3.8); change with --model
+DEFAULT_MODEL = "qwen14"           # the selected and only model (2026-11-14)
 
 GEN = {"do_sample": True, "temperature": 0.6, "top_p": 0.9, "top_k": 50, "repetition_penalty": 1.0}
 MAX_NEW_TOKENS = 900               # as evaluated; mode and reflection answers for many trips get more

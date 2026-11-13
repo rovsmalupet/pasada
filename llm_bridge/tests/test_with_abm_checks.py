@@ -103,7 +103,7 @@ def fake(system, prompt, max_new_tokens=0):
 M.load = lambda name: None
 M.ask = fake
 M.ask_batch = lambda system, users, n=0: [fake(system, u) for u in users]
-M.CURRENT = "llama"
+M.CURRENT = "qwen14"
 
 import llm_tasks as LT
 LT.load_lines = lambda: None
@@ -115,7 +115,7 @@ def run_and_check(task, day, check):
     shutil.move(out, keep)
     inp = abm / "demand" / "llm_inputs" / (f"{task}_input.json" if day is None else f"{task}_input_day_{day}.json")
     for attempt in range(10):          # like the real runner: run again to retry the agents that failed
-        if A.run_task(task, day, inp, out, "llama"):
+        if A.run_task(task, day, inp, out, "qwen14"):
             break
     else:
         raise AssertionError(f"{task} {day} did not finish")

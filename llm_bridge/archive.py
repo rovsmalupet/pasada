@@ -105,7 +105,7 @@ def save(note="", new_run=False):
                      "agents": n_agents(),
                      "days_done": sorted(int(m.group(1)) for p in demand().glob("reflection_day_*.json")
                                          if (m := re.match(r"reflection_day_(\d+)", p.stem))),
-                     "prompt_version": C.PROMPT_VERSION, "max_tries": C.MAX_TRIES, "batch_size": C.BATCH_SIZE,
+                     "prompt_version": C.PROMPT_VERSION, "model": C.MODELS[C.DEFAULT_MODEL]["repo"], "max_tries": C.MAX_TRIES, "batch_size": C.BATCH_SIZE,
                      "simulation_settings": settings_used(), "git_commit": git_commit()})
         info_path.write_text(json.dumps(info, indent=2, ensure_ascii=False), encoding="utf-8")
         CURRENT.write_text(name, encoding="utf-8")

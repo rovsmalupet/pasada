@@ -4,7 +4,7 @@ waiting. Run it in tmux so it survives a dropped connection:
 
     cd ~/abm && ~/thesis-env/bin/python -m llm_bridge.run_sim --days 1 --first-args "--redo agents --agents 10"
     cd ~/abm && ~/thesis-env/bin/python -m llm_bridge.run_sim --days 1-3          # go on, days 1 to 3
-    --model qwen (another candidate), BATCH_SIZE=16 (environment: agents answered together)
+    the model is Qwen3 14B (the selected model); BATCH_SIZE=12 (environment: agents answered together)
 
 A day already done is kept (the pipeline keeps every finished step). Every run is kept in its own
 folder, starosa_bayan/llm_runs/run_NNN_<date>_<N>agents/ (archive.py): brought up to date at the end of
