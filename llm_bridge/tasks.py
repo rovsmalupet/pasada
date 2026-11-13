@@ -754,6 +754,27 @@ def modes_answer(text, entry, head):
         if isinstance(d.get("reasoning"), str) and d["reasoning"].strip():
             sel["reasoning"] = d["reasoning"].strip()
         selections.append(sel)
+    if not enforce_vehicle and not problems:
+        # the rule could not be asked of the LLM, but the simulation still needs each bicycle/car trip to
+        # start where the vehicle is: such a choice becomes the fastest other option of that trip (logged)
+        where = {m_: home for m_ in C.VEHICLE_MODES}
+        for i, (t, sel) in enumerate(zip(trips, selections)):
+            mode = sel["mode"]
+            if mode in C.VEHICLE_MODES and where[mode] != t["from"]:
+                others = [o for o in best_options(t) if o["mode"] not in C.VEHICLE_MODES or where[o["mode"]] == t["from"]]
+                if others:
+                    pick = min(others, key=lambda o: o["estimated_total_time_s"])
+                    sel.clear()
+                    sel.update({"trip_id": t["trip_id"], "mode": pick["mode"],
+                                "reasoning": f"(simulation) the {C.TO_PROMPT_MODE[mode]} was not here; "
+                                             f"took the {C.TO_PROMPT_MODE[pick['mode']]} instead"})
+                    if pick["mode"] == "jeepney":
+                        sel["route_id"] = pick["route_id"]
+                    NOTES.append(f"{t['trip_id']}: {C.TO_PROMPT_MODE[mode]} not at {t['from']}; "
+                                 f"replaced by {C.TO_PROMPT_MODE[pick['mode']]}")
+                    mode = pick["mode"]
+            if mode in C.VEHICLE_MODES:
+                where[mode] = t["to"]
     if enforce_vehicle and not problems:
         for vehicle, where in parked.items():
             if where != home:                # 2026-11-13, decided with the user: no vehicle left out overnight

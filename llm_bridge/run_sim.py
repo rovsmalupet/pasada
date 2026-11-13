@@ -109,6 +109,24 @@ def simulate(args, first):
                       flush=True)
                 first = ["--redo", "schedule"]
                 continue
+            failed = re.search(r"(demand/\S+\.json) fails \d+ check\(s\)", run.stdout)
+            if not wait and failed and redos.get(failed.group(1), 0) < 3:
+                # the simulation's own checks rejected some agents' answers: ask ONLY those again
+                redos[failed.group(1)] = redos.get(failed.group(1), 0) + 1
+                bad = sorted(set(re.findall(r"^\s+(A\d+)\b", run.stdout, re.M)))
+                path = C.ABM_DIR / failed.group(1)
+                answered = json.loads(path.read_text(encoding="utf-8"))["agents"]
+                keep = {e["agent_id"]: e for e in answered if e.get("agent_id") not in bad}
+                logs = C.ABM_DIR / "demand" / "llm_logs"
+                logs.mkdir(exist_ok=True)
+                (logs / f"{path.stem}.keep.json").write_text(json.dumps(
+                    {"prompt_version": C.PROMPT_VERSION, "why": f"the simulation's checks rejected {', '.join(bad)}",
+                     "answers": keep}, ensure_ascii=False), encoding="utf-8")
+                path.unlink()
+                print(f"\n>>> {path.name}: asking only {', '.join(bad)} again (the simulation's checks rejected "
+                      f"them); the other {len(keep)} agents keep theirs", flush=True)
+                first = []
+                continue
             if not wait:
                 print("The pipeline stopped for a reason the LLM cannot fix (above).")
                 return 1
