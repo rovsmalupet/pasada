@@ -50,12 +50,13 @@ JEEPNEY_CONTEXT = """About jeepneys in Santa Rosa City, Laguna:
 # ------------------------------------------------------------------- 1. persona
 LMH = '"Low, Moderate, or High"'
 
+# v0.5 / abm10 (round 2, 2026-11-13): the same text as the evaluation notebook v0.5
 PERSONA_FORMAT = (
     '{"behavioral_description": "realistic one paragraph description of this commuter",\n'
     ' "vehicle_ownership": true or false,\n'
     ' "bicycle_access": true or false,\n'
-    f' "walking_sensitivity": {LMH},\n'
-    f' "cycling_sensitivity": {LMH},\n'
+    f' "walking_tolerance": {LMH},\n'
+    f' "cycling_tolerance": {LMH},\n'
     f' "sensitivities": {{"safety": {LMH}, "cost": {LMH}, "comfort": {LMH},\n'
     f'   "accessibility": {LMH}, "availability": {LMH}, "efficiency": {LMH},\n'
     f'   "reliability": {LMH}}},\n'
@@ -63,16 +64,25 @@ PERSONA_FORMAT = (
 
 PERSONA_DEFINITIONS = (
     "Definitions:\n"
-    "- per_capita_income_decile: 1 is the lowest-income tenth of the population and 10 is "
-    "the highest.\n"
+    "- per_capita_income_decile: where this person's household income per person ranks in the "
+    "population, from 1 to 10. 1 to 3 is lower income (the poorest 30%), 4 to 7 is middle income, "
+    "and 8 to 10 is higher income (the richest 30%). For example, 7 means richer than about 60% of "
+    "the population, and 2 means poorer than about 80%.\n"
+    "- current_school_level (students only): the level this person is enrolled in now. For example, "
+    "bachelors means they are taking a bachelor's degree now, not that they finished one.\n"
     "- vehicle_ownership and bicycle_access: whether this person can personally use a "
     "private car or a bicycle for their own trips. This can not be true if the household "
     "has no access to one.\n"
-    "- Walking and cycling sensitivity: how strongly the distance or effort of walking or "
-    "cycling discourages this commuter. High means low tolerance, so they avoid it; "
-    "Low means they tolerate long distances.\n"
-    "- Other sensitivities: how strongly each attribute influences this commuter's choice "
-    "of transport mode. High means it strongly matters; Low means it barely matters.\n")
+    "- walking_tolerance and cycling_tolerance: how far this commuter is willing to walk or cycle. "
+    "High means they walk or cycle long distances without minding; Low means they avoid it beyond "
+    "short distances.\n"
+    "- sensitivities: how much each attribute matters to this commuter when choosing how to travel. "
+    "High means it matters a lot; Low means it barely matters. safety: the risk of accidents, crime, or "
+    "travelling at night. cost: the price of a trip. comfort: crowding, heat, noise, and cramped seats. "
+    "accessibility: how far they walk to and from where a ride starts or ends. availability: having enough "
+    "rides to choose from. efficiency: short travel times. reliability: travel and waiting times that stay "
+    "the same from day to day. For example, a commuter on a tight budget has cost: High, and a commuter "
+    "who does not mind crowded, hot rides has comfort: Low.\n")
 
 
 def persona_prompt(shown_agent, findings):
@@ -127,9 +137,11 @@ def habits_prompt(commuter, locations, modes):
             "Include at least one recurring trip, and include the trips that return you home.\n"
             # INTEGRATION: the simulation follows each day's trips in order, so they must chain;
             # and the rules its checks found broken most often (v0.3-abm2/3, 2026-11-10)
-            "Make each regular outing a round trip from home: one trip from home to the place and one "
-            "trip from that place back to home, on the same days. For example: home to workplace at "
-            "07:00 and workplace to home at 17:00, Monday to Friday.\n"
+            # abm10 (v0.5): outings can chain several places before going home
+            "An outing can be a round trip from home, for example home to workplace at 07:00 and "
+            "workplace to home at 17:00, Monday to Friday. It can also visit several places before going "
+            "home, for example home to mall at 14:00, mall to market at 17:00, and market to home at "
+            "18:30, on Saturdays.\n"
             "On each travel day, your trips in order of departure time must start at home, leave "
             "from where the trip before ended, and end at home.\n"
             # INTEGRATION abm8: Llama overlapped two outings on one day (A000933, 2026-11-11)
@@ -206,7 +218,7 @@ def mode_prompt(commuter, habits, travel_experience, schedule, candidates):
             "For each trip, write one personal sentence explaining your choice, then pick the "
             "mode. Compare the total time of each option with the time you have in your "
             "schedule, and weigh it against cost, safety, comfort, and accessibility according "
-            "to your sensitivities, your usual habits, and your previous experiences.\n"
+            "to your sensitivities, your walking and cycling tolerance, your usual habits, and your previous experiences.\n"
             "Pick exactly one mode for every trip, and only from the options listed for that "
             "trip.\n"
             # INTEGRATION: the simulation's vehicle rule and its on-time rule (llm_tasks.py)
