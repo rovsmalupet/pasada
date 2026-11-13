@@ -1,6 +1,6 @@
 # Simulation validation: PASS
 
-Scripted test agents (manuscript Sec. 4.4.3.3), run `runs/2026-11-13_182618`, 2026-11-13 18:27, 116 s. Made by `python validation/validate.py`.
+Scripted test agents (manuscript Sec. 4.4.3.3), run `runs/2026-11-14_034743`, 2026-11-14 03:48, 154 s. Made by `python validation/validate.py`.
 
 Test day: 32 agents, 38 trips, no background traffic (`validation/cases/`, from `make_cases.py`).
 

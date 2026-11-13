@@ -1,0 +1,20 @@
+{
+  "source_run": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f",
+  "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261113_071022_011.mp4",
+  "source_size_bytes": 11894425134,
+  "verification": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/verification.json",
+  "exports": {
+    "vehicle_events.csv": "bf4197c9f58d2aab770c11bcf3c688856c472e489736b72b2a54068f9b46ff59",
+    "vehicle_tracking_times.csv": "2af634ebcd93faf5f46b85fd5e91dcbf165d71678faee8c3b426933cef3d3a6c",
+    "vehicles_per_min.csv": "1ffb14167b95319ee3a10d795dbb81ddbf12b1e5bf7efd9caa504e0b6b31a9bf",
+    "vehicles_per_min_by_direction.csv": "2e4c40c36db4c2f0a14bf4828054ba068a17397e91ec76a858a6ab29f92d3b6b",
+    "overall_counts.csv": "95319ea41994f336ea6c4a2865bd3208ffe23a93a244c4fe048de464add8b73d",
+    "counting_coverage.csv": "d3a7a8cac4e611809ede7f96dacb6c2bd248e9494e1d2c9eb223fef3243d7800",
+    "classification_review.csv": "bddd46a25db9dc0535131af619608fc21487dc5ead76709dac3c7d4677ca4585",
+    "specialist_predictions.json": "5215a1c4d4ef7e46bf07c0687aab88f173b75b52340dc030e1c8849d706c9dac",
+    "summary.json": "51e25ed8aac0895423d2c1acfebbb039b808223e77950a7d898a35493fd700a1"
+  },
+  "geometry": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago_Nov13_7AM/full_runs/run_20261113T100603_2c44533f/geometry.json",
+  "jeepney_labels": "model predictions requiring human review",
+  "speed_calculations_deferred": true
+}

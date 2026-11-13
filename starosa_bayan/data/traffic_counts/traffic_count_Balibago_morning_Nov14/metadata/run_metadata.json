@@ -1,0 +1,307 @@
+{
+  "video": {
+    "path": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261113_071022_011.mp4",
+    "filename": "VID_20261113_071022_011.mp4",
+    "width": 1920,
+    "height": 1080,
+    "fps_exact": "25",
+    "fps": 25.0,
+    "duration_seconds": 1799.04,
+    "container_duration_seconds": 1799.04,
+    "frame_count": 44976,
+    "estimated_frame_count": 44976,
+    "codec": "hevc",
+    "pixel_format": "yuvj420p",
+    "rotation_degrees": 0.0,
+    "creation_time_metadata": "2026-11-12T23:10:22.000000Z",
+    "creation_time_verified": false,
+    "stream_index": 0,
+    "time_base": "1/25000",
+    "timing_method": "decoded presentation timestamps (PyAV); rational CFR frame indexing",
+    "possible_vfr": false,
+    "raw_probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "hevc",
+          "codec_long_name": "H.265 / HEVC (High Efficiency Video Coding)",
+          "profile": "Main",
+          "codec_type": "video",
+          "codec_tag_string": "hvc1",
+          "codec_tag": "0x31637668",
+          "width": 1920,
+          "height": 1080,
+          "coded_width": 1920,
+          "coded_height": 1080,
+          "has_b_frames": 0,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "16:9",
+          "pix_fmt": "yuvj420p",
+          "level": 123,
+          "color_range": "pc",
+          "color_space": "bt709",
+          "color_transfer": "bt709",
+          "color_primaries": "bt709",
+          "chroma_location": "left",
+          "view_ids_available": "",
+          "view_pos_available": "",
+          "id": "0x1",
+          "r_frame_rate": "25/1",
+          "avg_frame_rate": "25/1",
+          "time_base": "1/25000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 44976000,
+          "duration": "1799.040000",
+          "bit_rate": "52428211",
+          "nb_frames": "44976",
+          "extradata_size": 140,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "creation_time": "2026-11-12T23:10:22.000000Z",
+            "language": "eng",
+            "handler_name": "\u0010INS.HVC",
+            "encoder": "HVC encoder"
+          }
+        },
+        {
+          "index": 1,
+          "codec_name": "aac",
+          "codec_long_name": "AAC (Advanced Audio Coding)",
+          "profile": "LC",
+          "codec_type": "audio",
+          "codec_tag_string": "mp4a",
+          "codec_tag": "0x6134706d",
+          "mime_codec_string": "mp4a.40.2",
+          "sample_fmt": "fltp",
+          "sample_rate": "48000",
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bits_per_sample": 0,
+          "initial_padding": 0,
+          "id": "0x2",
+          "r_frame_rate": "0/0",
+          "avg_frame_rate": "0/0",
+          "time_base": "1/48000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 86350848,
+          "duration": "1798.976000",
+          "bit_rate": "189376",
+          "nb_frames": "84327",
+          "extradata_size": 5,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "creation_time": "2026-11-12T23:10:22.000000Z",
+            "language": "eng",
+            "handler_name": "\u0010INS.AAC"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261113_071022_011.mp4",
+        "nb_streams": 2,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "1799.040000",
+        "size": "11894425134",
+        "bit_rate": "52892320",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "avc1",
+          "minor_version": "538182144",
+          "compatible_brands": "avc1isom",
+          "creation_time": "2026-11-12T23:10:22.000000Z"
+        }
+      }
+    }
+  },
+  "geometry": {
+    "schema_version": 1,
+    "source_resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261113_071022_011.mp4",
+    "anchor": "bottom-center",
+    "confidence_threshold": 0.3,
+    "tracking_detection_threshold": 0.1,
+    "vehicle_nms_iou": 0.65,
+    "tracker": {
+      "track_activation_threshold": 0.3,
+      "lost_track_buffer": 45,
+      "minimum_matching_threshold": 0.8,
+      "minimum_consecutive_frames": 2
+    },
+    "counting": {
+      "hysteresis_pixels": 8,
+      "stable_frames": 2,
+      "minimum_direction_pixels": 8,
+      "max_gap_seconds": 1.5,
+      "state_ttl_seconds": 10,
+      "duplicate_window_seconds": 0.6,
+      "duplicate_distance_pixels": 25
+    },
+    "lines": [
+      {
+        "id": "balibago_nov13_7am_road_reference",
+        "start": [
+          525.5005396674726,
+          855.1473265716645
+        ],
+        "end": [
+          1759.3943193065968,
+          897.6228867190439
+        ],
+        "allowed_directions": [
+          "toward_camera",
+          "away_from_camera"
+        ],
+        "direction_axis": [
+          0.034613124564173973,
+          0.9994007862754086
+        ],
+        "roi": []
+      }
+    ],
+    "road_polygons": [
+      [
+        [
+          1865.3369140625,
+          1079.0
+        ],
+        [
+          568.4735717773438,
+          1079.0
+        ],
+        [
+          356.72100830078125,
+          1067.35595703125
+        ],
+        [
+          888.7446899414062,
+          610.8563232421875
+        ],
+        [
+          1261.7322998046875,
+          615.0930786132812
+        ]
+      ]
+    ],
+    "exclude_polygons": [],
+    "validation": {
+      "geometry_approved": true,
+      "accuracy_validated": false,
+      "anchor_validated": false,
+      "created_at": "2026-11-13T10:05:07.085035+00:00",
+      "representative_frames_reviewed": [
+        2,
+        449.76,
+        780,
+        1349.28,
+        1797.04
+      ],
+      "notes": "Same counting method as the prior Balibago run. Road line/polygon approximately aligned from its reference image to this recording at 13:00 using static-building features, then clipped to the new source frame. No physical distance calibration or human accuracy validation.",
+      "authorization": "User requested the entire VID_20261113_071022_011 recording, counts only, in rfdetr_jeepney_Balibago_Nov13_7AM.",
+      "reference_frame_seconds": 780
+    },
+    "reference_timestamp_seconds": 780,
+    "alignment_source": {
+      "geometry": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago/config/balibago_full_geometry.json",
+      "reference": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago/preview/reference.jpg",
+      "new_reference_frame": 19500,
+      "old_to_new_reference": [
+        [
+          0.8122340732917752,
+          0.0035091665887672465,
+          168.6657131164095
+        ],
+        [
+          -0.03840380705939153,
+          0.8731829816769734,
+          67.57775728282228
+        ],
+        [
+          -7.928267004900645e-05,
+          -2.478197612134547e-05,
+          0.9814222030652344
+        ]
+      ],
+      "quality": {
+        "valid": true,
+        "reason": "ok",
+        "inliers": 34,
+        "matches": 45,
+        "median_reprojection_error_px": 1.7330477227716745,
+        "line_visible": true,
+        "line_in_source": [
+          [
+            525.5005396674726,
+            855.1473265716645
+          ],
+          [
+            1759.3943193065968,
+            897.6228867190439
+          ]
+        ]
+      }
+    }
+  },
+  "reference_frame_number": 19500,
+  "reference_pixels_sha256": "6ec930e3c3fbc995900a509eac12a818d3a20e8fff9c3692fefae2060a648789",
+  "run_name": "run_20261113T100603_2c44533f",
+  "confidence_policy": "Current observation, supported by >=0.30 confidence on the same track within 0.20 seconds.",
+  "camera_policy": "ORB/RANSAC homography to source frame at 13:00; update at 5 Hz; primary counting skips invalid registration.",
+  "classification_policy": "Original COCO crossing categories; conservative specialist jeepney predictions overlap them. No human labels fabricated.",
+  "storage_policy": "No source copy, full annotated video, or frame dump; retain SQLite trajectories/transforms and at most one JPEG per counted or jeepney-candidate track.",
+  "code_sha256": {
+    "counting_policy.py": "e5980024f3ccff72546ceddc3e0c3c8bbccdee16f041a1e8f08d22703b4b7a69",
+    "export_results.py": "ab31c693cbfcdc9b1515f2628361b434e346fad2bbf0780be6fe496a90f92082",
+    "full_job.py": "c4f59d6675f23d78f7ca32abdd2ddc3dc31c4f9f53f83117fc428a84264a27e3",
+    "full_counts.py": "eb20348e5dae9ab2530e5d9ef5dcb974872ca5316b3613d0ec8030288e3b8eb3",
+    "camera_motion.py": "d4d175c030009b112a1e6ae7ee1da58794f066329419aee6f954d4616848a5bd"
+  }
+}

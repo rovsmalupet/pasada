@@ -1,0 +1,51 @@
+{
+  "status": "completed",
+  "full_video": true,
+  "run_id": "run_20261113T021657_9dfbbd82",
+  "source_video": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/VID_20261112_141031_007.mp4",
+  "actual_duration_seconds": 1799.04,
+  "source_frames": 44976,
+  "minute_rows": 30,
+  "overall": {
+    "vehicles_passing": 1790,
+    "cars": 512,
+    "buses": 57,
+    "motorcycles": 1036,
+    "trucks": 185,
+    "jeepneys_predicted": 64
+  },
+  "by_direction": {
+    "toward_camera": {
+      "vehicles_passing": 850,
+      "cars": 270,
+      "buses": 11,
+      "motorcycles": 463,
+      "trucks": 106,
+      "jeepneys_predicted": 27
+    },
+    "away_from_camera": {
+      "vehicles_passing": 940,
+      "cars": 242,
+      "buses": 46,
+      "motorcycles": 573,
+      "trucks": 79,
+      "jeepneys_predicted": 37
+    }
+  },
+  "road_related_tracked_ids": 5771,
+  "registered_frames": 44961,
+  "registration_gap_frames": 15,
+  "suspected_close_crossing_events": 38,
+  "fixed_line_diagnostic_events": 1692,
+  "speed_calculations_deferred": true,
+  "distance_meters": null,
+  "notes": [
+    "All counts are automatic and require review; no count accuracy percentage is claimed.",
+    "Cars + buses + motorcycles + trucks equals total vehicles. Jeepney predictions overlap these categories; do not add them again.",
+    "COCO has no tricycle category. The specialist jeepney subtotal is not human verified.",
+    "Primary crossings use road-reference image registration; ByteTrack internal motion is not stabilized.",
+    "Appearance times cover the complete saved track for IDs observed in the road region. Road-region times are separate fields. Neither is a calibrated speed gate.",
+    "A blank crop path on an uncounted track means no preview was selected, not a missing vehicle.",
+    "The final minute ends at 1799.04 seconds; no zero padding beyond the video."
+  ]
+}

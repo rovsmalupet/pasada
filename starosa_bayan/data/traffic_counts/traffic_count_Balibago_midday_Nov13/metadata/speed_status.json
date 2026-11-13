@@ -1,0 +1,14 @@
+{
+  "status": "pending_distance_and_gate_calibration",
+  "vehicle_speeds_csv_available": false,
+  "whole_box_distance_m": null,
+  "gate_distance_m": null,
+  "source_run": "/Users/matthewfuentes/Documents/Thesis/traffic-counts/rfdetr_jeepney_Balibago/full_runs/run_20261113T021657_9dfbbd82",
+  "required_inputs": [
+    "Physical gate positions for each direction",
+    "Measured or estimated distances in meters",
+    "Method and uncertainty",
+    "Crossing times derived from saved trajectories"
+  ],
+  "notes": "Paseo distances are not valid for Balibago. Appearance times alone are not calibrated speed-gate times."
+}

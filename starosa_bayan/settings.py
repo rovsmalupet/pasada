@@ -70,6 +70,10 @@ SEED = 42
 END_S = 86400                      # simulated seconds per run: a whole day, as in sumo_track (day_length_s);
                                    # run.py stops early once every commuter is home, or at --end
 LATERAL_RESOLUTION = 0.4           # m: sublane strips (sandbox 11)
+TIME_TO_TELEPORT = -1              # s a vehicle may stand still before SUMO moves it on; -1: never. SUMO 1.27
+                                   # crashed (segmentation fault) when taking a stuck vehicle off the road
+                                   # with these sublanes: 3 of 3 midday runs with the counted traffic
+                                   # (2026-11-14), also with --time-to-teleport.remove; none with -1
 
 # --- jeepney lines ------------------------------------------------------------------------------
 # Main roads: nobody lives on them (convert_demand.street_exclusions).
@@ -190,11 +194,19 @@ OCCUPANCY_SAMPLE_S = 60            # run.py's event log: each jeepney's passenge
 #   jeepney_headway_s: {line: headway} for lines (both ways) running less often than
 #   JEEPNEY_HEADWAY_S. A multiple of it: the jeepneys leaving at its multiples still run, with
 #   their riders; the others are taken off.
+#   disrupted_mode: the mode it makes worse, whose weight measures.py follows (C(T), Sec. 4.5.4.3).
 SCENARIOS = {
     # Rizal Boulevard's two lines every 30 min instead of 5 (a stand-in level: long enough for a
     # typical 6-10 min jeepney trip to pass the disruption rule below)
-    "reduced_jeepney": {"jeepney_headway_s": {"RIZ-FRS": 1800, "RIZ-N1": 1800}},
+    "reduced_jeepney": {"jeepney_headway_s": {"RIZ-FRS": 1800, "RIZ-N1": 1800}, "disrupted_mode": "jeepney"},
 }
+
+# --- measures (measures.py: the manuscript's Sec. 4.5 from the simulation's files) ---------------
+# Stand-ins until the group sets them. Periods of the day: hours [from, to).
+PERIODS = [("night", 0, 6), ("morning peak", 6, 9), ("midday", 9, 16), ("evening peak", 16, 19), ("night", 19, 24)]
+INCOME_GROUPS = {"low (deciles 1-3)": (1, 3), "middle (4-7)": (4, 7), "high (8-10)": (8, 10)}   # per capita decile
+SHORT_TRIP_M = 1000.0              # m: Sec. 4.5.4.1's "minimum motorized-trip distance": shorter trips
+                                   #    should mostly be walked or biked
 
 # --- trip outcomes (run.py -> runs/<date_time>/outcomes_day_<n>.json, Plan Part D.4) -------------
 # A trip is disrupted when it took at least DISRUPTION_RATIO times its estimate AND at least
@@ -241,6 +253,26 @@ GATEWAY_THROUGH_SHARE = 0.5
 # spot of the line inside the area, or (RIDER_THROUGH_SHARE) rides on out of it.
 JEEPNEY_ENTRY_LOAD = 0.5
 RIDER_THROUGH_SHARE = 0.3
+
+# --- traffic counts (counts.py): the group's videos, against the simulation at the same spot ------
+TRAFFIC_COUNTS = HERE / "data" / "traffic_counts"   # one folder per video, from the counting pipeline
+# Each site: where the camera stood (lon, lat), the road it filmed, which way "away from the camera"
+# is, and its videos (folders of TRAFFIC_COUNTS). Balibago N1: Matthew's two 30-min videos on
+# National Highway 1, just north of its junctions with Rizal Boulevard and Felix Reyes Street (pin
+# and direction: the user, 2026-11-14). Counted automatically; not yet checked by hand.
+COUNT_SITES = {
+    "Balibago N1": dict(lonlat=(121.105583, 14.296889), road="National Highway 1", away="N",
+                        videos=["traffic_count_Balibago_morning_Nov14", "traffic_count_Balibago_midday_Nov13"]),
+}
+# 4. Counted traffic (make_background.py): through trips on each count site's road, from its end
+# behind the camera to the end ahead (the road's GATEWAYS, by direction), at the rates the site's
+# videos counted per type, so the camera sees what the videos saw. In the hour of a video, its
+# rates; in other hours, the nearest video's x BACKGROUND_PROFILE[hour] / BACKGROUND_PROFILE[its
+# hour]. The camera counts a jeepney as a car, bus or truck, so the simulation's own jeepneys passing
+# it are taken off the buses and trucks.
+BACKGROUND_TYPES = ["car", "motorcycle", "bus", "truck"]   # one trip file each (make_background.py)
 CAR = dict(latAlignment="nice", minGapLat=0.4)                    # rest: SUMO defaults
 MOTORCYCLE = dict(width=0.75, latAlignment="arbitrary", minGapLat=0.15)
 BICYCLE = {}                                                      # commuters' bikes: SUMO defaults
+BUS = dict(latAlignment="right", minGapLat=0.4)                   # counted traffic only (below)
+TRUCK = dict(latAlignment="right", minGapLat=0.4)
