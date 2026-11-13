@@ -113,7 +113,9 @@ SAMPLE_AGENTS = 100                # make_agents.py: this many of the base agent
 NOT_TRAVELLING = ("Under 5",)      # age groups left out: small children do not travel on their own
 CAR_DRIVER_MIN_AGE = 20            # a car only for age groups from this age (the 15-19 group mixes minors
                                    # and adults; a non-professional licence is from 17)
-MAX_WALK = 400.0                  # m: longest walk home -> roadside, roadside -> destination, or door <-> vehicle
+MAX_WALK = 400.0                  # m: longest walk between door and car or bike
+LINE_WALK = 10000.0               # m: longest walk to the jeepney line and from it (a test since 2026-11-13,
+                                  #    the user's: 400 m, MAX_WALK, before; no tricycles yet)
 MIN_RIDE = 500.0                   # m: shortest jeepney ride worth taking
 MAX_STREET_SPEED = 14.0            # m/s: homes and destinations only on streets up to ~50 km/h
 KERB_MARGIN = 10.0                 # m: jeepneys stop at least this far from either end of an edge

@@ -213,7 +213,7 @@ carries the same options:
 
 | Option | When it is listed |
 |---|---|
-| `jeepney` | One per line (`route_id`) passing within 400 m on foot of both ends, with at least 500 m of ride |
+| `jeepney` | One per line (`route_id`) passing within `LINE_WALK` (10 km, a test) on foot of both ends, with at least 500 m of ride |
 | `walk` | The walking route is 20 to 1,500 m |
 | `bike` | The agent has a bike (persona), and the ride is at most 5,000 m |
 | `car` | The agent has a car (persona) |
