@@ -315,6 +315,7 @@ def main():
     if args.scenario:
         print(f"Scenario {args.scenario}: " + ", ".join(f"{line} {on} jeepneys ({off} taken off)"
                                                        for line, (on, off) in changed.items()))
+    print(f"Starting {'SUMO' if args.nogui else 'sumo-gui'}: loading the map and the vehicles ...", flush=True)
     if args.nogui:
         traci.start([sumolib.checkBinary("sumo"), "-c", str(cfg)])
     else:

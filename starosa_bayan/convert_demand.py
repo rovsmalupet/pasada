@@ -48,6 +48,7 @@ import json
 import math
 import re
 import shutil
+import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -530,7 +531,10 @@ def plan_day(demand, agents, planner, route_ids=None):
     ([trip, sorted by departure], {agent_id: why the day was left out}). route_ids: the jeepney
     line chosen for a trip (default: the line with the shortest total walk)."""
     day, trips, problems, route_ids = demand["day"], [], {}, route_ids or {}
-    for agent in demand["agents"]:
+    started, total = time.time(), len(demand["agents"])
+    for n, agent in enumerate(demand["agents"]):
+        if n and n % max(1, total // 10) == 0:      # progress: the walks to a jeepney line take a while
+            print(f"  {n} of {total} agents planned ({time.time() - started:.0f} s)", flush=True)
         aid, info = agent["agent_id"], agents[agent["agent_id"]]
         home = planner.home_place(info["home"])
         if home is None:
@@ -707,6 +711,7 @@ def convert(demand_path, out_dir, modes_path=None):
     demand_path, out_dir = Path(demand_path), Path(out_dir)
     demand = load_json(demand_path, "write a schedule (format in demand/README.md), or run python pipeline.py")
     agents = load_agents()
+    print(f"Reading the map and the places for {demand_path.name} ...", flush=True)
     planner = Planner()
     one_file = has_modes(demand)
     errors = check_format(demand, agents, set(planner.locations), with_modes=one_file)
@@ -723,6 +728,8 @@ def convert(demand_path, out_dir, modes_path=None):
         more = f"\n  ... and {len(errors) - 30} more" if len(errors) > 30 else ""
         raise SystemExit(f"{' + '.join(p.name for p in inputs)} do not follow the demand format (demand/README.md):\n  "
                          + "\n  ".join(errors[:30]) + more)
+    print(f"Planning every trip of {len(demand['agents'])} agents: walks, rides and drives on the map "
+          "(a few minutes with many jeepney trips) ...", flush=True)
     with planner:
         trips, problems = plan_day(demand, agents, planner, route_ids)
 
