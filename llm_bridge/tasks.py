@@ -249,6 +249,16 @@ def persona_answer(text, entry, head):
         problems.append(f"car access below age {C.CAR_DRIVER_MIN_AGE} (simulation rule)")
     if p.get("bicycle_access") is True and not entry["household_bicycle_access"]:
         problems.append("bicycle access without a household bicycle")
+    # abm11: on the last try, an impossible car/bicycle access is set to false (logged), not failed
+    vehicle_problems = [x for x in problems if x.startswith(("car access", "bicycle access"))]
+    if LAST_TRY and vehicle_problems:
+        for x in vehicle_problems:
+            problems.remove(x)
+            NOTES.append(f"{entry.get('agent_id', '?')}: {x} on the last try: set to false")
+        if any(x.startswith("car access") for x in vehicle_problems):
+            p["vehicle_ownership"] = False
+        if any(x.startswith("bicycle access") for x in vehicle_problems):
+            p["bicycle_access"] = False
     if "general_transport_preference" in p and p["general_transport_preference"] not in C.TO_ABM_MODE:
         problems.append(f"preference {p['general_transport_preference']!r} is not one of the four modes")
     if "behavioral_description" in p and not (isinstance(p["behavioral_description"], str)

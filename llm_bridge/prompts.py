@@ -73,6 +73,10 @@ PERSONA_DEFINITIONS = (
     "- vehicle_ownership and bicycle_access: whether this person can personally use a "
     "private car or a bicycle for their own trips. This can not be true if the household "
     "has no access to one.\n"
+    # abm11: A000042 (15-19, household car) claimed car access on 10 of 10 tries (2026-11-14)
+    "- vehicle_ownership means this person drives the car themselves, so it must be false if they "
+    "are younger than 20, even if the household has a car. Being driven by a family member does "
+    "not count.\n"
     "- walking_tolerance and cycling_tolerance: how far this commuter is willing to walk or cycle. "
     "High means they walk or cycle long distances without minding; Low means they avoid it beyond "
     "short distances.\n"

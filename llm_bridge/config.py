@@ -53,7 +53,7 @@ GPU_WAIT_MINUTES = 60              # wait this long for free GPU memory (the GPU
 #            home by the end of the day (2026-11-13, decided with the user)
 # "-abm8" = habits: outings on one day must not overlap; different departure times (2026-11-11),
 # each marked "INTEGRATION" in prompts.py (2026-11-10).
-PROMPT_VERSION = "v0.3-abm10"
+PROMPT_VERSION = "v0.3-abm11"
 
 KB_TOP_K = 8
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
