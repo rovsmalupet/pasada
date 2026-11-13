@@ -99,7 +99,7 @@ def run(cmd, log):
 # ------------------------------------------------------------------------------ check 1, static
 def check_network(check, cases):
     """Places and homes reachable on foot; lines continuous. Uses SUMO's router, like the converter."""
-    demand_agents = S.HERE / "demand" / "agents.json"
+    demand_agents = S.AGENTS_FILE                   # demand/, or STAROSA_BAYAN_DEMAND's folder
     real = json.loads(demand_agents.read_text(encoding="utf-8"))["agents"] if demand_agents.is_file() else []
     with Planner() as p:
         check.item(not sum(p.dropped.values()),

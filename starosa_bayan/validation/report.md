@@ -1,6 +1,6 @@
 # Simulation validation: PASS
 
-Scripted test agents (manuscript Sec. 4.4.3.3), run `runs/2026-11-14_034743`, 2026-11-14 03:48, 154 s. Made by `python validation/validate.py`.
+Scripted test agents (manuscript Sec. 4.4.3.3), run `runs/2026-11-14_052058`, 2026-11-14 05:21, 115 s. Made by `python validation/validate.py`.
 
 Test day: 32 agents, 38 trips, no background traffic (`validation/cases/`, from `make_cases.py`).
 
@@ -17,7 +17,7 @@ Test day: 32 agents, 38 trips, no background traffic (`validation/cases/`, from 
 - PASS: 756 activity locations on a walkable edge within LOCATION_SNAP_M (200 m); 0 dropped
 - PASS: every activity location reachable on foot from LOC_0421 (the most central) and back
 - PASS: 32 test agents' homes on a home street within HOME_SNAP_M and reachable on foot both ways
-- PASS: 100 demand/ agents' homes on a home street within HOME_SNAP_M and reachable on foot both ways
+- PASS: 32 demand/ agents' homes on a home street within HOME_SNAP_M and reachable on foot both ways
 - PASS: line N1_N: 80 edges, 3.94 km, continuous for bus; 39 edges people can wait on
 - PASS: line N1_S: 80 edges, 3.94 km, continuous for bus; 39 edges people can wait on
 - PASS: line RIZ-FRS_N: 123 edges, 6.54 km, continuous for bus; 69 edges people can wait on
