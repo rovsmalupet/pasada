@@ -17,11 +17,21 @@
                 {"mode": "walk", "distance_m": 485, "estimated_total_time_s": 349, "cost_php": 0.0}
             ]},
             {"trip_id": "A000034_D01_T02", "from": "LOC_0148", "to": "HOME_A000034", "to_name": "home", "trip_type": "work_to_home", "depart": "16:25", "options": [
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4868, "access_walk_m": 1940, "in_vehicle_m": 1061, "egress_walk_m": 1867, "estimated_total_time_s": 2985, "access_time_s": 1396, "waiting_time_s": 150, "in_vehicle_time_s": 96, "egress_time_s": 1343, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 485, "estimated_total_time_s": 349, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000035", "has_car": false, "has_bike": false, "trips": [
-            
+            {"trip_id": "A000035_D01_T01", "from": "HOME_A000035", "to": "LOC_0112", "to_name": "City Hall Extension Building (Building B)", "trip_type": "home_to_work", "depart": "08:07", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3015, "access_walk_m": 1454, "in_vehicle_m": 1315, "egress_walk_m": 245, "estimated_total_time_s": 1511, "access_time_s": 1046, "waiting_time_s": 150, "in_vehicle_time_s": 138, "egress_time_s": 177, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3015, "access_walk_m": 1454, "in_vehicle_m": 1315, "egress_walk_m": 245, "estimated_total_time_s": 1518, "access_time_s": 1046, "waiting_time_s": 150, "in_vehicle_time_s": 145, "egress_time_s": 177, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4411, "access_walk_m": 1897, "in_vehicle_m": 836, "egress_walk_m": 1678, "estimated_total_time_s": 2796, "access_time_s": 1364, "waiting_time_s": 150, "in_vehicle_time_s": 75, "egress_time_s": 1207, "cost_php": 14.0}
+            ]},
+            {"trip_id": "A000035_D01_T02", "from": "LOC_0112", "to": "HOME_A000035", "to_name": "home", "trip_type": "work_to_home", "depart": "17:20", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 3022, "access_walk_m": 257, "in_vehicle_m": 1295, "egress_walk_m": 1470, "estimated_total_time_s": 1529, "access_time_s": 185, "waiting_time_s": 150, "in_vehicle_time_s": 136, "egress_time_s": 1058, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 3022, "access_walk_m": 257, "in_vehicle_m": 1295, "egress_walk_m": 1470, "estimated_total_time_s": 1535, "access_time_s": 185, "waiting_time_s": 150, "in_vehicle_time_s": 142, "egress_time_s": 1058, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4449, "access_walk_m": 1694, "in_vehicle_m": 836, "egress_walk_m": 1918, "estimated_total_time_s": 2824, "access_time_s": 1219, "waiting_time_s": 150, "in_vehicle_time_s": 75, "egress_time_s": 1380, "cost_php": 14.0}
+            ]}
         ]},
     {"agent_id": "A000042", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000042_D01_T01", "from": "HOME_A000042", "to": "LOC_0135", "to_name": "iQor", "trip_type": "home_to_work", "depart": "06:20", "options": [
@@ -33,9 +43,13 @@
         ]},
     {"agent_id": "A000044", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000044_D01_T01", "from": "HOME_A000044", "to": "LOC_0081", "to_name": "Polytechnic University of the Philippines - Santa Rosa", "trip_type": "home_to_school", "depart": "06:46", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2578, "access_walk_m": 813, "in_vehicle_m": 1248, "egress_walk_m": 517, "estimated_total_time_s": 1238, "access_time_s": 585, "waiting_time_s": 150, "in_vehicle_time_s": 131, "egress_time_s": 372, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2578, "access_walk_m": 813, "in_vehicle_m": 1248, "egress_walk_m": 517, "estimated_total_time_s": 1245, "access_time_s": 585, "waiting_time_s": 150, "in_vehicle_time_s": 138, "egress_time_s": 372, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 929, "estimated_total_time_s": 669, "cost_php": 0.0}
             ]},
             {"trip_id": "A000044_D01_T02", "from": "LOC_0081", "to": "HOME_A000044", "to_name": "home", "trip_type": "school_to_home", "depart": "16:02", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2571, "access_walk_m": 505, "in_vehicle_m": 1268, "egress_walk_m": 798, "estimated_total_time_s": 1220, "access_time_s": 363, "waiting_time_s": 150, "in_vehicle_time_s": 133, "egress_time_s": 574, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2571, "access_walk_m": 505, "in_vehicle_m": 1268, "egress_walk_m": 798, "estimated_total_time_s": 1226, "access_time_s": 363, "waiting_time_s": 150, "in_vehicle_time_s": 139, "egress_time_s": 574, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 929, "estimated_total_time_s": 669, "cost_php": 0.0}
             ]}
         ]},
@@ -54,6 +68,8 @@
                 {"mode": "walk", "distance_m": 871, "estimated_total_time_s": 626, "cost_php": 0.0}
             ]},
             {"trip_id": "A000059_D01_T02", "from": "LOC_0103", "to": "HOME_A000059", "to_name": "home", "trip_type": "school_to_home", "depart": "15:13", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1419, "access_walk_m": 234, "in_vehicle_m": 506, "egress_walk_m": 679, "estimated_total_time_s": 859, "access_time_s": 168, "waiting_time_s": 150, "in_vehicle_time_s": 53, "egress_time_s": 488, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1419, "access_walk_m": 234, "in_vehicle_m": 506, "egress_walk_m": 679, "estimated_total_time_s": 862, "access_time_s": 168, "waiting_time_s": 150, "in_vehicle_time_s": 56, "egress_time_s": 488, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 871, "estimated_total_time_s": 626, "cost_php": 0.0}
             ]}
         ]},
@@ -72,11 +88,13 @@
             ]}
         ]},
     {"agent_id": "A000083", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000083_D01_T01", "from": "HOME_A000083", "to": "LOC_0028", "to_name": "Alfamart", "trip_type": "home_to_shopping", "depart": "07:36", "options": [
-                {"mode": "walk", "distance_m": 1363, "estimated_total_time_s": 980, "cost_php": 0.0}
+            {"trip_id": "A000083_D01_T01", "from": "HOME_A000083", "to": "LOC_0078", "to_name": "New Sinai School and Colleges Santa Rosa", "trip_type": "home_to_school", "depart": "06:36", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2651, "access_walk_m": 1260, "in_vehicle_m": 885, "egress_walk_m": 506, "estimated_total_time_s": 1514, "access_time_s": 907, "waiting_time_s": 150, "in_vehicle_time_s": 93, "egress_time_s": 364, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2651, "access_walk_m": 1260, "in_vehicle_m": 885, "egress_walk_m": 506, "estimated_total_time_s": 1519, "access_time_s": 907, "waiting_time_s": 150, "in_vehicle_time_s": 98, "egress_time_s": 364, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000083_D01_T02", "from": "LOC_0028", "to": "HOME_A000083", "to_name": "home", "trip_type": "shopping_to_home", "depart": "09:12", "options": [
-                {"mode": "walk", "distance_m": 1363, "estimated_total_time_s": 980, "cost_php": 0.0}
+            {"trip_id": "A000083_D01_T02", "from": "LOC_0078", "to": "HOME_A000083", "to_name": "home", "trip_type": "school_to_home", "depart": "14:42", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2657, "access_walk_m": 500, "in_vehicle_m": 885, "egress_walk_m": 1272, "estimated_total_time_s": 1518, "access_time_s": 360, "waiting_time_s": 150, "in_vehicle_time_s": 93, "egress_time_s": 915, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2657, "access_walk_m": 500, "in_vehicle_m": 885, "egress_walk_m": 1272, "estimated_total_time_s": 1522, "access_time_s": 360, "waiting_time_s": 150, "in_vehicle_time_s": 97, "egress_time_s": 915, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000093", "has_car": false, "has_bike": false, "trips": [
@@ -91,22 +109,28 @@
         ]},
     {"agent_id": "A000101", "has_car": false, "has_bike": true, "trips": [
             {"trip_id": "A000101_D01_T01", "from": "HOME_A000101", "to": "LOC_0189", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:55", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3061, "access_walk_m": 1656, "in_vehicle_m": 990, "egress_walk_m": 416, "estimated_total_time_s": 1744, "access_time_s": 1191, "waiting_time_s": 150, "in_vehicle_time_s": 104, "egress_time_s": 299, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3061, "access_walk_m": 1656, "in_vehicle_m": 990, "egress_walk_m": 416, "estimated_total_time_s": 1749, "access_time_s": 1191, "waiting_time_s": 150, "in_vehicle_time_s": 109, "egress_time_s": 299, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4722, "access_walk_m": 2098, "in_vehicle_m": 777, "egress_walk_m": 1848, "estimated_total_time_s": 3059, "access_time_s": 1509, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 1330, "cost_php": 14.0},
                 {"mode": "bike", "distance_m": 2999, "access_walk_m": 0, "in_vehicle_m": 2999, "egress_walk_m": 0, "estimated_total_time_s": 600, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 600, "egress_time_s": 0, "cost_php": 0.0}
             ]},
             {"trip_id": "A000101_D01_T02", "from": "LOC_0189", "to": "HOME_A000101", "to_name": "home", "trip_type": "work_to_home", "depart": "18:08", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 3066, "access_walk_m": 425, "in_vehicle_m": 970, "egress_walk_m": 1671, "estimated_total_time_s": 1760, "access_time_s": 306, "waiting_time_s": 150, "in_vehicle_time_s": 102, "egress_time_s": 1202, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 3066, "access_walk_m": 425, "in_vehicle_m": 970, "egress_walk_m": 1671, "estimated_total_time_s": 1765, "access_time_s": 306, "waiting_time_s": 150, "in_vehicle_time_s": 107, "egress_time_s": 1202, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4761, "access_walk_m": 1865, "in_vehicle_m": 776, "egress_walk_m": 2119, "estimated_total_time_s": 3087, "access_time_s": 1342, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 1525, "cost_php": 14.0},
                 {"mode": "bike", "distance_m": 2939, "access_walk_m": 0, "in_vehicle_m": 2939, "egress_walk_m": 0, "estimated_total_time_s": 572, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 572, "egress_time_s": 0, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000111", "has_car": true, "has_bike": false, "trips": [
-            {"trip_id": "A000111_D01_T01", "from": "HOME_A000111", "to": "LOC_0019", "to_name": "Sta. Rosa Gateway by Toplite", "trip_type": "home_to_shopping", "depart": "09:22", "options": [
-                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1831, "access_walk_m": 211, "in_vehicle_m": 1439, "egress_walk_m": 182, "estimated_total_time_s": 584, "access_time_s": 152, "waiting_time_s": 150, "in_vehicle_time_s": 151, "egress_time_s": 131, "cost_php": 14.0},
-                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1831, "access_walk_m": 211, "in_vehicle_m": 1439, "egress_walk_m": 182, "estimated_total_time_s": 591, "access_time_s": 152, "waiting_time_s": 150, "in_vehicle_time_s": 158, "egress_time_s": 131, "cost_php": 14.0},
-                {"mode": "car", "distance_m": 2100, "access_walk_m": 0, "in_vehicle_m": 2058, "egress_walk_m": 41, "estimated_total_time_s": 460, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 250, "egress_time_s": 150, "cost_php": 12.35}
+            {"trip_id": "A000111_D01_T01", "from": "HOME_A000111", "to": "LOC_0016", "to_name": "SM City Santa Rosa", "trip_type": "home_to_shopping", "depart": "09:22", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2996, "access_walk_m": 224, "in_vehicle_m": 1733, "egress_walk_m": 1040, "estimated_total_time_s": 1241, "access_time_s": 161, "waiting_time_s": 150, "in_vehicle_time_s": 182, "egress_time_s": 748, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2996, "access_walk_m": 224, "in_vehicle_m": 1733, "egress_walk_m": 1040, "estimated_total_time_s": 1250, "access_time_s": 161, "waiting_time_s": 150, "in_vehicle_time_s": 191, "egress_time_s": 748, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 2355, "access_walk_m": 1569, "in_vehicle_m": 505, "egress_walk_m": 281, "estimated_total_time_s": 1527, "access_time_s": 1129, "waiting_time_s": 150, "in_vehicle_time_s": 46, "egress_time_s": 202, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000111_D01_T02", "from": "LOC_0019", "to": "HOME_A000111", "to_name": "home", "trip_type": "shopping_to_home", "depart": "11:19", "options": [
-                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2029, "access_walk_m": 218, "in_vehicle_m": 1587, "egress_walk_m": 224, "estimated_total_time_s": 635, "access_time_s": 157, "waiting_time_s": 150, "in_vehicle_time_s": 167, "egress_time_s": 161, "cost_php": 14.0},
-                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1887, "access_walk_m": 259, "in_vehicle_m": 1404, "egress_walk_m": 224, "estimated_total_time_s": 652, "access_time_s": 186, "waiting_time_s": 150, "in_vehicle_time_s": 155, "egress_time_s": 161, "cost_php": 14.0},
-                {"mode": "car", "distance_m": 2767, "access_walk_m": 41, "in_vehicle_m": 2725, "egress_walk_m": 0, "estimated_total_time_s": 504, "access_time_s": 90, "waiting_time_s": 0, "in_vehicle_time_s": 294, "egress_time_s": 120, "cost_php": 16.35}
+            {"trip_id": "A000111_D01_T02", "from": "LOC_0016", "to": "HOME_A000111", "to_name": "home", "trip_type": "shopping_to_home", "depart": "11:19", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2978, "access_walk_m": 1034, "in_vehicle_m": 1733, "egress_walk_m": 211, "estimated_total_time_s": 1228, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 182, "egress_time_s": 152, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2978, "access_walk_m": 1034, "in_vehicle_m": 1733, "egress_walk_m": 211, "estimated_total_time_s": 1237, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 191, "egress_time_s": 152, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 2350, "access_walk_m": 259, "in_vehicle_m": 505, "egress_walk_m": 1586, "estimated_total_time_s": 1523, "access_time_s": 186, "waiting_time_s": 150, "in_vehicle_time_s": 46, "egress_time_s": 1141, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000123", "has_car": true, "has_bike": false, "trips": [
@@ -138,18 +162,28 @@
         ]},
     {"agent_id": "A000160", "has_car": true, "has_bike": false, "trips": [
             {"trip_id": "A000160_D01_T01", "from": "HOME_A000160", "to": "LOC_0003", "to_name": "JAC Liner - Balibago Terminal", "trip_type": "home_to_out_of_area", "depart": "05:54", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2836, "access_walk_m": 1029, "in_vehicle_m": 1607, "egress_walk_m": 199, "estimated_total_time_s": 1210, "access_time_s": 740, "waiting_time_s": 150, "in_vehicle_time_s": 177, "egress_time_s": 143, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2904, "access_walk_m": 1029, "in_vehicle_m": 1631, "egress_walk_m": 243, "estimated_total_time_s": 1236, "access_time_s": 740, "waiting_time_s": 150, "in_vehicle_time_s": 171, "egress_time_s": 175, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 3964, "access_walk_m": 2412, "in_vehicle_m": 1352, "egress_walk_m": 199, "estimated_total_time_s": 2150, "access_time_s": 1735, "waiting_time_s": 150, "in_vehicle_time_s": 122, "egress_time_s": 143, "cost_php": 14.0},
                 {"mode": "car", "distance_m": 3371, "access_walk_m": 0, "in_vehicle_m": 3371, "egress_walk_m": 0, "estimated_total_time_s": 614, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 434, "egress_time_s": 120, "cost_php": 20.22}
             ]},
             {"trip_id": "A000160_D01_T02", "from": "LOC_0003", "to": "HOME_A000160", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "16:38", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3025, "access_walk_m": 220, "in_vehicle_m": 1787, "egress_walk_m": 1018, "estimated_total_time_s": 1237, "access_time_s": 158, "waiting_time_s": 150, "in_vehicle_time_s": 197, "egress_time_s": 732, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3189, "access_walk_m": 221, "in_vehicle_m": 1950, "egress_walk_m": 1018, "estimated_total_time_s": 1246, "access_time_s": 159, "waiting_time_s": 150, "in_vehicle_time_s": 205, "egress_time_s": 732, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 3968, "access_walk_m": 220, "in_vehicle_m": 1352, "egress_walk_m": 2396, "estimated_total_time_s": 2154, "access_time_s": 158, "waiting_time_s": 150, "in_vehicle_time_s": 122, "egress_time_s": 1724, "cost_php": 14.0},
                 {"mode": "car", "distance_m": 3500, "access_walk_m": 0, "in_vehicle_m": 3500, "egress_walk_m": 0, "estimated_total_time_s": 650, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 470, "egress_time_s": 120, "cost_php": 21.0}
             ]}
         ]},
     {"agent_id": "A000172", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000172_D01_T01", "from": "HOME_A000172", "to": "LOC_0005", "to_name": "Santa Rosa Complex Terminal", "trip_type": "home_to_out_of_area", "depart": "06:25", "options": [
-                {"mode": "walk", "distance_m": 227, "estimated_total_time_s": 163, "cost_php": 0.0}
+            {"trip_id": "A000172_D01_T01", "from": "HOME_A000172", "to": "LOC_0001", "to_name": "Alabang Jeepney Terminal", "trip_type": "home_to_out_of_area", "depart": "05:25", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3081, "access_walk_m": 300, "in_vehicle_m": 2753, "egress_walk_m": 28, "estimated_total_time_s": 675, "access_time_s": 216, "waiting_time_s": 150, "in_vehicle_time_s": 289, "egress_time_s": 20, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3038, "access_walk_m": 579, "in_vehicle_m": 2431, "egress_walk_m": 28, "estimated_total_time_s": 855, "access_time_s": 417, "waiting_time_s": 150, "in_vehicle_time_s": 268, "egress_time_s": 20, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4155, "access_walk_m": 579, "in_vehicle_m": 2470, "egress_walk_m": 1106, "estimated_total_time_s": 1584, "access_time_s": 417, "waiting_time_s": 150, "in_vehicle_time_s": 222, "egress_time_s": 795, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000172_D01_T02", "from": "LOC_0005", "to": "HOME_A000172", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "17:35", "options": [
-                {"mode": "walk", "distance_m": 227, "estimated_total_time_s": 163, "cost_php": 0.0}
+            {"trip_id": "A000172_D01_T02", "from": "LOC_0001", "to": "HOME_A000172", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "15:50", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2998, "access_walk_m": 41, "in_vehicle_m": 2638, "egress_walk_m": 319, "estimated_total_time_s": 686, "access_time_s": 29, "waiting_time_s": 150, "in_vehicle_time_s": 277, "egress_time_s": 230, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 3073, "access_walk_m": 41, "in_vehicle_m": 2475, "egress_walk_m": 557, "estimated_total_time_s": 852, "access_time_s": 29, "waiting_time_s": 150, "in_vehicle_time_s": 272, "egress_time_s": 401, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4164, "access_walk_m": 1116, "in_vehicle_m": 2490, "egress_walk_m": 557, "estimated_total_time_s": 1578, "access_time_s": 803, "waiting_time_s": 150, "in_vehicle_time_s": 224, "egress_time_s": 401, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000186", "has_car": true, "has_bike": true, "trips": [
@@ -172,15 +206,21 @@
                 {"mode": "car", "distance_m": 1446, "access_walk_m": 0, "in_vehicle_m": 1405, "egress_walk_m": 41, "estimated_total_time_s": 395, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 185, "egress_time_s": 150, "cost_php": 8.43}
             ]},
             {"trip_id": "A000195_D01_T02", "from": "LOC_0019", "to": "HOME_A000195", "to_name": "home", "trip_type": "shopping_to_home", "depart": "08:14", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1335, "access_walk_m": 218, "in_vehicle_m": 700, "egress_walk_m": 416, "estimated_total_time_s": 680, "access_time_s": 157, "waiting_time_s": 150, "in_vehicle_time_s": 74, "egress_time_s": 299, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1193, "access_walk_m": 259, "in_vehicle_m": 517, "egress_walk_m": 416, "estimated_total_time_s": 692, "access_time_s": 186, "waiting_time_s": 150, "in_vehicle_time_s": 57, "egress_time_s": 299, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1206, "estimated_total_time_s": 868, "cost_php": 0.0},
                 {"mode": "car", "distance_m": 1416, "access_walk_m": 41, "in_vehicle_m": 1374, "egress_walk_m": 0, "estimated_total_time_s": 395, "access_time_s": 90, "waiting_time_s": 0, "in_vehicle_time_s": 185, "egress_time_s": 120, "cost_php": 8.25}
             ]}
         ]},
     {"agent_id": "A000204", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000204_D01_T01", "from": "HOME_A000204", "to": "LOC_0267", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:02", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1480, "access_walk_m": 311, "in_vehicle_m": 586, "egress_walk_m": 583, "estimated_total_time_s": 854, "access_time_s": 224, "waiting_time_s": 150, "in_vehicle_time_s": 61, "egress_time_s": 419, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1470, "access_walk_m": 311, "in_vehicle_m": 552, "egress_walk_m": 607, "estimated_total_time_s": 872, "access_time_s": 224, "waiting_time_s": 150, "in_vehicle_time_s": 61, "egress_time_s": 437, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1243, "estimated_total_time_s": 894, "cost_php": 0.0}
             ]},
             {"trip_id": "A000204_D01_T02", "from": "LOC_0267", "to": "HOME_A000204", "to_name": "home", "trip_type": "work_to_home", "depart": "15:32", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1648, "access_walk_m": 620, "in_vehicle_m": 700, "egress_walk_m": 327, "estimated_total_time_s": 905, "access_time_s": 446, "waiting_time_s": 150, "in_vehicle_time_s": 74, "egress_time_s": 235, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1529, "access_walk_m": 685, "in_vehicle_m": 517, "egress_walk_m": 327, "estimated_total_time_s": 935, "access_time_s": 493, "waiting_time_s": 150, "in_vehicle_time_s": 57, "egress_time_s": 235, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1243, "estimated_total_time_s": 894, "cost_php": 0.0}
             ]}
         ]},
@@ -214,11 +254,11 @@
             
         ]},
     {"agent_id": "A000267", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000267_D01_T01", "from": "HOME_A000267", "to": "LOC_0080", "to_name": "Our Lady of Fatima University - Santa Rosa", "trip_type": "home_to_school", "depart": "07:05", "options": [
-                {"mode": "walk", "distance_m": 689, "estimated_total_time_s": 496, "cost_php": 0.0}
+            {"trip_id": "A000267_D01_T01", "from": "HOME_A000267", "to": "LOC_0074", "to_name": "Macabling Elementary School", "trip_type": "home_to_school", "depart": "07:05", "options": [
+                {"mode": "walk", "distance_m": 695, "estimated_total_time_s": 500, "cost_php": 0.0}
             ]},
-            {"trip_id": "A000267_D01_T02", "from": "LOC_0080", "to": "HOME_A000267", "to_name": "home", "trip_type": "school_to_home", "depart": "14:47", "options": [
-                {"mode": "walk", "distance_m": 689, "estimated_total_time_s": 496, "cost_php": 0.0}
+            {"trip_id": "A000267_D01_T02", "from": "LOC_0074", "to": "HOME_A000267", "to_name": "home", "trip_type": "school_to_home", "depart": "14:47", "options": [
+                {"mode": "walk", "distance_m": 695, "estimated_total_time_s": 500, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000268", "has_car": false, "has_bike": false, "trips": [
@@ -233,14 +273,23 @@
             
         ]},
     {"agent_id": "A000272", "has_car": false, "has_bike": false, "trips": [
-            
+            {"trip_id": "A000272_D01_T01", "from": "HOME_A000272", "to": "LOC_0089", "to_name": "Santa Rosa Elementary School Central I", "trip_type": "home_to_school", "depart": "07:23", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2619, "access_walk_m": 1311, "in_vehicle_m": 1243, "egress_walk_m": 64, "estimated_total_time_s": 1269, "access_time_s": 943, "waiting_time_s": 150, "in_vehicle_time_s": 130, "egress_time_s": 46, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2619, "access_walk_m": 1311, "in_vehicle_m": 1243, "egress_walk_m": 64, "estimated_total_time_s": 1276, "access_time_s": 943, "waiting_time_s": 150, "in_vehicle_time_s": 137, "egress_time_s": 46, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4083, "access_walk_m": 1753, "in_vehicle_m": 836, "egress_walk_m": 1494, "estimated_total_time_s": 2561, "access_time_s": 1261, "waiting_time_s": 150, "in_vehicle_time_s": 75, "egress_time_s": 1075, "cost_php": 14.0}
+            ]},
+            {"trip_id": "A000272_D01_T02", "from": "LOC_0089", "to": "HOME_A000272", "to_name": "home", "trip_type": "school_to_home", "depart": "13:51", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2630, "access_walk_m": 80, "in_vehicle_m": 1223, "egress_walk_m": 1327, "estimated_total_time_s": 1290, "access_time_s": 58, "waiting_time_s": 150, "in_vehicle_time_s": 128, "egress_time_s": 954, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2630, "access_walk_m": 80, "in_vehicle_m": 1223, "egress_walk_m": 1327, "estimated_total_time_s": 1297, "access_time_s": 58, "waiting_time_s": 150, "in_vehicle_time_s": 135, "egress_time_s": 954, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4122, "access_walk_m": 1511, "in_vehicle_m": 836, "egress_walk_m": 1775, "estimated_total_time_s": 2589, "access_time_s": 1087, "waiting_time_s": 150, "in_vehicle_time_s": 75, "egress_time_s": 1277, "cost_php": 14.0}
+            ]}
         ]},
     {"agent_id": "A000279", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000279_D01_T01", "from": "HOME_A000279", "to": "LOC_0194", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "06:38", "options": [
-                {"mode": "walk", "distance_m": 1187, "estimated_total_time_s": 854, "cost_php": 0.0}
+            {"trip_id": "A000279_D01_T01", "from": "HOME_A000279", "to": "LOC_0192", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "06:38", "options": [
+                {"mode": "walk", "distance_m": 924, "estimated_total_time_s": 665, "cost_php": 0.0}
             ]},
-            {"trip_id": "A000279_D01_T02", "from": "LOC_0194", "to": "HOME_A000279", "to_name": "home", "trip_type": "work_to_home", "depart": "16:33", "options": [
-                {"mode": "walk", "distance_m": 1187, "estimated_total_time_s": 854, "cost_php": 0.0}
+            {"trip_id": "A000279_D01_T02", "from": "LOC_0192", "to": "HOME_A000279", "to_name": "home", "trip_type": "work_to_home", "depart": "16:33", "options": [
+                {"mode": "walk", "distance_m": 924, "estimated_total_time_s": 665, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000281", "has_car": false, "has_bike": false, "trips": [
@@ -250,44 +299,54 @@
             
         ]},
     {"agent_id": "A000296", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000296_D01_T01", "from": "HOME_A000296", "to": "LOC_0021", "to_name": "Tram Plaza", "trip_type": "home_to_shopping", "depart": "06:54", "options": [
-                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2765, "access_walk_m": 73, "in_vehicle_m": 2543, "egress_walk_m": 148, "estimated_total_time_s": 577, "access_time_s": 53, "waiting_time_s": 150, "in_vehicle_time_s": 267, "egress_time_s": 107, "cost_php": 14.0},
-                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2765, "access_walk_m": 73, "in_vehicle_m": 2543, "egress_walk_m": 148, "estimated_total_time_s": 590, "access_time_s": 53, "waiting_time_s": 150, "in_vehicle_time_s": 280, "egress_time_s": 107, "cost_php": 14.0}
+            {"trip_id": "A000296_D01_T01", "from": "HOME_A000296", "to": "LOC_0019", "to_name": "Sta. Rosa Gateway by Toplite", "trip_type": "home_to_shopping", "depart": "06:54", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2924, "access_walk_m": 73, "in_vehicle_m": 2669, "egress_walk_m": 182, "estimated_total_time_s": 614, "access_time_s": 53, "waiting_time_s": 150, "in_vehicle_time_s": 280, "egress_time_s": 131, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2924, "access_walk_m": 73, "in_vehicle_m": 2669, "egress_walk_m": 182, "estimated_total_time_s": 628, "access_time_s": 53, "waiting_time_s": 150, "in_vehicle_time_s": 294, "egress_time_s": 131, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 2887, "access_walk_m": 641, "in_vehicle_m": 2167, "egress_walk_m": 79, "estimated_total_time_s": 863, "access_time_s": 461, "waiting_time_s": 150, "in_vehicle_time_s": 195, "egress_time_s": 57, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000296_D01_T02", "from": "LOC_0021", "to": "HOME_A000296", "to_name": "home", "trip_type": "shopping_to_home", "depart": "08:09", "options": [
-                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2762, "access_walk_m": 136, "in_vehicle_m": 2543, "egress_walk_m": 83, "estimated_total_time_s": 575, "access_time_s": 98, "waiting_time_s": 150, "in_vehicle_time_s": 267, "egress_time_s": 60, "cost_php": 14.0},
-                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2762, "access_walk_m": 136, "in_vehicle_m": 2543, "egress_walk_m": 83, "estimated_total_time_s": 589, "access_time_s": 98, "waiting_time_s": 150, "in_vehicle_time_s": 281, "egress_time_s": 60, "cost_php": 14.0}
+            {"trip_id": "A000296_D01_T02", "from": "LOC_0019", "to": "HOME_A000296", "to_name": "home", "trip_type": "shopping_to_home", "depart": "08:09", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3119, "access_walk_m": 218, "in_vehicle_m": 2818, "egress_walk_m": 83, "estimated_total_time_s": 663, "access_time_s": 157, "waiting_time_s": 150, "in_vehicle_time_s": 296, "egress_time_s": 60, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2977, "access_walk_m": 259, "in_vehicle_m": 2635, "egress_walk_m": 83, "estimated_total_time_s": 687, "access_time_s": 186, "waiting_time_s": 150, "in_vehicle_time_s": 291, "egress_time_s": 60, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 2861, "access_walk_m": 63, "in_vehicle_m": 2167, "egress_walk_m": 630, "estimated_total_time_s": 845, "access_time_s": 46, "waiting_time_s": 150, "in_vehicle_time_s": 195, "egress_time_s": 454, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000320", "has_car": false, "has_bike": false, "trips": [
             
         ]},
     {"agent_id": "A000325", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000325_D01_T01", "from": "HOME_A000325", "to": "LOC_0002", "to_name": "Balibago Complex Bus Terminal", "trip_type": "home_to_out_of_area", "depart": "05:50", "options": [
-                {"mode": "walk", "distance_m": 1449, "estimated_total_time_s": 1042, "cost_php": 0.0}
+            {"trip_id": "A000325_D01_T01", "from": "HOME_A000325", "to": "LOC_0007", "to_name": "Tagaytay Jeepney Terminal", "trip_type": "home_to_out_of_area", "depart": "05:50", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1524, "access_walk_m": 628, "in_vehicle_m": 526, "egress_walk_m": 370, "estimated_total_time_s": 926, "access_time_s": 452, "waiting_time_s": 150, "in_vehicle_time_s": 58, "egress_time_s": 266, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1706, "access_walk_m": 628, "in_vehicle_m": 667, "egress_walk_m": 411, "estimated_total_time_s": 968, "access_time_s": 452, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 296, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000325_D01_T02", "from": "LOC_0002", "to": "HOME_A000325", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "15:48", "options": [
-                {"mode": "walk", "distance_m": 1449, "estimated_total_time_s": 1042, "cost_php": 0.0}
+            {"trip_id": "A000325_D01_T02", "from": "LOC_0007", "to": "HOME_A000325", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "15:48", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1518, "access_walk_m": 392, "in_vehicle_m": 502, "egress_walk_m": 624, "estimated_total_time_s": 936, "access_time_s": 282, "waiting_time_s": 150, "in_vehicle_time_s": 55, "egress_time_s": 449, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1800, "access_walk_m": 394, "in_vehicle_m": 781, "egress_walk_m": 624, "estimated_total_time_s": 965, "access_time_s": 284, "waiting_time_s": 150, "in_vehicle_time_s": 82, "egress_time_s": 449, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000331", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000331_D01_T01", "from": "HOME_A000331", "to": "LOC_0102", "to_name": "(unnamed)", "trip_type": "home_to_school", "depart": "07:40", "options": [
                 {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1073, "access_walk_m": 162, "in_vehicle_m": 800, "egress_walk_m": 111, "estimated_total_time_s": 431, "access_time_s": 117, "waiting_time_s": 150, "in_vehicle_time_s": 84, "egress_time_s": 80, "cost_php": 14.0},
                 {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1073, "access_walk_m": 162, "in_vehicle_m": 800, "egress_walk_m": 111, "estimated_total_time_s": 435, "access_time_s": 117, "waiting_time_s": 150, "in_vehicle_time_s": 88, "egress_time_s": 80, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 3555, "access_walk_m": 845, "in_vehicle_m": 1061, "egress_walk_m": 1650, "estimated_total_time_s": 2041, "access_time_s": 608, "waiting_time_s": 150, "in_vehicle_time_s": 96, "egress_time_s": 1187, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1209, "estimated_total_time_s": 870, "cost_php": 0.0}
             ]},
             {"trip_id": "A000331_D01_T02", "from": "LOC_0102", "to": "HOME_A000331", "to_name": "home", "trip_type": "school_to_home", "depart": "16:25", "options": [
                 {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1054, "access_walk_m": 93, "in_vehicle_m": 780, "egress_walk_m": 180, "estimated_total_time_s": 429, "access_time_s": 67, "waiting_time_s": 150, "in_vehicle_time_s": 82, "egress_time_s": 130, "cost_php": 14.0},
                 {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1054, "access_walk_m": 93, "in_vehicle_m": 780, "egress_walk_m": 180, "estimated_total_time_s": 433, "access_time_s": 67, "waiting_time_s": 150, "in_vehicle_time_s": 86, "egress_time_s": 130, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 3528, "access_walk_m": 1633, "in_vehicle_m": 1061, "egress_walk_m": 834, "estimated_total_time_s": 2021, "access_time_s": 1175, "waiting_time_s": 150, "in_vehicle_time_s": 96, "egress_time_s": 600, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1209, "estimated_total_time_s": 870, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000333", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000333_D01_T01", "from": "HOME_A000333", "to": "LOC_0021", "to_name": "Tram Plaza", "trip_type": "home_to_shopping", "depart": "08:25", "options": [
-                {"mode": "walk", "distance_m": 1450, "estimated_total_time_s": 1043, "cost_php": 0.0}
+            {"trip_id": "A000333_D01_T01", "from": "HOME_A000333", "to": "LOC_0020", "to_name": "Target Mall Santa Rosa", "trip_type": "home_to_shopping", "depart": "09:55", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2044, "access_walk_m": 1007, "in_vehicle_m": 855, "egress_walk_m": 182, "estimated_total_time_s": 1096, "access_time_s": 725, "waiting_time_s": 150, "in_vehicle_time_s": 90, "egress_time_s": 131, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2058, "access_walk_m": 1007, "in_vehicle_m": 638, "egress_walk_m": 413, "estimated_total_time_s": 1242, "access_time_s": 725, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 297, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 2336, "access_walk_m": 1407, "in_vehicle_m": 516, "egress_walk_m": 413, "estimated_total_time_s": 1505, "access_time_s": 1012, "waiting_time_s": 150, "in_vehicle_time_s": 46, "egress_time_s": 297, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000333_D01_T02", "from": "LOC_0021", "to": "HOME_A000333", "to_name": "home", "trip_type": "shopping_to_home", "depart": "09:07", "options": [
-                {"mode": "walk", "distance_m": 1450, "estimated_total_time_s": 1043, "cost_php": 0.0}
+            {"trip_id": "A000333_D01_T02", "from": "LOC_0020", "to": "HOME_A000333", "to_name": "home", "trip_type": "shopping_to_home", "depart": "11:22", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2107, "access_walk_m": 165, "in_vehicle_m": 950, "egress_walk_m": 992, "estimated_total_time_s": 1083, "access_time_s": 119, "waiting_time_s": 150, "in_vehicle_time_s": 100, "egress_time_s": 714, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2020, "access_walk_m": 434, "in_vehicle_m": 594, "egress_walk_m": 992, "estimated_total_time_s": 1242, "access_time_s": 312, "waiting_time_s": 150, "in_vehicle_time_s": 66, "egress_time_s": 714, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 2335, "access_walk_m": 434, "in_vehicle_m": 516, "egress_walk_m": 1385, "estimated_total_time_s": 1504, "access_time_s": 312, "waiting_time_s": 150, "in_vehicle_time_s": 46, "egress_time_s": 996, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000335", "has_car": false, "has_bike": false, "trips": [
@@ -302,11 +361,15 @@
             
         ]},
     {"agent_id": "A000361", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000361_D01_T01", "from": "HOME_A000361", "to": "LOC_0189", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "06:53", "options": [
-                {"mode": "walk", "distance_m": 1399, "estimated_total_time_s": 1006, "cost_php": 0.0}
+            {"trip_id": "A000361_D01_T01", "from": "HOME_A000361", "to": "LOC_0114", "to_name": "City Tourism Office", "trip_type": "home_to_work", "depart": "06:53", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2510, "access_walk_m": 1740, "in_vehicle_m": 676, "egress_walk_m": 94, "estimated_total_time_s": 1540, "access_time_s": 1252, "waiting_time_s": 150, "in_vehicle_time_s": 71, "egress_time_s": 67, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2510, "access_walk_m": 1740, "in_vehicle_m": 676, "egress_walk_m": 94, "estimated_total_time_s": 1544, "access_time_s": 1252, "waiting_time_s": 150, "in_vehicle_time_s": 75, "egress_time_s": 67, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4701, "access_walk_m": 2645, "in_vehicle_m": 723, "egress_walk_m": 1333, "estimated_total_time_s": 3077, "access_time_s": 1903, "waiting_time_s": 150, "in_vehicle_time_s": 65, "egress_time_s": 959, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000361_D01_T02", "from": "LOC_0189", "to": "HOME_A000361", "to_name": "home", "trip_type": "work_to_home", "depart": "15:49", "options": [
-                {"mode": "walk", "distance_m": 1399, "estimated_total_time_s": 1006, "cost_php": 0.0}
+            {"trip_id": "A000361_D01_T02", "from": "LOC_0114", "to": "HOME_A000361", "to_name": "home", "trip_type": "work_to_home", "depart": "15:49", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2525, "access_walk_m": 76, "in_vehicle_m": 696, "egress_walk_m": 1753, "estimated_total_time_s": 1539, "access_time_s": 55, "waiting_time_s": 150, "in_vehicle_time_s": 73, "egress_time_s": 1261, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2525, "access_walk_m": 76, "in_vehicle_m": 696, "egress_walk_m": 1753, "estimated_total_time_s": 1543, "access_time_s": 55, "waiting_time_s": 150, "in_vehicle_time_s": 77, "egress_time_s": 1261, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4741, "access_walk_m": 1349, "in_vehicle_m": 723, "egress_walk_m": 2669, "estimated_total_time_s": 3106, "access_time_s": 971, "waiting_time_s": 150, "in_vehicle_time_s": 65, "egress_time_s": 1920, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000368", "has_car": true, "has_bike": false, "trips": [
@@ -314,9 +377,11 @@
         ]},
     {"agent_id": "A000390", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000390_D01_T01", "from": "HOME_A000390", "to": "LOC_0054", "to_name": "Balibago National High School", "trip_type": "home_to_school", "depart": "07:08", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1299, "access_walk_m": 542, "in_vehicle_m": 503, "egress_walk_m": 254, "estimated_total_time_s": 776, "access_time_s": 390, "waiting_time_s": 150, "in_vehicle_time_s": 53, "egress_time_s": 183, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1333, "estimated_total_time_s": 959, "cost_php": 0.0}
             ]},
             {"trip_id": "A000390_D01_T02", "from": "LOC_0054", "to": "HOME_A000390", "to_name": "home", "trip_type": "school_to_home", "depart": "16:09", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1416, "access_walk_m": 291, "in_vehicle_m": 598, "egress_walk_m": 527, "estimated_total_time_s": 801, "access_time_s": 209, "waiting_time_s": 150, "in_vehicle_time_s": 63, "egress_time_s": 379, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1333, "estimated_total_time_s": 959, "cost_php": 0.0}
             ]}
         ]},
@@ -350,22 +415,26 @@
             
         ]},
     {"agent_id": "A000437", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000437_D01_T01", "from": "HOME_A000437", "to": "LOC_0021", "to_name": "Tram Plaza", "trip_type": "home_to_shopping", "depart": "06:45", "options": [
-                {"mode": "walk", "distance_m": 1291, "estimated_total_time_s": 929, "cost_php": 0.0}
+            {"trip_id": "A000437_D01_T01", "from": "HOME_A000437", "to": "LOC_0001", "to_name": "Alabang Jeepney Terminal", "trip_type": "home_to_out_of_area", "depart": "04:45", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2123, "access_walk_m": 535, "in_vehicle_m": 1560, "egress_walk_m": 28, "estimated_total_time_s": 719, "access_time_s": 385, "waiting_time_s": 150, "in_vehicle_time_s": 164, "egress_time_s": 20, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2123, "access_walk_m": 535, "in_vehicle_m": 1560, "egress_walk_m": 28, "estimated_total_time_s": 727, "access_time_s": 385, "waiting_time_s": 150, "in_vehicle_time_s": 172, "egress_time_s": 20, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4213, "access_walk_m": 1211, "in_vehicle_m": 1897, "egress_walk_m": 1106, "estimated_total_time_s": 1987, "access_time_s": 871, "waiting_time_s": 150, "in_vehicle_time_s": 171, "egress_time_s": 795, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000437_D01_T02", "from": "LOC_0021", "to": "HOME_A000437", "to_name": "home", "trip_type": "shopping_to_home", "depart": "08:44", "options": [
-                {"mode": "walk", "distance_m": 1291, "estimated_total_time_s": 929, "cost_php": 0.0}
+            {"trip_id": "A000437_D01_T02", "from": "LOC_0001", "to": "HOME_A000437", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "15:59", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2147, "access_walk_m": 41, "in_vehicle_m": 1560, "egress_walk_m": 547, "estimated_total_time_s": 736, "access_time_s": 29, "waiting_time_s": 150, "in_vehicle_time_s": 164, "egress_time_s": 393, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2147, "access_walk_m": 41, "in_vehicle_m": 1560, "egress_walk_m": 547, "estimated_total_time_s": 744, "access_time_s": 29, "waiting_time_s": 150, "in_vehicle_time_s": 172, "egress_time_s": 393, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4246, "access_walk_m": 1116, "in_vehicle_m": 1897, "egress_walk_m": 1233, "estimated_total_time_s": 2011, "access_time_s": 803, "waiting_time_s": 150, "in_vehicle_time_s": 171, "egress_time_s": 887, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000443", "has_car": false, "has_bike": false, "trips": [
             
         ]},
     {"agent_id": "A000445", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000445_D01_T01", "from": "HOME_A000445", "to": "LOC_0189", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "08:29", "options": [
-                {"mode": "walk", "distance_m": 1261, "estimated_total_time_s": 907, "cost_php": 0.0}
+            {"trip_id": "A000445_D01_T01", "from": "HOME_A000445", "to": "LOC_0190", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "08:29", "options": [
+                {"mode": "walk", "distance_m": 1457, "estimated_total_time_s": 1048, "cost_php": 0.0}
             ]},
-            {"trip_id": "A000445_D01_T02", "from": "LOC_0189", "to": "HOME_A000445", "to_name": "home", "trip_type": "work_to_home", "depart": "18:29", "options": [
-                {"mode": "walk", "distance_m": 1261, "estimated_total_time_s": 907, "cost_php": 0.0}
+            {"trip_id": "A000445_D01_T02", "from": "LOC_0190", "to": "HOME_A000445", "to_name": "home", "trip_type": "work_to_home", "depart": "18:29", "options": [
+                {"mode": "walk", "distance_m": 1457, "estimated_total_time_s": 1048, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000449", "has_car": false, "has_bike": false, "trips": [
@@ -394,11 +463,11 @@
             
         ]},
     {"agent_id": "A000544", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000544_D01_T01", "from": "HOME_A000544", "to": "LOC_0267", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:51", "options": [
-                {"mode": "walk", "distance_m": 1487, "estimated_total_time_s": 1069, "cost_php": 0.0}
+            {"trip_id": "A000544_D01_T01", "from": "HOME_A000544", "to": "LOC_0105", "to_name": "Balibago Polyclinic", "trip_type": "home_to_work", "depart": "07:06", "options": [
+                {"mode": "walk", "distance_m": 1088, "estimated_total_time_s": 782, "cost_php": 0.0}
             ]},
-            {"trip_id": "A000544_D01_T02", "from": "LOC_0267", "to": "HOME_A000544", "to_name": "home", "trip_type": "work_to_home", "depart": "16:26", "options": [
-                {"mode": "walk", "distance_m": 1487, "estimated_total_time_s": 1069, "cost_php": 0.0}
+            {"trip_id": "A000544_D01_T02", "from": "LOC_0105", "to": "HOME_A000544", "to_name": "home", "trip_type": "work_to_home", "depart": "16:56", "options": [
+                {"mode": "walk", "distance_m": 1088, "estimated_total_time_s": 782, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000575", "has_car": false, "has_bike": false, "trips": [
@@ -426,44 +495,52 @@
             ]}
         ]},
     {"agent_id": "A000588", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000588_D01_T01", "from": "HOME_A000588", "to": "LOC_0287", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:32", "options": [
-                {"mode": "walk", "distance_m": 1224, "estimated_total_time_s": 881, "cost_php": 0.0}
+            {"trip_id": "A000588_D01_T01", "from": "HOME_A000588", "to": "LOC_0257", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "08:17", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2689, "access_walk_m": 1548, "in_vehicle_m": 609, "egress_walk_m": 532, "estimated_total_time_s": 1711, "access_time_s": 1114, "waiting_time_s": 150, "in_vehicle_time_s": 64, "egress_time_s": 383, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 3512, "access_walk_m": 1123, "in_vehicle_m": 733, "egress_walk_m": 1657, "estimated_total_time_s": 2216, "access_time_s": 808, "waiting_time_s": 150, "in_vehicle_time_s": 66, "egress_time_s": 1192, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000588_D01_T02", "from": "LOC_0287", "to": "HOME_A000588", "to_name": "home", "trip_type": "work_to_home", "depart": "16:53", "options": [
-                {"mode": "walk", "distance_m": 1224, "estimated_total_time_s": 881, "cost_php": 0.0}
+            {"trip_id": "A000588_D01_T02", "from": "LOC_0257", "to": "HOME_A000588", "to_name": "home", "trip_type": "work_to_home", "depart": "17:23", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2730, "access_walk_m": 557, "in_vehicle_m": 609, "egress_walk_m": 1564, "estimated_total_time_s": 1740, "access_time_s": 401, "waiting_time_s": 150, "in_vehicle_time_s": 64, "egress_time_s": 1125, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 3570, "access_walk_m": 1673, "in_vehicle_m": 753, "egress_walk_m": 1145, "estimated_total_time_s": 2245, "access_time_s": 1203, "waiting_time_s": 150, "in_vehicle_time_s": 68, "egress_time_s": 824, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000636", "has_car": false, "has_bike": false, "trips": [
             
         ]},
     {"agent_id": "A000664", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000664_D01_T01", "from": "HOME_A000664", "to": "LOC_0194", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:38", "options": [
-                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 962, "access_walk_m": 194, "in_vehicle_m": 699, "egress_walk_m": 70, "estimated_total_time_s": 413, "access_time_s": 140, "waiting_time_s": 150, "in_vehicle_time_s": 73, "egress_time_s": 50, "cost_php": 14.0},
-                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 962, "access_walk_m": 194, "in_vehicle_m": 699, "egress_walk_m": 70, "estimated_total_time_s": 417, "access_time_s": 140, "waiting_time_s": 150, "in_vehicle_time_s": 77, "egress_time_s": 50, "cost_php": 14.0},
-                {"mode": "walk", "distance_m": 1088, "estimated_total_time_s": 783, "cost_php": 0.0}
+            {"trip_id": "A000664_D01_T01", "from": "HOME_A000664", "to": "LOC_0174", "to_name": "Southern Sky Travel & Tours", "trip_type": "home_to_work", "depart": "07:38", "options": [
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 1994, "access_walk_m": 762, "in_vehicle_m": 894, "egress_walk_m": 338, "estimated_total_time_s": 1022, "access_time_s": 548, "waiting_time_s": 150, "in_vehicle_time_s": 81, "egress_time_s": 243, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2119, "access_walk_m": 204, "in_vehicle_m": 502, "egress_walk_m": 1413, "estimated_total_time_s": 1367, "access_time_s": 147, "waiting_time_s": 150, "in_vehicle_time_s": 53, "egress_time_s": 1017, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2119, "access_walk_m": 204, "in_vehicle_m": 502, "egress_walk_m": 1413, "estimated_total_time_s": 1369, "access_time_s": 147, "waiting_time_s": 150, "in_vehicle_time_s": 55, "egress_time_s": 1017, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000664_D01_T02", "from": "LOC_0194", "to": "HOME_A000664", "to_name": "home", "trip_type": "work_to_home", "depart": "16:36", "options": [
-                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 966, "access_walk_m": 63, "in_vehicle_m": 699, "egress_walk_m": 204, "estimated_total_time_s": 415, "access_time_s": 45, "waiting_time_s": 150, "in_vehicle_time_s": 73, "egress_time_s": 147, "cost_php": 14.0},
-                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 966, "access_walk_m": 63, "in_vehicle_m": 699, "egress_walk_m": 204, "estimated_total_time_s": 419, "access_time_s": 45, "waiting_time_s": 150, "in_vehicle_time_s": 77, "egress_time_s": 147, "cost_php": 14.0},
-                {"mode": "walk", "distance_m": 1088, "estimated_total_time_s": 783, "cost_php": 0.0}
+            {"trip_id": "A000664_D01_T02", "from": "LOC_0174", "to": "HOME_A000664", "to_name": "home", "trip_type": "work_to_home", "depart": "16:36", "options": [
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 2002, "access_walk_m": 356, "in_vehicle_m": 894, "egress_walk_m": 751, "estimated_total_time_s": 1028, "access_time_s": 256, "waiting_time_s": 150, "in_vehicle_time_s": 81, "egress_time_s": 541, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2103, "access_walk_m": 1407, "in_vehicle_m": 502, "egress_walk_m": 194, "estimated_total_time_s": 1355, "access_time_s": 1012, "waiting_time_s": 150, "in_vehicle_time_s": 53, "egress_time_s": 140, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2103, "access_walk_m": 1407, "in_vehicle_m": 502, "egress_walk_m": 194, "estimated_total_time_s": 1357, "access_time_s": 1012, "waiting_time_s": 150, "in_vehicle_time_s": 55, "egress_time_s": 140, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000665", "has_car": false, "has_bike": false, "trips": [
             
         ]},
     {"agent_id": "A000678", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000678_D01_T01", "from": "HOME_A000678", "to": "LOC_0192", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "06:36", "options": [
-                {"mode": "walk", "distance_m": 1253, "estimated_total_time_s": 902, "cost_php": 0.0}
+            {"trip_id": "A000678_D01_T01", "from": "HOME_A000678", "to": "LOC_0252", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "06:36", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2333, "access_walk_m": 1065, "in_vehicle_m": 885, "egress_walk_m": 383, "estimated_total_time_s": 1285, "access_time_s": 766, "waiting_time_s": 150, "in_vehicle_time_s": 93, "egress_time_s": 276, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2333, "access_walk_m": 1065, "in_vehicle_m": 885, "egress_walk_m": 383, "estimated_total_time_s": 1290, "access_time_s": 766, "waiting_time_s": 150, "in_vehicle_time_s": 98, "egress_time_s": 276, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000678_D01_T02", "from": "LOC_0192", "to": "HOME_A000678", "to_name": "home", "trip_type": "work_to_home", "depart": "17:25", "options": [
-                {"mode": "walk", "distance_m": 1253, "estimated_total_time_s": 902, "cost_php": 0.0}
+            {"trip_id": "A000678_D01_T02", "from": "LOC_0252", "to": "HOME_A000678", "to_name": "home", "trip_type": "work_to_home", "depart": "17:25", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2339, "access_walk_m": 378, "in_vehicle_m": 885, "egress_walk_m": 1077, "estimated_total_time_s": 1289, "access_time_s": 272, "waiting_time_s": 150, "in_vehicle_time_s": 93, "egress_time_s": 774, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2339, "access_walk_m": 378, "in_vehicle_m": 885, "egress_walk_m": 1077, "estimated_total_time_s": 1293, "access_time_s": 272, "waiting_time_s": 150, "in_vehicle_time_s": 97, "egress_time_s": 774, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000693", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000693_D01_T01", "from": "HOME_A000693", "to": "LOC_0091", "to_name": "Santa Rosa Manpower Services", "trip_type": "home_to_school", "depart": "07:15", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2484, "access_walk_m": 709, "in_vehicle_m": 1248, "egress_walk_m": 528, "estimated_total_time_s": 1171, "access_time_s": 510, "waiting_time_s": 150, "in_vehicle_time_s": 131, "egress_time_s": 380, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2484, "access_walk_m": 709, "in_vehicle_m": 1248, "egress_walk_m": 528, "estimated_total_time_s": 1178, "access_time_s": 510, "waiting_time_s": 150, "in_vehicle_time_s": 138, "egress_time_s": 380, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 813, "estimated_total_time_s": 585, "cost_php": 0.0}
             ]},
             {"trip_id": "A000693_D01_T02", "from": "LOC_0091", "to": "HOME_A000693", "to_name": "home", "trip_type": "school_to_home", "depart": "16:35", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2477, "access_walk_m": 516, "in_vehicle_m": 1268, "egress_walk_m": 693, "estimated_total_time_s": 1153, "access_time_s": 371, "waiting_time_s": 150, "in_vehicle_time_s": 133, "egress_time_s": 499, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2477, "access_walk_m": 516, "in_vehicle_m": 1268, "egress_walk_m": 693, "estimated_total_time_s": 1159, "access_time_s": 371, "waiting_time_s": 150, "in_vehicle_time_s": 139, "egress_time_s": 499, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 813, "estimated_total_time_s": 585, "cost_php": 0.0}
             ]}
         ]},
@@ -472,24 +549,31 @@
                 {"mode": "bike", "distance_m": 1778, "access_walk_m": 0, "in_vehicle_m": 1778, "egress_walk_m": 0, "estimated_total_time_s": 356, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 356, "egress_time_s": 0, "cost_php": 0.0}
             ]},
             {"trip_id": "A000701_D01_T02", "from": "LOC_0019", "to": "HOME_A000701", "to_name": "home", "trip_type": "shopping_to_home", "depart": "11:44", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1729, "access_walk_m": 218, "in_vehicle_m": 598, "egress_walk_m": 913, "estimated_total_time_s": 1027, "access_time_s": 157, "waiting_time_s": 150, "in_vehicle_time_s": 63, "egress_time_s": 657, "cost_php": 14.0},
                 {"mode": "bike", "distance_m": 1820, "access_walk_m": 0, "in_vehicle_m": 1820, "egress_walk_m": 0, "estimated_total_time_s": 356, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 356, "egress_time_s": 0, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000704", "has_car": true, "has_bike": false, "trips": [
-            {"trip_id": "A000704_D01_T01", "from": "HOME_A000704", "to": "LOC_0287", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "06:57", "options": [
-                {"mode": "walk", "distance_m": 1410, "estimated_total_time_s": 1014, "cost_php": 0.0},
-                {"mode": "car", "distance_m": 1571, "access_walk_m": 0, "in_vehicle_m": 1317, "egress_walk_m": 254, "estimated_total_time_s": 540, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 177, "egress_time_s": 303, "cost_php": 7.9}
+            {"trip_id": "A000704_D01_T01", "from": "HOME_A000704", "to": "LOC_0135", "to_name": "iQor", "trip_type": "home_to_work", "depart": "06:57", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 5060, "access_walk_m": 1892, "in_vehicle_m": 2152, "egress_walk_m": 1015, "estimated_total_time_s": 2467, "access_time_s": 1361, "waiting_time_s": 150, "in_vehicle_time_s": 226, "egress_time_s": 730, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 5060, "access_walk_m": 1892, "in_vehicle_m": 2152, "egress_walk_m": 1015, "estimated_total_time_s": 2478, "access_time_s": 1361, "waiting_time_s": 150, "in_vehicle_time_s": 237, "egress_time_s": 730, "cost_php": 14.0},
+                {"mode": "walk", "distance_m": 1428, "estimated_total_time_s": 1027, "cost_php": 0.0},
+                {"mode": "car", "distance_m": 1930, "access_walk_m": 0, "in_vehicle_m": 1654, "egress_walk_m": 276, "estimated_total_time_s": 589, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 210, "egress_time_s": 319, "cost_php": 9.92}
             ]},
-            {"trip_id": "A000704_D01_T02", "from": "LOC_0287", "to": "HOME_A000704", "to_name": "home", "trip_type": "work_to_home", "depart": "17:01", "options": [
-                {"mode": "walk", "distance_m": 1410, "estimated_total_time_s": 1014, "cost_php": 0.0},
-                {"mode": "car", "distance_m": 1668, "access_walk_m": 254, "in_vehicle_m": 1414, "egress_walk_m": 0, "estimated_total_time_s": 552, "access_time_s": 243, "waiting_time_s": 0, "in_vehicle_time_s": 189, "egress_time_s": 120, "cost_php": 8.48}
+            {"trip_id": "A000704_D01_T02", "from": "LOC_0135", "to": "HOME_A000704", "to_name": "home", "trip_type": "work_to_home", "depart": "17:01", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 5059, "access_walk_m": 1010, "in_vehicle_m": 2172, "egress_walk_m": 1877, "estimated_total_time_s": 2454, "access_time_s": 726, "waiting_time_s": 150, "in_vehicle_time_s": 228, "egress_time_s": 1350, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 5059, "access_walk_m": 1010, "in_vehicle_m": 2172, "egress_walk_m": 1877, "estimated_total_time_s": 2465, "access_time_s": 726, "waiting_time_s": 150, "in_vehicle_time_s": 239, "egress_time_s": 1350, "cost_php": 14.0},
+                {"mode": "walk", "distance_m": 1428, "estimated_total_time_s": 1027, "cost_php": 0.0},
+                {"mode": "car", "distance_m": 1786, "access_walk_m": 276, "in_vehicle_m": 1510, "egress_walk_m": 0, "estimated_total_time_s": 567, "access_time_s": 259, "waiting_time_s": 0, "in_vehicle_time_s": 188, "egress_time_s": 120, "cost_php": 9.06}
             ]}
         ]},
     {"agent_id": "A000720", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000720_D01_T01", "from": "HOME_A000720", "to": "LOC_0253", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "08:19", "options": [
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 3908, "access_walk_m": 1355, "in_vehicle_m": 1061, "egress_walk_m": 1493, "estimated_total_time_s": 2295, "access_time_s": 975, "waiting_time_s": 150, "in_vehicle_time_s": 96, "egress_time_s": 1074, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 243, "estimated_total_time_s": 175, "cost_php": 0.0}
             ]},
             {"trip_id": "A000720_D01_T02", "from": "LOC_0253", "to": "HOME_A000720", "to_name": "home", "trip_type": "work_to_home", "depart": "18:09", "options": [
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 3881, "access_walk_m": 1476, "in_vehicle_m": 1061, "egress_walk_m": 1344, "estimated_total_time_s": 2275, "access_time_s": 1062, "waiting_time_s": 150, "in_vehicle_time_s": 96, "egress_time_s": 967, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 243, "estimated_total_time_s": 175, "cost_php": 0.0}
             ]}
         ]},
@@ -509,45 +593,67 @@
             
         ]},
     {"agent_id": "A000756", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000756_D01_T01", "from": "HOME_A000756", "to": "LOC_0021", "to_name": "Tram Plaza", "trip_type": "home_to_shopping", "depart": "08:07", "options": [
-                {"mode": "walk", "distance_m": 1437, "estimated_total_time_s": 1034, "cost_php": 0.0}
+            {"trip_id": "A000756_D01_T01", "from": "HOME_A000756", "to": "LOC_0002", "to_name": "Balibago Complex Bus Terminal", "trip_type": "home_to_out_of_area", "depart": "05:37", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1941, "access_walk_m": 751, "in_vehicle_m": 915, "egress_walk_m": 276, "estimated_total_time_s": 989, "access_time_s": 540, "waiting_time_s": 150, "in_vehicle_time_s": 101, "egress_time_s": 198, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1918, "access_walk_m": 751, "in_vehicle_m": 862, "egress_walk_m": 305, "estimated_total_time_s": 1000, "access_time_s": 540, "waiting_time_s": 150, "in_vehicle_time_s": 91, "egress_time_s": 219, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 2249, "access_walk_m": 1380, "in_vehicle_m": 593, "egress_walk_m": 276, "estimated_total_time_s": 1394, "access_time_s": 993, "waiting_time_s": 150, "in_vehicle_time_s": 53, "egress_time_s": 198, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000756_D01_T02", "from": "LOC_0021", "to": "HOME_A000756", "to_name": "home", "trip_type": "shopping_to_home", "depart": "10:04", "options": [
-                {"mode": "walk", "distance_m": 1437, "estimated_total_time_s": 1034, "cost_php": 0.0}
+            {"trip_id": "A000756_D01_T02", "from": "LOC_0002", "to": "HOME_A000756", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "16:49", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1999, "access_walk_m": 283, "in_vehicle_m": 977, "egress_walk_m": 739, "estimated_total_time_s": 989, "access_time_s": 204, "waiting_time_s": 150, "in_vehicle_time_s": 103, "egress_time_s": 532, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1907, "access_walk_m": 298, "in_vehicle_m": 871, "egress_walk_m": 739, "estimated_total_time_s": 992, "access_time_s": 214, "waiting_time_s": 150, "in_vehicle_time_s": 96, "egress_time_s": 532, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 2229, "access_walk_m": 298, "in_vehicle_m": 573, "egress_walk_m": 1358, "estimated_total_time_s": 1393, "access_time_s": 214, "waiting_time_s": 150, "in_vehicle_time_s": 52, "egress_time_s": 977, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000766", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000766_D01_T01", "from": "HOME_A000766", "to": "LOC_0033", "to_name": "Puregold", "trip_type": "home_to_shopping", "depart": "09:51", "options": [
-                {"mode": "walk", "distance_m": 1243, "estimated_total_time_s": 894, "cost_php": 0.0}
+            {"trip_id": "A000766_D01_T01", "from": "HOME_A000766", "to": "LOC_0016", "to_name": "SM City Santa Rosa", "trip_type": "home_to_shopping", "depart": "09:51", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3328, "access_walk_m": 882, "in_vehicle_m": 1407, "egress_walk_m": 1040, "estimated_total_time_s": 1680, "access_time_s": 634, "waiting_time_s": 150, "in_vehicle_time_s": 148, "egress_time_s": 748, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3328, "access_walk_m": 882, "in_vehicle_m": 1407, "egress_walk_m": 1040, "estimated_total_time_s": 1687, "access_time_s": 634, "waiting_time_s": 150, "in_vehicle_time_s": 155, "egress_time_s": 748, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 2983, "access_walk_m": 2108, "in_vehicle_m": 615, "egress_walk_m": 259, "estimated_total_time_s": 1908, "access_time_s": 1517, "waiting_time_s": 150, "in_vehicle_time_s": 55, "egress_time_s": 186, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000766_D01_T02", "from": "LOC_0033", "to": "HOME_A000766", "to_name": "home", "trip_type": "shopping_to_home", "depart": "11:07", "options": [
-                {"mode": "walk", "distance_m": 1243, "estimated_total_time_s": 894, "cost_php": 0.0}
+            {"trip_id": "A000766_D01_T02", "from": "LOC_0016", "to": "HOME_A000766", "to_name": "home", "trip_type": "shopping_to_home", "depart": "11:07", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 3334, "access_walk_m": 1034, "in_vehicle_m": 1407, "egress_walk_m": 893, "estimated_total_time_s": 1684, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 148, "egress_time_s": 642, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 3334, "access_walk_m": 1034, "in_vehicle_m": 1407, "egress_walk_m": 893, "estimated_total_time_s": 1691, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 155, "egress_time_s": 642, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 2993, "access_walk_m": 281, "in_vehicle_m": 615, "egress_walk_m": 2098, "estimated_total_time_s": 1916, "access_time_s": 202, "waiting_time_s": 150, "in_vehicle_time_s": 55, "egress_time_s": 1509, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000770", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000770_D01_T01", "from": "HOME_A000770", "to": "LOC_0015", "to_name": "Robinsons Santa Rosa Market", "trip_type": "home_to_shopping", "depart": "06:34", "options": [
-                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 1548, "access_walk_m": 378, "in_vehicle_m": 1056, "egress_walk_m": 114, "estimated_total_time_s": 599, "access_time_s": 272, "waiting_time_s": 150, "in_vehicle_time_s": 95, "egress_time_s": 82, "cost_php": 14.0}
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 1548, "access_walk_m": 378, "in_vehicle_m": 1056, "egress_walk_m": 114, "estimated_total_time_s": 599, "access_time_s": 272, "waiting_time_s": 150, "in_vehicle_time_s": 95, "egress_time_s": 82, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 4664, "access_walk_m": 1587, "in_vehicle_m": 2795, "egress_walk_m": 281, "estimated_total_time_s": 1787, "access_time_s": 1142, "waiting_time_s": 150, "in_vehicle_time_s": 293, "egress_time_s": 202, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 4664, "access_walk_m": 1587, "in_vehicle_m": 2795, "egress_walk_m": 281, "estimated_total_time_s": 1802, "access_time_s": 1142, "waiting_time_s": 150, "in_vehicle_time_s": 308, "egress_time_s": 202, "cost_php": 14.0}
             ]},
             {"trip_id": "A000770_D01_T02", "from": "LOC_0015", "to": "HOME_A000770", "to_name": "home", "trip_type": "shopping_to_home", "depart": "07:43", "options": [
-                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 1529, "access_walk_m": 95, "in_vehicle_m": 1076, "egress_walk_m": 358, "estimated_total_time_s": 573, "access_time_s": 68, "waiting_time_s": 150, "in_vehicle_time_s": 97, "egress_time_s": 258, "cost_php": 14.0}
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 1529, "access_walk_m": 95, "in_vehicle_m": 1076, "egress_walk_m": 358, "estimated_total_time_s": 573, "access_time_s": 68, "waiting_time_s": 150, "in_vehicle_time_s": 97, "egress_time_s": 258, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 4022, "access_walk_m": 275, "in_vehicle_m": 2172, "egress_walk_m": 1575, "estimated_total_time_s": 1709, "access_time_s": 198, "waiting_time_s": 150, "in_vehicle_time_s": 228, "egress_time_s": 1133, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 4022, "access_walk_m": 275, "in_vehicle_m": 2172, "egress_walk_m": 1575, "estimated_total_time_s": 1720, "access_time_s": 198, "waiting_time_s": 150, "in_vehicle_time_s": 239, "egress_time_s": 1133, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000778", "has_car": false, "has_bike": true, "trips": [
             {"trip_id": "A000778_D01_T01", "from": "HOME_A000778", "to": "LOC_0146", "to_name": "Malusak Barangay Hall", "trip_type": "home_to_work", "depart": "08:10", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2266, "access_walk_m": 1390, "in_vehicle_m": 607, "egress_walk_m": 269, "estimated_total_time_s": 1407, "access_time_s": 1000, "waiting_time_s": 150, "in_vehicle_time_s": 64, "egress_time_s": 193, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2266, "access_walk_m": 1390, "in_vehicle_m": 607, "egress_walk_m": 269, "estimated_total_time_s": 1410, "access_time_s": 1000, "waiting_time_s": 150, "in_vehicle_time_s": 67, "egress_time_s": 193, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4673, "access_walk_m": 2295, "in_vehicle_m": 723, "egress_walk_m": 1655, "estimated_total_time_s": 3057, "access_time_s": 1651, "waiting_time_s": 150, "in_vehicle_time_s": 65, "egress_time_s": 1191, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1286, "estimated_total_time_s": 925, "cost_php": 0.0},
                 {"mode": "bike", "distance_m": 1483, "access_walk_m": 0, "in_vehicle_m": 1483, "egress_walk_m": 0, "estimated_total_time_s": 309, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 309, "egress_time_s": 0, "cost_php": 0.0}
             ]},
             {"trip_id": "A000778_D01_T02", "from": "LOC_0146", "to": "HOME_A000778", "to_name": "home", "trip_type": "work_to_home", "depart": "17:42", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2309, "access_walk_m": 279, "in_vehicle_m": 627, "egress_walk_m": 1403, "estimated_total_time_s": 1426, "access_time_s": 201, "waiting_time_s": 150, "in_vehicle_time_s": 66, "egress_time_s": 1009, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2309, "access_walk_m": 279, "in_vehicle_m": 627, "egress_walk_m": 1403, "estimated_total_time_s": 1429, "access_time_s": 201, "waiting_time_s": 150, "in_vehicle_time_s": 69, "egress_time_s": 1009, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4713, "access_walk_m": 1671, "in_vehicle_m": 723, "egress_walk_m": 2319, "estimated_total_time_s": 3085, "access_time_s": 1202, "waiting_time_s": 150, "in_vehicle_time_s": 65, "egress_time_s": 1668, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1286, "estimated_total_time_s": 925, "cost_php": 0.0},
                 {"mode": "bike", "distance_m": 1435, "access_walk_m": 0, "in_vehicle_m": 1435, "egress_walk_m": 0, "estimated_total_time_s": 287, "access_time_s": 0, "waiting_time_s": 0, "in_vehicle_time_s": 287, "egress_time_s": 0, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000789", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000789_D01_T01", "from": "HOME_A000789", "to": "LOC_0021", "to_name": "Tram Plaza", "trip_type": "home_to_shopping", "depart": "09:08", "options": [
-                {"mode": "walk", "distance_m": 1272, "estimated_total_time_s": 915, "cost_php": 0.0}
+            {"trip_id": "A000789_D01_T01", "from": "HOME_A000789", "to": "LOC_0013", "to_name": "Newstar", "trip_type": "home_to_shopping", "depart": "06:38", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1611, "access_walk_m": 810, "in_vehicle_m": 638, "egress_walk_m": 163, "estimated_total_time_s": 920, "access_time_s": 583, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 117, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1751, "access_walk_m": 810, "in_vehicle_m": 662, "egress_walk_m": 279, "estimated_total_time_s": 1004, "access_time_s": 583, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 201, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 1909, "access_walk_m": 1230, "in_vehicle_m": 516, "egress_walk_m": 163, "estimated_total_time_s": 1198, "access_time_s": 885, "waiting_time_s": 150, "in_vehicle_time_s": 46, "egress_time_s": 117, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000789_D01_T02", "from": "LOC_0021", "to": "HOME_A000789", "to_name": "home", "trip_type": "shopping_to_home", "depart": "10:25", "options": [
-                {"mode": "walk", "distance_m": 1272, "estimated_total_time_s": 915, "cost_php": 0.0}
+            {"trip_id": "A000789_D01_T02", "from": "LOC_0013", "to": "HOME_A000789", "to_name": "home", "trip_type": "shopping_to_home", "depart": "07:40", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1572, "access_walk_m": 184, "in_vehicle_m": 594, "egress_walk_m": 794, "estimated_total_time_s": 919, "access_time_s": 132, "waiting_time_s": 150, "in_vehicle_time_s": 66, "egress_time_s": 571, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1808, "access_walk_m": 257, "in_vehicle_m": 757, "egress_walk_m": 794, "estimated_total_time_s": 985, "access_time_s": 185, "waiting_time_s": 150, "in_vehicle_time_s": 79, "egress_time_s": 571, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 1908, "access_walk_m": 184, "in_vehicle_m": 516, "egress_walk_m": 1208, "estimated_total_time_s": 1197, "access_time_s": 132, "waiting_time_s": 150, "in_vehicle_time_s": 46, "egress_time_s": 869, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000796", "has_car": false, "has_bike": false, "trips": [
@@ -578,10 +684,14 @@
     {"agent_id": "A000807", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000807_D01_T01", "from": "HOME_A000807", "to": "LOC_0238", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "08:01", "options": [
                 {"mode": "jeepney", "route_id": "N1_S", "distance_m": 813, "access_walk_m": 95, "in_vehicle_m": 520, "egress_walk_m": 198, "estimated_total_time_s": 409, "access_time_s": 69, "waiting_time_s": 150, "in_vehicle_time_s": 47, "egress_time_s": 143, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 4957, "access_walk_m": 982, "in_vehicle_m": 2766, "egress_walk_m": 1210, "estimated_total_time_s": 2016, "access_time_s": 706, "waiting_time_s": 150, "in_vehicle_time_s": 290, "egress_time_s": 870, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 4957, "access_walk_m": 982, "in_vehicle_m": 2766, "egress_walk_m": 1210, "estimated_total_time_s": 2030, "access_time_s": 706, "waiting_time_s": 150, "in_vehicle_time_s": 304, "egress_time_s": 870, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 929, "estimated_total_time_s": 668, "cost_php": 0.0}
             ]},
             {"trip_id": "A000807_D01_T02", "from": "LOC_0238", "to": "HOME_A000807", "to_name": "home", "trip_type": "work_to_home", "depart": "16:49", "options": [
                 {"mode": "jeepney", "route_id": "N1_N", "distance_m": 830, "access_walk_m": 179, "in_vehicle_m": 540, "egress_walk_m": 111, "estimated_total_time_s": 408, "access_time_s": 129, "waiting_time_s": 150, "in_vehicle_time_s": 49, "egress_time_s": 80, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 4973, "access_walk_m": 1216, "in_vehicle_m": 2766, "egress_walk_m": 992, "estimated_total_time_s": 2027, "access_time_s": 874, "waiting_time_s": 150, "in_vehicle_time_s": 290, "egress_time_s": 713, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 4973, "access_walk_m": 1216, "in_vehicle_m": 2766, "egress_walk_m": 992, "estimated_total_time_s": 2042, "access_time_s": 874, "waiting_time_s": 150, "in_vehicle_time_s": 305, "egress_time_s": 713, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 929, "estimated_total_time_s": 668, "cost_php": 0.0}
             ]}
         ]},
@@ -593,10 +703,14 @@
         ]},
     {"agent_id": "A000851", "has_car": true, "has_bike": false, "trips": [
             {"trip_id": "A000851_D01_T01", "from": "HOME_A000851", "to": "LOC_0190", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "08:39", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1173, "access_walk_m": 427, "in_vehicle_m": 549, "egress_walk_m": 197, "estimated_total_time_s": 657, "access_time_s": 307, "waiting_time_s": 150, "in_vehicle_time_s": 58, "egress_time_s": 142, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1173, "access_walk_m": 427, "in_vehicle_m": 549, "egress_walk_m": 197, "estimated_total_time_s": 660, "access_time_s": 307, "waiting_time_s": 150, "in_vehicle_time_s": 61, "egress_time_s": 142, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1261, "estimated_total_time_s": 907, "cost_php": 0.0},
                 {"mode": "car", "distance_m": 1397, "access_walk_m": 0, "in_vehicle_m": 1351, "egress_walk_m": 46, "estimated_total_time_s": 405, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 192, "egress_time_s": 153, "cost_php": 8.11}
             ]},
             {"trip_id": "A000851_D01_T02", "from": "LOC_0190", "to": "HOME_A000851", "to_name": "home", "trip_type": "work_to_home", "depart": "18:18", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1181, "access_walk_m": 210, "in_vehicle_m": 529, "egress_walk_m": 442, "estimated_total_time_s": 675, "access_time_s": 151, "waiting_time_s": 150, "in_vehicle_time_s": 56, "egress_time_s": 318, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1181, "access_walk_m": 210, "in_vehicle_m": 529, "egress_walk_m": 442, "estimated_total_time_s": 677, "access_time_s": 151, "waiting_time_s": 150, "in_vehicle_time_s": 58, "egress_time_s": 318, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1261, "estimated_total_time_s": 907, "cost_php": 0.0},
                 {"mode": "car", "distance_m": 1492, "access_walk_m": 46, "in_vehicle_m": 1445, "egress_walk_m": 0, "estimated_total_time_s": 422, "access_time_s": 93, "waiting_time_s": 0, "in_vehicle_time_s": 209, "egress_time_s": 120, "cost_php": 8.67}
             ]}
@@ -615,11 +729,11 @@
             
         ]},
     {"agent_id": "A000890", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000890_D01_T01", "from": "HOME_A000890", "to": "LOC_0191", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "08:25", "options": [
-                {"mode": "walk", "distance_m": 1326, "estimated_total_time_s": 954, "cost_php": 0.0}
+            {"trip_id": "A000890_D01_T01", "from": "HOME_A000890", "to": "LOC_0105", "to_name": "Balibago Polyclinic", "trip_type": "home_to_work", "depart": "08:25", "options": [
+                {"mode": "walk", "distance_m": 1372, "estimated_total_time_s": 987, "cost_php": 0.0}
             ]},
-            {"trip_id": "A000890_D01_T02", "from": "LOC_0191", "to": "HOME_A000890", "to_name": "home", "trip_type": "work_to_home", "depart": "18:36", "options": [
-                {"mode": "walk", "distance_m": 1326, "estimated_total_time_s": 954, "cost_php": 0.0}
+            {"trip_id": "A000890_D01_T02", "from": "LOC_0105", "to": "HOME_A000890", "to_name": "home", "trip_type": "work_to_home", "depart": "18:36", "options": [
+                {"mode": "walk", "distance_m": 1372, "estimated_total_time_s": 987, "cost_php": 0.0}
             ]}
         ]},
     {"agent_id": "A000892", "has_car": false, "has_bike": false, "trips": [
@@ -627,6 +741,7 @@
                 {"mode": "walk", "distance_m": 1221, "estimated_total_time_s": 878, "cost_php": 0.0}
             ]},
             {"trip_id": "A000892_D01_T02", "from": "LOC_0266", "to": "HOME_A000892", "to_name": "home", "trip_type": "work_to_home", "depart": "17:45", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2357, "access_walk_m": 653, "in_vehicle_m": 525, "egress_walk_m": 1179, "estimated_total_time_s": 1523, "access_time_s": 470, "waiting_time_s": 150, "in_vehicle_time_s": 55, "egress_time_s": 848, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1221, "estimated_total_time_s": 878, "cost_php": 0.0}
             ]}
         ]},
@@ -634,11 +749,13 @@
             
         ]},
     {"agent_id": "A000903", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000903_D01_T01", "from": "HOME_A000903", "to": "LOC_0032", "to_name": "Puregold", "trip_type": "home_to_shopping", "depart": "08:09", "options": [
-                {"mode": "walk", "distance_m": 863, "estimated_total_time_s": 621, "cost_php": 0.0}
+            {"trip_id": "A000903_D01_T01", "from": "HOME_A000903", "to": "LOC_0016", "to_name": "SM City Santa Rosa", "trip_type": "home_to_shopping", "depart": "08:09", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3310, "access_walk_m": 761, "in_vehicle_m": 1509, "egress_walk_m": 1040, "estimated_total_time_s": 1603, "access_time_s": 547, "waiting_time_s": 150, "in_vehicle_time_s": 158, "egress_time_s": 748, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3310, "access_walk_m": 761, "in_vehicle_m": 1509, "egress_walk_m": 1040, "estimated_total_time_s": 1611, "access_time_s": 547, "waiting_time_s": 150, "in_vehicle_time_s": 166, "egress_time_s": 748, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000903_D01_T02", "from": "LOC_0032", "to": "HOME_A000903", "to_name": "home", "trip_type": "shopping_to_home", "depart": "09:39", "options": [
-                {"mode": "walk", "distance_m": 863, "estimated_total_time_s": 621, "cost_php": 0.0}
+            {"trip_id": "A000903_D01_T02", "from": "LOC_0016", "to": "HOME_A000903", "to_name": "home", "trip_type": "shopping_to_home", "depart": "09:39", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 3282, "access_walk_m": 1034, "in_vehicle_m": 1509, "egress_walk_m": 739, "estimated_total_time_s": 1583, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 158, "egress_time_s": 531, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 3282, "access_walk_m": 1034, "in_vehicle_m": 1509, "egress_walk_m": 739, "estimated_total_time_s": 1591, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 166, "egress_time_s": 531, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000909", "has_car": false, "has_bike": false, "trips": [
@@ -658,18 +775,40 @@
             ]}
         ]},
     {"agent_id": "A000932", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000932_D01_T01", "from": "HOME_A000932", "to": "LOC_0189", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:07", "options": [
-                {"mode": "walk", "distance_m": 1468, "estimated_total_time_s": 1056, "cost_php": 0.0}
+            {"trip_id": "A000932_D01_T01", "from": "HOME_A000932", "to": "LOC_0130", "to_name": "Government Center Building D", "trip_type": "home_to_work", "depart": "07:07", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2629, "access_walk_m": 1809, "in_vehicle_m": 726, "egress_walk_m": 94, "estimated_total_time_s": 1595, "access_time_s": 1302, "waiting_time_s": 150, "in_vehicle_time_s": 76, "egress_time_s": 67, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2629, "access_walk_m": 1809, "in_vehicle_m": 726, "egress_walk_m": 94, "estimated_total_time_s": 1599, "access_time_s": 1302, "waiting_time_s": 150, "in_vehicle_time_s": 80, "egress_time_s": 67, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4960, "access_walk_m": 2714, "in_vehicle_m": 723, "egress_walk_m": 1523, "estimated_total_time_s": 3264, "access_time_s": 1953, "waiting_time_s": 150, "in_vehicle_time_s": 65, "egress_time_s": 1096, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000932_D01_T02", "from": "LOC_0189", "to": "HOME_A000932", "to_name": "home", "trip_type": "work_to_home", "depart": "16:58", "options": [
-                {"mode": "walk", "distance_m": 1468, "estimated_total_time_s": 1056, "cost_php": 0.0}
+            {"trip_id": "A000932_D01_T02", "from": "LOC_0130", "to": "HOME_A000932", "to_name": "home", "trip_type": "work_to_home", "depart": "16:58", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2745, "access_walk_m": 105, "in_vehicle_m": 819, "egress_walk_m": 1822, "estimated_total_time_s": 1621, "access_time_s": 75, "waiting_time_s": 150, "in_vehicle_time_s": 86, "egress_time_s": 1310, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2745, "access_walk_m": 105, "in_vehicle_m": 819, "egress_walk_m": 1822, "estimated_total_time_s": 1625, "access_time_s": 75, "waiting_time_s": 150, "in_vehicle_time_s": 90, "egress_time_s": 1310, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 5000, "access_walk_m": 1540, "in_vehicle_m": 723, "egress_walk_m": 2738, "estimated_total_time_s": 3293, "access_time_s": 1108, "waiting_time_s": 150, "in_vehicle_time_s": 65, "egress_time_s": 1970, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000938", "has_car": false, "has_bike": false, "trips": [
-            
+            {"trip_id": "A000938_D01_T01", "from": "HOME_A000938", "to": "LOC_0005", "to_name": "Santa Rosa Complex Terminal", "trip_type": "home_to_out_of_area", "depart": "04:56", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2797, "access_walk_m": 1582, "in_vehicle_m": 715, "egress_walk_m": 501, "estimated_total_time_s": 1727, "access_time_s": 1138, "waiting_time_s": 150, "in_vehicle_time_s": 79, "egress_time_s": 360, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2979, "access_walk_m": 1582, "in_vehicle_m": 855, "egress_walk_m": 542, "estimated_total_time_s": 1768, "access_time_s": 1138, "waiting_time_s": 150, "in_vehicle_time_s": 90, "egress_time_s": 390, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 3124, "access_walk_m": 2030, "in_vehicle_m": 593, "egress_walk_m": 501, "estimated_total_time_s": 2024, "access_time_s": 1461, "waiting_time_s": 150, "in_vehicle_time_s": 53, "egress_time_s": 360, "cost_php": 14.0}
+            ]},
+            {"trip_id": "A000938_D01_T02", "from": "LOC_0005", "to": "HOME_A000938", "to_name": "home", "trip_type": "out_of_area_to_home", "depart": "15:21", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2760, "access_walk_m": 523, "in_vehicle_m": 671, "egress_walk_m": 1566, "estimated_total_time_s": 1727, "access_time_s": 376, "waiting_time_s": 150, "in_vehicle_time_s": 74, "egress_time_s": 1127, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3042, "access_walk_m": 525, "in_vehicle_m": 950, "egress_walk_m": 1566, "estimated_total_time_s": 1755, "access_time_s": 378, "waiting_time_s": 150, "in_vehicle_time_s": 100, "egress_time_s": 1127, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 3124, "access_walk_m": 523, "in_vehicle_m": 593, "egress_walk_m": 2008, "estimated_total_time_s": 2024, "access_time_s": 376, "waiting_time_s": 150, "in_vehicle_time_s": 53, "egress_time_s": 1445, "cost_php": 14.0}
+            ]}
         ]},
     {"agent_id": "A000943", "has_car": false, "has_bike": false, "trips": [
-            
+            {"trip_id": "A000943_D01_T01", "from": "HOME_A000943", "to": "LOC_0189", "to_name": "(unnamed)", "trip_type": "home_to_work", "depart": "07:07", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 2934, "access_walk_m": 1529, "in_vehicle_m": 990, "egress_walk_m": 416, "estimated_total_time_s": 1653, "access_time_s": 1100, "waiting_time_s": 150, "in_vehicle_time_s": 104, "egress_time_s": 299, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 2934, "access_walk_m": 1529, "in_vehicle_m": 990, "egress_walk_m": 416, "estimated_total_time_s": 1658, "access_time_s": 1100, "waiting_time_s": 150, "in_vehicle_time_s": 109, "egress_time_s": 299, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 4596, "access_walk_m": 1971, "in_vehicle_m": 777, "egress_walk_m": 1848, "estimated_total_time_s": 2968, "access_time_s": 1418, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 1330, "cost_php": 14.0}
+            ]},
+            {"trip_id": "A000943_D01_T02", "from": "LOC_0189", "to": "HOME_A000943", "to_name": "home", "trip_type": "work_to_home", "depart": "16:54", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 2939, "access_walk_m": 425, "in_vehicle_m": 970, "egress_walk_m": 1544, "estimated_total_time_s": 1669, "access_time_s": 306, "waiting_time_s": 150, "in_vehicle_time_s": 102, "egress_time_s": 1111, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 2939, "access_walk_m": 425, "in_vehicle_m": 970, "egress_walk_m": 1544, "estimated_total_time_s": 1674, "access_time_s": 306, "waiting_time_s": 150, "in_vehicle_time_s": 107, "egress_time_s": 1111, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 4634, "access_walk_m": 1865, "in_vehicle_m": 776, "egress_walk_m": 1993, "estimated_total_time_s": 2996, "access_time_s": 1342, "waiting_time_s": 150, "in_vehicle_time_s": 70, "egress_time_s": 1434, "cost_php": 14.0}
+            ]}
         ]},
     {"agent_id": "A000947", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000947_D01_T01", "from": "HOME_A000947", "to": "LOC_0067", "to_name": "Holy Rosary College", "trip_type": "home_to_school", "depart": "07:09", "options": [
@@ -680,28 +819,32 @@
             ]}
         ]},
     {"agent_id": "A000948", "has_car": true, "has_bike": false, "trips": [
-            {"trip_id": "A000948_D01_T01", "from": "HOME_A000948", "to": "LOC_0015", "to_name": "Robinsons Santa Rosa Market", "trip_type": "home_to_shopping", "depart": "09:56", "options": [
-                {"mode": "car", "distance_m": 3407, "access_walk_m": 0, "in_vehicle_m": 3322, "egress_walk_m": 85, "estimated_total_time_s": 663, "access_time_s": 60, "waiting_time_s": 0, "in_vehicle_time_s": 422, "egress_time_s": 181, "cost_php": 19.93}
+            {"trip_id": "A000948_D01_T01", "from": "HOME_A000948", "to": "LOC_0016", "to_name": "SM City Santa Rosa", "trip_type": "home_to_shopping", "depart": "09:56", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3112, "access_walk_m": 665, "in_vehicle_m": 1407, "egress_walk_m": 1040, "estimated_total_time_s": 1524, "access_time_s": 478, "waiting_time_s": 150, "in_vehicle_time_s": 148, "egress_time_s": 748, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3112, "access_walk_m": 665, "in_vehicle_m": 1407, "egress_walk_m": 1040, "estimated_total_time_s": 1531, "access_time_s": 478, "waiting_time_s": 150, "in_vehicle_time_s": 155, "egress_time_s": 748, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000948_D01_T02", "from": "LOC_0015", "to": "HOME_A000948", "to_name": "home", "trip_type": "shopping_to_home", "depart": "10:52", "options": [
-                {"mode": "car", "distance_m": 3376, "access_walk_m": 85, "in_vehicle_m": 3291, "egress_walk_m": 0, "estimated_total_time_s": 657, "access_time_s": 121, "waiting_time_s": 0, "in_vehicle_time_s": 416, "egress_time_s": 120, "cost_php": 19.75}
+            {"trip_id": "A000948_D01_T02", "from": "LOC_0016", "to": "HOME_A000948", "to_name": "home", "trip_type": "shopping_to_home", "depart": "10:52", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 3117, "access_walk_m": 1034, "in_vehicle_m": 1407, "egress_walk_m": 676, "estimated_total_time_s": 1528, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 148, "egress_time_s": 486, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 3117, "access_walk_m": 1034, "in_vehicle_m": 1407, "egress_walk_m": 676, "estimated_total_time_s": 1535, "access_time_s": 744, "waiting_time_s": 150, "in_vehicle_time_s": 155, "egress_time_s": 486, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000954", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000954_D01_T01", "from": "HOME_A000954", "to": "LOC_0054", "to_name": "Balibago National High School", "trip_type": "home_to_school", "depart": "06:52", "options": [
-                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 1163, "access_walk_m": 44, "in_vehicle_m": 980, "egress_walk_m": 139, "estimated_total_time_s": 370, "access_time_s": 32, "waiting_time_s": 150, "in_vehicle_time_s": 88, "egress_time_s": 100, "cost_php": 14.0},
-                {"mode": "walk", "distance_m": 1367, "estimated_total_time_s": 984, "cost_php": 0.0}
+            {"trip_id": "A000954_D01_T01", "from": "HOME_A000954", "to": "LOC_0068", "to_name": "Jose Zavalla Memorial Elementary School", "trip_type": "home_to_school", "depart": "06:52", "options": [
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 1441, "access_walk_m": 44, "in_vehicle_m": 710, "egress_walk_m": 688, "estimated_total_time_s": 741, "access_time_s": 32, "waiting_time_s": 150, "in_vehicle_time_s": 64, "egress_time_s": 495, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000954_D01_T02", "from": "LOC_0054", "to": "HOME_A000954", "to_name": "home", "trip_type": "school_to_home", "depart": "16:38", "options": [
-                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 1215, "access_walk_m": 152, "in_vehicle_m": 1000, "egress_walk_m": 63, "estimated_total_time_s": 396, "access_time_s": 110, "waiting_time_s": 150, "in_vehicle_time_s": 90, "egress_time_s": 46, "cost_php": 14.0},
-                {"mode": "walk", "distance_m": 1367, "estimated_total_time_s": 984, "cost_php": 0.0}
+            {"trip_id": "A000954_D01_T02", "from": "LOC_0068", "to": "HOME_A000954", "to_name": "home", "trip_type": "school_to_home", "depart": "16:38", "options": [
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 1459, "access_walk_m": 666, "in_vehicle_m": 730, "egress_walk_m": 63, "estimated_total_time_s": 741, "access_time_s": 479, "waiting_time_s": 150, "in_vehicle_time_s": 66, "egress_time_s": 46, "cost_php": 14.0}
             ]}
         ]},
     {"agent_id": "A000959", "has_car": false, "has_bike": false, "trips": [
             {"trip_id": "A000959_D01_T01", "from": "HOME_A000959", "to": "LOC_0085", "to_name": "Saint Ignatius Technical Institute of Business and Arts", "trip_type": "home_to_school", "depart": "07:20", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 1052, "access_walk_m": 434, "in_vehicle_m": 606, "egress_walk_m": 13, "estimated_total_time_s": 538, "access_time_s": 312, "waiting_time_s": 150, "in_vehicle_time_s": 67, "egress_time_s": 9, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 1114, "access_walk_m": 434, "in_vehicle_m": 606, "egress_walk_m": 75, "estimated_total_time_s": 580, "access_time_s": 312, "waiting_time_s": 150, "in_vehicle_time_s": 64, "egress_time_s": 54, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1169, "estimated_total_time_s": 841, "cost_php": 0.0}
             ]},
             {"trip_id": "A000959_D01_T02", "from": "LOC_0085", "to": "HOME_A000959", "to_name": "home", "trip_type": "school_to_home", "depart": "14:25", "options": [
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 1143, "access_walk_m": 13, "in_vehicle_m": 680, "egress_walk_m": 450, "estimated_total_time_s": 554, "access_time_s": 9, "waiting_time_s": 150, "in_vehicle_time_s": 71, "egress_time_s": 324, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 1161, "access_walk_m": 100, "in_vehicle_m": 611, "egress_walk_m": 450, "estimated_total_time_s": 613, "access_time_s": 72, "waiting_time_s": 150, "in_vehicle_time_s": 67, "egress_time_s": 324, "cost_php": 14.0},
                 {"mode": "walk", "distance_m": 1169, "estimated_total_time_s": 841, "cost_php": 0.0}
             ]}
         ]},
@@ -714,11 +857,15 @@
             ]}
         ]},
     {"agent_id": "A000992", "has_car": false, "has_bike": false, "trips": [
-            {"trip_id": "A000992_D01_T01", "from": "HOME_A000992", "to": "LOC_0045", "to_name": "SM Supermarket", "trip_type": "home_to_shopping", "depart": "10:13", "options": [
-                {"mode": "walk", "distance_m": 1481, "estimated_total_time_s": 1066, "cost_php": 0.0}
+            {"trip_id": "A000992_D01_T01", "from": "HOME_A000992", "to": "LOC_0019", "to_name": "Sta. Rosa Gateway by Toplite", "trip_type": "home_to_shopping", "depart": "09:28", "options": [
+                {"mode": "jeepney", "route_id": "N1_S", "distance_m": 2199, "access_walk_m": 1014, "in_vehicle_m": 1106, "egress_walk_m": 79, "estimated_total_time_s": 1036, "access_time_s": 729, "waiting_time_s": 150, "in_vehicle_time_s": 100, "egress_time_s": 57, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_S", "distance_m": 3347, "access_walk_m": 2166, "in_vehicle_m": 999, "egress_walk_m": 182, "estimated_total_time_s": 1944, "access_time_s": 1558, "waiting_time_s": 150, "in_vehicle_time_s": 105, "egress_time_s": 131, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_S", "distance_m": 3347, "access_walk_m": 2166, "in_vehicle_m": 999, "egress_walk_m": 182, "estimated_total_time_s": 1949, "access_time_s": 1558, "waiting_time_s": 150, "in_vehicle_time_s": 110, "egress_time_s": 131, "cost_php": 14.0}
             ]},
-            {"trip_id": "A000992_D01_T02", "from": "LOC_0045", "to": "HOME_A000992", "to_name": "home", "trip_type": "shopping_to_home", "depart": "12:16", "options": [
-                {"mode": "walk", "distance_m": 1481, "estimated_total_time_s": 1066, "cost_php": 0.0}
+            {"trip_id": "A000992_D01_T02", "from": "LOC_0019", "to": "HOME_A000992", "to_name": "home", "trip_type": "shopping_to_home", "depart": "11:31", "options": [
+                {"mode": "jeepney", "route_id": "N1_N", "distance_m": 2200, "access_walk_m": 63, "in_vehicle_m": 1106, "egress_walk_m": 1030, "estimated_total_time_s": 1037, "access_time_s": 46, "waiting_time_s": 150, "in_vehicle_time_s": 100, "egress_time_s": 741, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-FRS_N", "distance_m": 3567, "access_walk_m": 218, "in_vehicle_m": 1168, "egress_walk_m": 2182, "estimated_total_time_s": 2000, "access_time_s": 157, "waiting_time_s": 150, "in_vehicle_time_s": 123, "egress_time_s": 1570, "cost_php": 14.0},
+                {"mode": "jeepney", "route_id": "RIZ-N1_N", "distance_m": 3426, "access_walk_m": 259, "in_vehicle_m": 985, "egress_walk_m": 2182, "estimated_total_time_s": 2015, "access_time_s": 186, "waiting_time_s": 150, "in_vehicle_time_s": 109, "egress_time_s": 1570, "cost_php": 14.0}
             ]}
         ]}
   ]
